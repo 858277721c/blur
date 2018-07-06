@@ -13,19 +13,15 @@ public class BackgroundTarget extends ViewTarget<View>
     }
 
     @Override
-    public void onBlur(Bitmap bitmap)
+    public void onBlur(Bitmap bitmap, View view)
     {
-        final View view = getView();
-        if (view == null)
+        if (bitmap == null || view == null)
             return;
 
-        if (bitmap != null)
-        {
-            final BitmapDrawable drawable = new BitmapDrawable(null, bitmap);
-            if (Build.VERSION.SDK_INT >= 16)
-                view.setBackground(drawable);
-            else
-                view.setBackgroundDrawable(drawable);
-        }
+        final BitmapDrawable drawable = new BitmapDrawable(null, bitmap);
+        if (Build.VERSION.SDK_INT >= 16)
+            view.setBackground(drawable);
+        else
+            view.setBackgroundDrawable(drawable);
     }
 }

@@ -11,13 +11,11 @@ public class ImageViewTarget extends ViewTarget<ImageView>
     }
 
     @Override
-    public void onBlur(Bitmap bitmap)
+    public void onBlur(Bitmap bitmap, ImageView view)
     {
-        final ImageView view = getView();
-        if (view == null)
+        if (bitmap == null || view == null)
             return;
 
-        if (bitmap != null)
-            view.setImageBitmap(bitmap);
+        view.setImageBitmap(bitmap);
     }
 }

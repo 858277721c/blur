@@ -8,8 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.fanwe.lib.blur.Blur;
-import com.fanwe.lib.blur.CompatBlur;
+import com.fanwe.lib.blur.api.FBlurry;
 
 import java.util.Random;
 
@@ -20,7 +19,6 @@ public class BlurActivity extends AppCompatActivity
     private final TimeLogger mTimeLogger = new TimeLogger(BlurActivity.class.getSimpleName());
 
     private ImageView mImageView;
-    private Blur mBlur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,6 +27,7 @@ public class BlurActivity extends AppCompatActivity
         mTimeLogger.setDebug(true);
         setContentView(R.layout.act_blur);
         mImageView = findViewById(R.id.imageview);
+
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -38,35 +37,19 @@ public class BlurActivity extends AppCompatActivity
                 final int resId = getResources().getIdentifier("fj" + index, "drawable", getPackageName());
                 final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
 
-                if (index % 2 == 0)
-                    getBlur().setColorOverlay(COLOR_OVERLAY_RED);
-                else
-                    getBlur().setColorOverlay(COLOR_OVERLAY_TRANSPARENT);
-
                 mTimeLogger.start();
-                final Bitmap bitmapBlur = getBlur().blur(bitmap);
-                mTimeLogger.print("blur");
-
-                mImageView.setImageBitmap(bitmapBlur);
-
+                FBlurry.newInstance(BlurActivity.this)
+                        .from(bitmap)
+                        .into(mImageView);
+                mTimeLogger.print("blurry");
             }
         });
     }
 
-    public Blur getBlur()
-    {
-        if (mBlur == null)
-        {
-            mBlur = new CompatBlur(this);
-        }
-        return mBlur;
-    }
 
     @Override
     protected void onDestroy()
     {
         super.onDestroy();
-        if (mBlur != null)
-            mBlur.destroy();
     }
 }

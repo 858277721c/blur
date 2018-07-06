@@ -57,7 +57,7 @@ public interface Blur
     Bitmap blur(View view);
 
     /**
-     * 销毁
+     * 释放资源，调用此方法后依旧可以使用此对象
      */
     void destroy();
 }

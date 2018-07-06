@@ -15,9 +15,9 @@ public interface Blur
     /**
      * 设置压缩倍数
      *
-     * @param downSampleFactor
+     * @param downSampling
      */
-    void setDownSampleFactor(int downSampleFactor);
+    void setDownSampling(int downSampling);
 
     /**
      * 设置覆盖层颜色
@@ -38,7 +38,7 @@ public interface Blur
      *
      * @return
      */
-    int getDownSampleFactor();
+    int getDownSampling();
 
     /**
      * 模糊Bitmap，传入的对象不会被回收

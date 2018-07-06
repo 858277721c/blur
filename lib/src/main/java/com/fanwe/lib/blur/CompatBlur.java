@@ -48,9 +48,9 @@ public class CompatBlur implements Blur
     }
 
     @Override
-    public void setDownSampleFactor(int downSampleFactor)
+    public void setDownSampling(int downSampling)
     {
-        getBlur().setDownSampleFactor(downSampleFactor);
+        getBlur().setDownSampling(downSampling);
     }
 
     @Override
@@ -66,9 +66,9 @@ public class CompatBlur implements Blur
     }
 
     @Override
-    public int getDownSampleFactor()
+    public int getDownSampling()
     {
-        return getBlur().getDownSampleFactor();
+        return getBlur().getDownSampling();
     }
 
     @Override

@@ -8,10 +8,10 @@ import android.view.View;
 public abstract class BaseBlur implements Blur
 {
     private int mRadius = 10;
-    private int mDownSampleFactor = 8;
+    private int mDownSampling = 8;
     private int mColorOverlay = Color.TRANSPARENT;
     private boolean mKeepBitmapSize = true;
-    private boolean mDownSampleFactorChanged;
+    private boolean mDownSamplingChanged;
 
     private int mWidth;
     private int mHeight;
@@ -30,15 +30,15 @@ public abstract class BaseBlur implements Blur
     }
 
     @Override
-    public void setDownSampleFactor(int downSampleFactor)
+    public void setDownSampling(int downSampling)
     {
-        if (downSampleFactor <= 0)
-            throw new IllegalArgumentException("downSampleFactor out of range (downSampleFactor > 0)");
+        if (downSampling <= 0)
+            throw new IllegalArgumentException("downSampling out of range (downSampling > 0)");
 
-        if (mDownSampleFactor != downSampleFactor)
+        if (mDownSampling != downSampling)
         {
-            mDownSampleFactor = downSampleFactor;
-            mDownSampleFactorChanged = true;
+            mDownSampling = downSampling;
+            mDownSamplingChanged = true;
         }
     }
 
@@ -55,20 +55,20 @@ public abstract class BaseBlur implements Blur
     }
 
     @Override
-    public int getDownSampleFactor()
+    public int getDownSampling()
     {
-        return mDownSampleFactor;
+        return mDownSampling;
     }
 
     private boolean init(int width, int height)
     {
         if (isConfigurationChanged(width, height))
         {
-            mDownSampleFactorChanged = false;
+            mDownSamplingChanged = false;
             mWidth = width;
             mHeight = height;
 
-            final float scale = 1.0f / mDownSampleFactor;
+            final float scale = 1.0f / mDownSampling;
             final int scaledWidth = (int) (width * scale);
             final int scaledHeight = (int) (height * scale);
             if (scaledWidth <= 0 || scaledHeight <= 0)
@@ -92,7 +92,7 @@ public abstract class BaseBlur implements Blur
 
     protected boolean isConfigurationChanged(int width, int height)
     {
-        return mDownSampleFactorChanged
+        return mDownSamplingChanged
                 || width != mWidth || height != mHeight
                 || mBitmapInput == null || mBitmapInput.isRecycled()
                 || mBitmapOutput == null || mBitmapOutput.isRecycled();
@@ -144,7 +144,7 @@ public abstract class BaseBlur implements Blur
             throw new RuntimeException("you can not recycle bitmapInput or bitmapOutput");
 
         Bitmap bitmapResult = null;
-        if (mDownSampleFactor == 1 || !mKeepBitmapSize)
+        if (mDownSampling == 1 || !mKeepBitmapSize)
         {
             bitmapResult = mBitmapOutput;
         } else

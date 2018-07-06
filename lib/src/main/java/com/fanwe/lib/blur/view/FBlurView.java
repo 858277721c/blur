@@ -74,13 +74,13 @@ public class FBlurView extends View
     }
 
     /**
-     * {@link Blur#setDownSampleFactor(int)}
+     * {@link Blur#setDownSampling(int)}
      *
-     * @param downSampleFactor
+     * @param downSampling
      */
-    public final void setDownSampleFactor(int downSampleFactor)
+    public final void setDownSampling(int downSampling)
     {
-        getBlur().setDownSampleFactor(downSampleFactor);
+        getBlur().setDownSampling(downSampling);
     }
 
     /**
@@ -105,7 +105,7 @@ public class FBlurView extends View
         final Bitmap bitmap = getBlur().blur(target);
         if (bitmap != null)
         {
-            final int scale = getBlur().getDownSampleFactor();
+            final int scale = getBlur().getDownSampling();
 
             canvas.save();
             canvas.translate(target.getX() - getX(), target.getY() - getY());

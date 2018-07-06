@@ -8,6 +8,7 @@ import com.fanwe.lib.blur.Blur;
 import com.fanwe.lib.blur.api.target.BackgroundTarget;
 import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.api.target.ImageViewTarget;
+import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
 
 abstract class BlurApi<S, R>
 {
@@ -103,7 +104,7 @@ abstract class BlurApi<S, R>
     public R into(ImageView imageView)
     {
         if (imageView != null)
-            into(new ImageViewTarget(imageView));
+            into(new MainThreadTargetWrapper(new ImageViewTarget(imageView)));
         return (R) this;
     }
 
@@ -116,7 +117,7 @@ abstract class BlurApi<S, R>
     public R intoBackground(View view)
     {
         if (view != null)
-            into(new BackgroundTarget(view));
+            into(new MainThreadTargetWrapper(new BackgroundTarget(view)));
         return (R) this;
     }
 

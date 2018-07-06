@@ -32,7 +32,7 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
         final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
 
         mTimeLogger.start();
-        FBlur.newInstance(BlurActivity.this)
+        FBlur.with(BlurActivity.this)
                 .from(bitmap)
                 .into(mImageView)
                 .destroy();

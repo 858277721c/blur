@@ -10,9 +10,19 @@ import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.api.target.ImageViewTarget;
 import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 abstract class BlurApi<S, R>
 {
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
+
     private final Blur mBlur;
+    private boolean mAsync;
+    private Map<BlurTask, Future> mMapTask;
 
     public BlurApi(S source, Blur blur)
     {
@@ -76,24 +86,23 @@ abstract class BlurApi<S, R>
     }
 
     /**
+     * 设置是否在子线程执行
+     *
+     * @param async
+     * @return
+     */
+    public R setAsync(boolean async)
+    {
+        mAsync = async;
+        return (R) this;
+    }
+
+    /**
      * 返回模糊的Bitmap
      *
      * @return
      */
     protected abstract Bitmap blur();
-
-    /**
-     * 模糊后设置给某个目标
-     *
-     * @param target
-     * @return
-     */
-    public R into(BlurTarget target)
-    {
-        if (target != null)
-            target.onBlur(blur());
-        return (R) this;
-    }
 
     /**
      * 模糊后设置给ImageView
@@ -122,10 +131,63 @@ abstract class BlurApi<S, R>
     }
 
     /**
+     * 模糊后设置给某个目标
+     *
+     * @param target
+     * @return
+     */
+    public R into(BlurTarget target)
+    {
+        if (target != null)
+        {
+            if (mAsync)
+            {
+                synchronized (BlurApi.this)
+                {
+                    final BlurTask task = new BlurTask(target);
+                    final Future future = EXECUTOR_SERVICE.submit(task);
+
+                    if (mMapTask == null)
+                        mMapTask = new WeakHashMap<>();
+                    mMapTask.put(task, future);
+                }
+            } else
+            {
+                target.onBlur(blur());
+            }
+        }
+        return (R) this;
+    }
+
+    /**
      * 释放资源，调用此方法后依旧可以使用此对象
      */
     public void destroy()
     {
-        getBlur().destroy();
+        mBlur.destroy();
+    }
+
+    private final class BlurTask implements Runnable
+    {
+        private final BlurTarget mTarget;
+
+        public BlurTask(BlurTarget target)
+        {
+            if (target == null)
+                throw new NullPointerException("target is null");
+            mTarget = target;
+        }
+
+        @Override
+        public void run()
+        {
+            mTarget.onBlur(blur());
+
+            synchronized (BlurApi.this)
+            {
+                if (mMapTask != null)
+                    mMapTask.remove(this);
+            }
+        }
     }
 }

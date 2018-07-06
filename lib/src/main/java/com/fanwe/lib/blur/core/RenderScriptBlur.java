@@ -60,7 +60,7 @@ public class RenderScriptBlur extends BaseBlur
     {
         super.onConfigurationChanged(scaledWidth, scaledHeight, scale, bitmapInput, bitmapOutput);
         mAllocationInput = Allocation.createFromBitmap(getRenderScript(), bitmapInput, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
-        mAllocationOutput = Allocation.createFromBitmap(getRenderScript(), bitmapOutput, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
+        mAllocationOutput = Allocation.createTyped(getRenderScript(), mAllocationInput.getType());
     }
 
     @Override

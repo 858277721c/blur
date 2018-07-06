@@ -7,11 +7,11 @@ import com.fanwe.lib.blur.Blur;
 
 import java.lang.ref.WeakReference;
 
-public final class ViewBlurry extends BaseBlurry<View, ViewBlurry>
+public final class ViewBlurApi extends BlurApi<View, ViewBlurApi>
 {
     private WeakReference<View> mView;
 
-    public ViewBlurry(View source, Blur blur)
+    public ViewBlurApi(View source, Blur blur)
     {
         super(source, blur);
         mView = new WeakReference<>(source);

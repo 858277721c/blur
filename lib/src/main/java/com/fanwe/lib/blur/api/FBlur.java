@@ -7,12 +7,12 @@ import android.view.View;
 import com.fanwe.lib.blur.Blur;
 import com.fanwe.lib.blur.CompatBlur;
 
-public class FBlurry
+public class FBlur
 {
-    private static FBlurry sInstance;
+    private static FBlur sInstance;
     private final Blur mBlur;
 
-    private FBlurry(Context context)
+    private FBlur(Context context)
     {
         mBlur = new CompatBlur(context);
     }
@@ -23,14 +23,14 @@ public class FBlurry
      * @param context
      * @return
      */
-    public static FBlurry getInstance(Context context)
+    public static FBlur getInstance(Context context)
     {
         if (sInstance == null)
         {
-            synchronized (FBlurry.class)
+            synchronized (FBlur.class)
             {
                 if (sInstance == null)
-                    sInstance = new FBlurry(context);
+                    sInstance = new FBlur(context);
             }
         }
         return sInstance;
@@ -42,18 +42,18 @@ public class FBlurry
      * @param context
      * @return
      */
-    public static FBlurry newInstance(Context context)
+    public static FBlur newInstance(Context context)
     {
-        return new FBlurry(context);
+        return new FBlur(context);
     }
 
-    public BitmapBlurry from(Bitmap bitmap)
+    public BitmapBlurApi from(Bitmap bitmap)
     {
-        return new BitmapBlurry(bitmap, mBlur);
+        return new BitmapBlurApi(bitmap, mBlur);
     }
 
-    public ViewBlurry from(View view)
+    public ViewBlurApi from(View view)
     {
-        return new ViewBlurry(view, mBlur);
+        return new ViewBlurApi(view, mBlur);
     }
 }

@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.fanwe.lib.blur.api.FBlurry;
+import com.fanwe.lib.blur.api.FBlur;
 
 import java.util.Random;
 
@@ -33,11 +33,11 @@ public class BlurActivity extends AppCompatActivity
                 final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
 
                 mTimeLogger.start();
-                FBlurry.newInstance(BlurActivity.this)
+                FBlur.newInstance(BlurActivity.this)
                         .from(bitmap)
                         .into(mImageView)
                         .destroy();
-                mTimeLogger.print("blurry");
+                mTimeLogger.print("blur api");
             }
         });
     }

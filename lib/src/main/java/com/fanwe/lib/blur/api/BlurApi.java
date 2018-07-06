@@ -9,11 +9,11 @@ import com.fanwe.lib.blur.api.target.BackgroundTarget;
 import com.fanwe.lib.blur.api.target.BlurryTarget;
 import com.fanwe.lib.blur.api.target.ImageViewTarget;
 
-abstract class BaseBlurry<S, R>
+abstract class BlurApi<S, R>
 {
     private final Blur mBlur;
 
-    public BaseBlurry(S source, Blur blur)
+    public BlurApi(S source, Blur blur)
     {
         if (blur == null)
             throw new NullPointerException("blur must not be null");

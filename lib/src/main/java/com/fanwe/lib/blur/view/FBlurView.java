@@ -58,7 +58,7 @@ public class FBlurView extends View
         if (mBlur == null)
         {
             mBlur = new CompatBlur(getContext());
-            mBlur.setKeepBitmapSize(false);
+            mBlur.setKeepDownSamplingSize(true);
         }
         return mBlur;
     }

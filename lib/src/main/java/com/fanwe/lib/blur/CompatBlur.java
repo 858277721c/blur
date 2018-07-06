@@ -60,9 +60,9 @@ public class CompatBlur implements Blur
     }
 
     @Override
-    public void setKeepBitmapSize(boolean keepBitmapSize)
+    public void setKeepDownSamplingSize(boolean keepDownSamplingSize)
     {
-        getBlur().setKeepBitmapSize(keepBitmapSize);
+        getBlur().setKeepDownSamplingSize(keepDownSamplingSize);
     }
 
     @Override

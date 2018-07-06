@@ -27,11 +27,11 @@ public interface Blur
     void setColorOverlay(int colorOverlay);
 
     /**
-     * 设置返回的模糊Bitmap是否要保持模糊之前的宽和高
+     * 设置返回的模糊Bitmap是否要保持压缩后的宽和高
      *
-     * @param keepBitmapSize
+     * @param keepDownSamplingSize
      */
-    void setKeepBitmapSize(boolean keepBitmapSize);
+    void setKeepDownSamplingSize(boolean keepDownSamplingSize);
 
     /**
      * 返回压缩倍数

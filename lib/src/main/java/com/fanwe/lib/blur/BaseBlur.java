@@ -10,7 +10,7 @@ public abstract class BaseBlur implements Blur
     private int mRadius = 10;
     private int mDownSampling = 8;
     private int mColorOverlay = Color.TRANSPARENT;
-    private boolean mKeepBitmapSize = true;
+    private boolean mKeepDownSamplingSize;
     private boolean mDownSamplingChanged;
 
     private int mWidth;
@@ -49,9 +49,9 @@ public abstract class BaseBlur implements Blur
     }
 
     @Override
-    public void setKeepBitmapSize(boolean keepBitmapSize)
+    public void setKeepDownSamplingSize(boolean keepDownSamplingSize)
     {
-        mKeepBitmapSize = keepBitmapSize;
+        mKeepDownSamplingSize = keepDownSamplingSize;
     }
 
     @Override
@@ -144,7 +144,7 @@ public abstract class BaseBlur implements Blur
             throw new RuntimeException("you can not recycle bitmapInput or bitmapOutput");
 
         Bitmap bitmapResult = null;
-        if (mDownSampling == 1 || !mKeepBitmapSize)
+        if (mDownSampling == 1 || mKeepDownSamplingSize)
         {
             bitmapResult = mBitmapOutput;
         } else

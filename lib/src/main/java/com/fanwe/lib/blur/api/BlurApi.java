@@ -160,10 +160,32 @@ abstract class BlurApi<S, R>
     }
 
     /**
+     * 取消异步请求
+     *
+     * @return
+     */
+    public R cancelAsync()
+    {
+        synchronized (BlurApi.this)
+        {
+            if (mMapTask != null)
+            {
+                for (Map.Entry<BlurTask, Future> item : mMapTask.entrySet())
+                {
+                    item.getValue().cancel(true);
+                }
+                mMapTask.clear();
+            }
+        }
+        return (R) this;
+    }
+
+    /**
      * 释放资源，调用此方法后依旧可以使用此对象
      */
     public void destroy()
     {
+        cancelAsync();
         mBlur.destroy();
     }
 

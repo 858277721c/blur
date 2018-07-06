@@ -15,6 +15,9 @@ abstract class BaseBlurry<S, R>
 
     public BaseBlurry(S source, Blur blur)
     {
+        if (blur == null)
+            throw new NullPointerException("blur must not be null");
+
         mBlur = blur;
     }
 

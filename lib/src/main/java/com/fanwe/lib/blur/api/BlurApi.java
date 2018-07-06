@@ -4,11 +4,11 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.fanwe.lib.blur.core.Blur;
 import com.fanwe.lib.blur.api.target.BackgroundTarget;
 import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.api.target.ImageViewTarget;
 import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
+import com.fanwe.lib.blur.core.Blur;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -102,7 +102,7 @@ abstract class BlurApi<S, R>
      *
      * @return
      */
-    protected abstract Bitmap blur();
+    protected abstract Bitmap blurImplemention();
 
     /**
      * 模糊后设置给ImageView
@@ -153,7 +153,7 @@ abstract class BlurApi<S, R>
                 }
             } else
             {
-                target.onBlur(blur());
+                target.onBlur(blurImplemention());
             }
         }
         return (R) this;
@@ -203,7 +203,7 @@ abstract class BlurApi<S, R>
         @Override
         public void run()
         {
-            mTarget.onBlur(blur());
+            mTarget.onBlur(blurImplemention());
 
             synchronized (BlurApi.this)
             {

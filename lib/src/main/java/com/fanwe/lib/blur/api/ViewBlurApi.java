@@ -23,7 +23,7 @@ public final class ViewBlurApi extends BlurApi<View, ViewBlurApi>
     }
 
     @Override
-    public Bitmap blur()
+    public Bitmap blurImplemention()
     {
         return getBlur().blur(getView());
     }

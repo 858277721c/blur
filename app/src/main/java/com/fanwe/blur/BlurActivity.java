@@ -40,7 +40,8 @@ public class BlurActivity extends AppCompatActivity
                 mTimeLogger.start();
                 FBlurry.newInstance(BlurActivity.this)
                         .from(bitmap)
-                        .into(mImageView);
+                        .into(mImageView)
+                        .destroy();
                 mTimeLogger.print("blurry");
             }
         });

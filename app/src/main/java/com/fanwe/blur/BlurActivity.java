@@ -11,7 +11,7 @@ import com.fanwe.lib.blur.api.FBlur;
 
 import java.util.Random;
 
-public class BlurActivity extends AppCompatActivity
+public class BlurActivity extends AppCompatActivity implements View.OnClickListener
 {
     private final TimeLogger mTimeLogger = new TimeLogger(BlurActivity.class.getSimpleName());
     private ImageView mImageView;
@@ -22,23 +22,20 @@ public class BlurActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_blur);
         mImageView = findViewById(R.id.imageview);
+    }
 
-        findViewById(R.id.btn).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                final int index = new Random().nextInt(10);
-                final int resId = getResources().getIdentifier("fj" + index, "drawable", getPackageName());
-                final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
+    @Override
+    public void onClick(final View view)
+    {
+        final int index = new Random().nextInt(10);
+        final int resId = getResources().getIdentifier("fj" + index, "drawable", getPackageName());
+        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
 
-                mTimeLogger.start();
-                FBlur.newInstance(BlurActivity.this)
-                        .from(bitmap)
-                        .into(mImageView)
-                        .destroy();
-                mTimeLogger.print("blur api");
-            }
-        });
+        mTimeLogger.start();
+        FBlur.newInstance(BlurActivity.this)
+                .from(bitmap)
+                .into(mImageView)
+                .destroy();
+        mTimeLogger.print("blur api");
     }
 }

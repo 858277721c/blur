@@ -3,7 +3,7 @@ package com.fanwe.lib.blur.api;
 import android.graphics.Bitmap;
 import android.view.View;
 
-import com.fanwe.lib.blur.Blur;
+import com.fanwe.lib.blur.core.Blur;
 
 import java.lang.ref.WeakReference;
 

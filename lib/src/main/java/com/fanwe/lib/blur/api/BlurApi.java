@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.fanwe.lib.blur.Blur;
+import com.fanwe.lib.blur.core.Blur;
 import com.fanwe.lib.blur.api.target.BackgroundTarget;
 import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.api.target.ImageViewTarget;

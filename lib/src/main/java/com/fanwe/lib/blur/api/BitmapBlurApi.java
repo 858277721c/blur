@@ -2,7 +2,7 @@ package com.fanwe.lib.blur.api;
 
 import android.graphics.Bitmap;
 
-import com.fanwe.lib.blur.Blur;
+import com.fanwe.lib.blur.core.Blur;
 
 public final class BitmapBlurApi extends BlurApi<Bitmap, BitmapBlurApi>
 {

@@ -7,8 +7,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.fanwe.lib.blur.Blur;
-import com.fanwe.lib.blur.CompatBlur;
+import com.fanwe.lib.blur.core.Blur;
+import com.fanwe.lib.blur.core.CompatBlur;
 
 import java.lang.ref.WeakReference;
 

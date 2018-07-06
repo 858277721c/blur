@@ -1,4 +1,4 @@
-package com.fanwe.lib.blur;
+package com.fanwe.lib.blur.core;
 
 import android.content.Context;
 import android.graphics.Bitmap;

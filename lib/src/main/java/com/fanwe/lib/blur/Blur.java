@@ -41,20 +41,20 @@ public interface Blur
     int getDownSampling();
 
     /**
-     * 模糊Bitmap，传入的对象不会被回收
-     *
-     * @param bitmap
-     * @return
-     */
-    Bitmap blur(Bitmap bitmap);
-
-    /**
      * 得到View的模糊Bitmap
      *
      * @param view
      * @return
      */
     Bitmap blur(View view);
+
+    /**
+     * 模糊Bitmap，传入的对象不会被回收
+     *
+     * @param bitmap
+     * @return
+     */
+    Bitmap blur(Bitmap bitmap);
 
     /**
      * 释放资源，调用此方法后依旧可以使用此对象

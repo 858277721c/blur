@@ -72,15 +72,15 @@ public class CompatBlur implements Blur
     }
 
     @Override
-    public Bitmap blur(Bitmap bitmap)
-    {
-        return getBlur().blur(bitmap);
-    }
-
-    @Override
     public Bitmap blur(View view)
     {
         return getBlur().blur(view);
+    }
+
+    @Override
+    public Bitmap blur(Bitmap bitmap)
+    {
+        return getBlur().blur(bitmap);
     }
 
     @Override

@@ -109,35 +109,46 @@ public abstract class BaseBlur implements Blur
     }
 
     @Override
+    public final Bitmap blur(View view)
+    {
+        if (view == null)
+            return null;
+
+        final boolean isDrawingCacheEnabled = view.isDrawingCacheEnabled();
+        final int quality = view.getDrawingCacheQuality();
+
+        if (!isDrawingCacheEnabled)
+            view.setDrawingCacheEnabled(true);
+
+        if (quality != View.DRAWING_CACHE_QUALITY_LOW)
+            view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+
+        final Bitmap drawingCache = view.getDrawingCache();
+        final Bitmap bitmapResult = blur(drawingCache);
+
+        if (isDrawingCacheEnabled)
+        {
+            view.setDrawingCacheQuality(quality);
+        } else
+        {
+            view.destroyDrawingCache();
+            view.setDrawingCacheEnabled(false);
+        }
+        return bitmapResult;
+    }
+
+    @Override
     public final Bitmap blur(final Bitmap bitmap)
     {
         if (bitmap == null)
             return null;
+
         if (!init(bitmap.getWidth(), bitmap.getHeight()))
             return null;
 
         mCanvasInput.drawBitmap(bitmap, 0, 0, null);
         mCanvasInput.drawColor(mColorOverlay);
 
-        return blurInternal();
-    }
-
-    @Override
-    public final Bitmap blur(View view)
-    {
-        if (view == null)
-            return null;
-        if (!init(view.getWidth(), view.getHeight()))
-            return null;
-
-        view.draw(mCanvasInput);
-        mCanvasInput.drawColor(mColorOverlay);
-
-        return blurInternal();
-    }
-
-    private Bitmap blurInternal()
-    {
         onBlurImplemention(mBitmapInput, mBitmapOutput);
 
         if (mBitmapInput.isRecycled() || mBitmapOutput.isRecycled())

@@ -9,7 +9,6 @@ import com.fanwe.lib.blur.CompatBlur;
 
 public class FBlur
 {
-    private static FBlur sInstance;
     private final Blur mBlur;
 
     private FBlur(Context context)
@@ -18,31 +17,12 @@ public class FBlur
     }
 
     /**
-     * 返回单例对象
-     *
-     * @param context
-     * @return
-     */
-    public static FBlur getInstance(Context context)
-    {
-        if (sInstance == null)
-        {
-            synchronized (FBlur.class)
-            {
-                if (sInstance == null)
-                    sInstance = new FBlur(context);
-            }
-        }
-        return sInstance;
-    }
-
-    /**
      * 返回一个新对象
      *
      * @param context
      * @return
      */
-    public static FBlur newInstance(Context context)
+    public static FBlur with(Context context)
     {
         return new FBlur(context);
     }

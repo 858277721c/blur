@@ -4,7 +4,7 @@ import android.view.View;
 
 import java.lang.ref.WeakReference;
 
-public abstract class ViewTarget<T extends View> implements BlurryTarget
+public abstract class ViewTarget<T extends View> implements BlurTarget
 {
     private final WeakReference<T> mView;
 

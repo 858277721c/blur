@@ -6,7 +6,7 @@ import android.widget.ImageView;
 
 import com.fanwe.lib.blur.Blur;
 import com.fanwe.lib.blur.api.target.BackgroundTarget;
-import com.fanwe.lib.blur.api.target.BlurryTarget;
+import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.api.target.ImageViewTarget;
 
 abstract class BlurApi<S, R>
@@ -87,10 +87,10 @@ abstract class BlurApi<S, R>
      * @param target
      * @return
      */
-    public R into(BlurryTarget target)
+    public R into(BlurTarget target)
     {
         if (target != null)
-            target.onBlurry(blur());
+            target.onBlur(blur());
         return (R) this;
     }
 

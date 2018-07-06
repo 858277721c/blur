@@ -11,7 +11,7 @@ public class ImageViewTarget extends ViewTarget<ImageView>
     }
 
     @Override
-    public void onBlurry(Bitmap bitmap)
+    public void onBlur(Bitmap bitmap)
     {
         final ImageView view = getView();
         if (view == null)

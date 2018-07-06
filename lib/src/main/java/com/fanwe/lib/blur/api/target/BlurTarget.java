@@ -2,7 +2,7 @@ package com.fanwe.lib.blur.api.target;
 
 import android.graphics.Bitmap;
 
-public interface BlurryTarget
+public interface BlurTarget
 {
-    void onBlurry(Bitmap bitmap);
+    void onBlur(Bitmap bitmap);
 }

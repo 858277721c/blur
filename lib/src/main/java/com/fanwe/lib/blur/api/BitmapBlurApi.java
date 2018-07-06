@@ -8,7 +8,7 @@ public final class BitmapBlurApi extends BlurApi<Bitmap, BitmapBlurApi>
 {
     private final Bitmap mBitmap;
 
-    public BitmapBlurApi(Bitmap source, Blur blur)
+    BitmapBlurApi(Bitmap source, Blur blur)
     {
         super(source, blur);
         mBitmap = source;

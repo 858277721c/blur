@@ -42,36 +42,36 @@ abstract class BlurApi<S, R>
     /**
      * {@link Blur#setDownSampling(int)}
      *
-     * @param downSampling
+     * @param sampling
      * @return
      */
-    public R sampling(int downSampling)
+    public R sampling(int sampling)
     {
-        mBlur.setDownSampling(downSampling);
+        mBlur.setDownSampling(sampling);
         return (R) this;
     }
 
     /**
      * {@link Blur#setColorOverlay(int)}
      *
-     * @param colorOverlay
+     * @param color
      * @return
      */
-    public R color(int colorOverlay)
+    public R color(int color)
     {
-        mBlur.setColorOverlay(colorOverlay);
+        mBlur.setColorOverlay(color);
         return (R) this;
     }
 
     /**
      * {@link Blur#setKeepDownSamplingSize(boolean)}
      *
-     * @param keepDownSamplingSize
+     * @param keepSamplingSize
      * @return
      */
-    public R keepDownSamplingSize(boolean keepDownSamplingSize)
+    public R keepSamplingSize(boolean keepSamplingSize)
     {
-        mBlur.setKeepDownSamplingSize(keepDownSamplingSize);
+        mBlur.setKeepDownSamplingSize(keepSamplingSize);
         return (R) this;
     }
 

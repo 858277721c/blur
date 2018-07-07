@@ -114,27 +114,13 @@ public abstract class BaseBlur implements Blur
         if (view == null)
             return null;
 
-        final boolean isDrawingCacheEnabled = view.isDrawingCacheEnabled();
-        final int quality = view.getDrawingCacheQuality();
+        if (!init(view.getWidth(), view.getHeight()))
+            return null;
 
-        if (!isDrawingCacheEnabled)
-            view.setDrawingCacheEnabled(true);
+        view.draw(mCanvasInput);
+        mCanvasInput.drawColor(mColorOverlay);
 
-        if (quality != View.DRAWING_CACHE_QUALITY_LOW)
-            view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
-
-        final Bitmap drawingCache = view.getDrawingCache();
-        final Bitmap bitmapResult = blur(drawingCache);
-
-        if (isDrawingCacheEnabled)
-        {
-            view.setDrawingCacheQuality(quality);
-        } else
-        {
-            view.destroyDrawingCache();
-            view.setDrawingCacheEnabled(false);
-        }
-        return bitmapResult;
+        return blurImplemention();
     }
 
     @Override
@@ -149,6 +135,11 @@ public abstract class BaseBlur implements Blur
         mCanvasInput.drawBitmap(bitmap, 0, 0, null);
         mCanvasInput.drawColor(mColorOverlay);
 
+        return blurImplemention();
+    }
+
+    private Bitmap blurImplemention()
+    {
         onBlurImplemention(mBitmapInput, mBitmapOutput);
 
         if (mBitmapInput.isRecycled() || mBitmapOutput.isRecycled())

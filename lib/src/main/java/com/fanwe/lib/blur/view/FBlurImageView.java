@@ -13,6 +13,10 @@ import android.widget.ImageView;
 import com.fanwe.lib.blur.core.Blur;
 import com.fanwe.lib.blur.core.CompatBlur;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 public class FBlurImageView extends ImageView implements BlurView
 {
     public FBlurImageView(Context context)
@@ -30,6 +34,8 @@ public class FBlurImageView extends ImageView implements BlurView
         super(context, attrs, defStyleAttr);
     }
 
+    private ExecutorService mExecutorService;
+    private Future mFuture;
     private Blur mBlur;
 
     private final Blur getBlur()
@@ -40,6 +46,13 @@ public class FBlurImageView extends ImageView implements BlurView
             mBlur.setDestroyAfterBlur(false);
         }
         return mBlur;
+    }
+
+    private ExecutorService getExecutorService()
+    {
+        if (mExecutorService == null)
+            mExecutorService = Executors.newSingleThreadExecutor();
+        return mExecutorService;
     }
 
     @Override
@@ -76,15 +89,15 @@ public class FBlurImageView extends ImageView implements BlurView
     @Override
     public void setImageDrawable(Drawable drawable)
     {
-        final Bitmap bitmap = drawableToBitmap(drawable);
-        if (bitmap != null)
+        if (drawable == null)
         {
-            final Bitmap blurBitmap = getBlur().blur(bitmap);
-            drawable = new BitmapDrawable(getResources(), blurBitmap);
-            bitmap.recycle();
+            super.setImageDrawable(null);
+        } else
+        {
+            if (mFuture != null)
+                mFuture.cancel(true);
+            mFuture = getExecutorService().submit(new BlurDrawableRunnable(drawable));
         }
-
-        super.setImageDrawable(drawable);
     }
 
     @Override
@@ -95,6 +108,35 @@ public class FBlurImageView extends ImageView implements BlurView
         {
             mBlur.destroy();
             mBlur = null;
+        }
+    }
+
+    private final class BlurDrawableRunnable implements Runnable
+    {
+        private Drawable mDrawable;
+
+        public BlurDrawableRunnable(Drawable drawable)
+        {
+            mDrawable = drawable;
+        }
+
+        @Override
+        public void run()
+        {
+            final Bitmap bitmap = drawableToBitmap(mDrawable);
+            if (bitmap != null)
+            {
+                final Bitmap blurBitmap = getBlur().blur(bitmap);
+                bitmap.recycle();
+                post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        FBlurImageView.super.setImageDrawable(new BitmapDrawable(getResources(), blurBitmap));
+                    }
+                });
+            }
         }
     }
 

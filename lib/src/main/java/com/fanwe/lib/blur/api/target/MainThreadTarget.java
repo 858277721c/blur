@@ -34,5 +34,5 @@ public abstract class MainThreadTarget implements BlurTarget
         }
     }
 
-    public abstract void onBlurMainThread(Bitmap bitmap);
+    protected abstract void onBlurMainThread(Bitmap bitmap);
 }

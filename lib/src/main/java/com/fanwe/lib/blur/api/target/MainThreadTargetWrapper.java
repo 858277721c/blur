@@ -14,7 +14,7 @@ public class MainThreadTargetWrapper extends MainThreadTarget
     }
 
     @Override
-    public void onBlurMainThread(Bitmap bitmap)
+    protected void onBlurMainThread(Bitmap bitmap)
     {
         mTarget.onBlur(bitmap);
     }

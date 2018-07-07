@@ -25,5 +25,5 @@ public abstract class ViewTarget<T extends View> implements BlurTarget
         onBlur(bitmap, getView());
     }
 
-    public abstract void onBlur(Bitmap bitmap, T view);
+    protected abstract void onBlur(Bitmap bitmap, T view);
 }

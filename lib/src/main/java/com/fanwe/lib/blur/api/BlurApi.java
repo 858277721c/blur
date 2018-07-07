@@ -91,7 +91,7 @@ abstract class BlurApi<S, R>
     public R into(ImageView imageView)
     {
         if (imageView != null)
-            into(new MainThreadTargetWrapper(new ImageViewTarget(imageView)));
+            into(new ImageViewTarget(imageView));
         return (R) this;
     }
 
@@ -104,7 +104,7 @@ abstract class BlurApi<S, R>
     public R intoBackground(View view)
     {
         if (view != null)
-            into(new MainThreadTargetWrapper(new BackgroundTarget(view)));
+            into(new BackgroundTarget(view));
         return (R) this;
     }
 
@@ -117,7 +117,7 @@ abstract class BlurApi<S, R>
     public R into(BlurTarget target)
     {
         if (target != null)
-            target.onBlur(blurImplemention());
+            new MainThreadTargetWrapper(target).onBlur(blurImplemention());
         return (R) this;
     }
 

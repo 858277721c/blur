@@ -60,6 +60,7 @@ public class FBlurView extends View
         {
             mBlur = new CompatBlur(getContext());
             mBlur.setKeepDownSamplingSize(true);
+            mBlur.setDestroyAfterBlur(false);
         }
         return mBlur;
     }

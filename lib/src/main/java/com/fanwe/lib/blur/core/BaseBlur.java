@@ -10,7 +10,8 @@ public abstract class BaseBlur implements Blur
     private int mRadius = 10;
     private int mDownSampling = 8;
     private int mColorOverlay = Color.TRANSPARENT;
-    private boolean mKeepDownSamplingSize;
+    private boolean mKeepDownSamplingSize = false;
+    private boolean mDestroyAfterBlur = true;
     private boolean mDownSamplingChanged;
 
     private int mWidth;
@@ -52,6 +53,12 @@ public abstract class BaseBlur implements Blur
     public void setKeepDownSamplingSize(boolean keepDownSamplingSize)
     {
         mKeepDownSamplingSize = keepDownSamplingSize;
+    }
+
+    @Override
+    public void setDestroyAfterBlur(boolean destroyAfterBlur)
+    {
+        mDestroyAfterBlur = destroyAfterBlur;
     }
 
     @Override
@@ -151,6 +158,10 @@ public abstract class BaseBlur implements Blur
         {
             bitmapResult = Bitmap.createScaledBitmap(mBitmapOutput, mWidth, mHeight, true);
         }
+
+        if (mDestroyAfterBlur)
+            destroy();
+
         return bitmapResult;
     }
 

@@ -66,6 +66,12 @@ public class CompatBlur implements Blur
     }
 
     @Override
+    public void setDestroyAfterBlur(boolean destroyAfterBlur)
+    {
+        getBlur().setDestroyAfterBlur(destroyAfterBlur);
+    }
+
+    @Override
     public int getDownSampling()
     {
         return getBlur().getDownSampling();

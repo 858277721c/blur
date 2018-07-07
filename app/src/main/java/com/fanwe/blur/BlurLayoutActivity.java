@@ -1,23 +1,16 @@
 package com.fanwe.blur;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-
 import com.fanwe.lib.blur.view.FBlurLayout;
 
-import java.util.Random;
-
-public class BlurLayoutActivity extends AppCompatActivity
+public class BlurLayoutActivity extends AppCompatActivity implements View.OnClickListener
 {
-    public static final int COLOR_OVERLAY_TRANSPARENT = Color.TRANSPARENT;
-    public static final int COLOR_OVERLAY_GREEN = Color.parseColor("#6600FF00");
-
     private ImageView mImageView;
     private FBlurLayout mBlurLayout;
 
@@ -29,23 +22,15 @@ public class BlurLayoutActivity extends AppCompatActivity
         mImageView = findViewById(R.id.imageview);
         mBlurLayout = findViewById(R.id.view_blur);
 
-        findViewById(R.id.btn).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                final int index = new Random().nextInt(10);
-                final int resId = getResources().getIdentifier("fj" + index, "drawable", getPackageName());
-                final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
+        mBlurLayout.getBlurView().setBlurColor(Color.parseColor("#6600FF00"));
+    }
 
-                if (index % 2 == 0)
-                    mBlurLayout.getBlurView().setBlurColor(COLOR_OVERLAY_GREEN);
-                else
-                    mBlurLayout.getBlurView().setBlurColor(COLOR_OVERLAY_TRANSPARENT);
+    @Override
+    public void onClick(View v)
+    {
+        final Bitmap bitmap = Utils.randomBitmap(BlurLayoutActivity.this);
 
-                mImageView.setImageBitmap(bitmap);
-                mBlurLayout.getBlurView().invalidate();
-            }
-        });
+        mImageView.setImageBitmap(bitmap);
+        mBlurLayout.getBlurView().invalidate();
     }
 }

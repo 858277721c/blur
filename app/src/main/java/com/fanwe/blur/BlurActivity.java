@@ -1,15 +1,13 @@
 package com.fanwe.blur;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.fanwe.lib.blur.core.CompatBlur;
-
-import java.util.Random;
 
 public class BlurActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -27,12 +25,16 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(final View view)
     {
-        final int index = new Random().nextInt(10);
-        final int resId = getResources().getIdentifier("fj" + index, "drawable", getPackageName());
-        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
-
+        final Bitmap bitmap = Utils.randomBitmap(this);
         mTimeLogger.start();
-        mImageView.setImageBitmap(new CompatBlur(this).blur(bitmap));
+
+        final Bitmap blurBitmap = new CompatBlur(this)
+                .setRadius(10)
+                .setDownSampling(8)
+                .setColor(Color.parseColor("#66FFFFFF"))
+                .blur(bitmap);
+        mImageView.setImageBitmap(blurBitmap);
+
         mTimeLogger.print("blur api");
     }
 }

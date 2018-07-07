@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-abstract class BlurApi<S, R>
+public abstract class BlurApi<S, R>
 {
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
 

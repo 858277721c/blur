@@ -113,6 +113,16 @@ public class FBlurImageView extends ImageView implements BlurView
             mBlur.destroy();
             mBlur = null;
         }
+        if (mFuture != null)
+        {
+            mFuture.cancel(true);
+            mFuture = null;
+        }
+        if (mExecutorService != null)
+        {
+            mExecutorService.shutdownNow();
+            mExecutorService = null;
+        }
     }
 
     private final class BlurDrawableRunnable implements Runnable

@@ -10,19 +10,9 @@ import com.fanwe.lib.blur.api.target.ImageViewTarget;
 import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
 import com.fanwe.lib.blur.core.Blur;
 
-import java.util.Map;
-import java.util.WeakHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 abstract class BlurApi<S, R>
 {
-    private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
-
     private final Blur mBlur;
-    private boolean mAsync;
-    private Map<BlurTask, Future> mMapTask;
 
     public BlurApi(S source, Blur blur)
     {
@@ -86,18 +76,6 @@ abstract class BlurApi<S, R>
     }
 
     /**
-     * 设置是否在子线程执行
-     *
-     * @param async
-     * @return
-     */
-    public R async(boolean async)
-    {
-        mAsync = async;
-        return (R) this;
-    }
-
-    /**
      * 返回模糊的Bitmap
      *
      * @return
@@ -139,44 +117,7 @@ abstract class BlurApi<S, R>
     public R into(BlurTarget target)
     {
         if (target != null)
-        {
-            if (mAsync)
-            {
-                synchronized (BlurApi.this)
-                {
-                    final BlurTask task = new BlurTask(target);
-                    final Future future = EXECUTOR_SERVICE.submit(task);
-
-                    if (mMapTask == null)
-                        mMapTask = new WeakHashMap<>();
-                    mMapTask.put(task, future);
-                }
-            } else
-            {
-                target.onBlur(blurImplemention());
-            }
-        }
-        return (R) this;
-    }
-
-    /**
-     * 取消异步请求
-     *
-     * @return
-     */
-    public R cancelAsync()
-    {
-        synchronized (BlurApi.this)
-        {
-            if (mMapTask != null)
-            {
-                for (Map.Entry<BlurTask, Future> item : mMapTask.entrySet())
-                {
-                    item.getValue().cancel(true);
-                }
-                mMapTask.clear();
-            }
-        }
+            target.onBlur(blurImplemention());
         return (R) this;
     }
 
@@ -185,31 +126,6 @@ abstract class BlurApi<S, R>
      */
     public void destroy()
     {
-        cancelAsync();
         mBlur.destroy();
-    }
-
-    private final class BlurTask implements Runnable
-    {
-        private final BlurTarget mTarget;
-
-        public BlurTask(BlurTarget target)
-        {
-            if (target == null)
-                throw new NullPointerException("target is null");
-            mTarget = target;
-        }
-
-        @Override
-        public void run()
-        {
-            mTarget.onBlur(blurImplemention());
-
-            synchronized (BlurApi.this)
-            {
-                if (mMapTask != null)
-                    mMapTask.remove(this);
-            }
-        }
     }
 }

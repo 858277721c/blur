@@ -43,7 +43,7 @@ abstract class BlurApi<S, R>
      * @param radius
      * @return
      */
-    public R setRadius(int radius)
+    public R radius(int radius)
     {
         mBlur.setRadius(radius);
         return (R) this;
@@ -55,7 +55,7 @@ abstract class BlurApi<S, R>
      * @param downSampling
      * @return
      */
-    public R setDownSampling(int downSampling)
+    public R sampling(int downSampling)
     {
         mBlur.setDownSampling(downSampling);
         return (R) this;
@@ -67,7 +67,7 @@ abstract class BlurApi<S, R>
      * @param colorOverlay
      * @return
      */
-    public R setColorOverlay(int colorOverlay)
+    public R color(int colorOverlay)
     {
         mBlur.setColorOverlay(colorOverlay);
         return (R) this;
@@ -79,7 +79,7 @@ abstract class BlurApi<S, R>
      * @param keepDownSamplingSize
      * @return
      */
-    public R setKeepDownSamplingSize(boolean keepDownSamplingSize)
+    public R keepDownSamplingSize(boolean keepDownSamplingSize)
     {
         mBlur.setKeepDownSamplingSize(keepDownSamplingSize);
         return (R) this;
@@ -91,7 +91,7 @@ abstract class BlurApi<S, R>
      * @param async
      * @return
      */
-    public R setAsync(boolean async)
+    public R async(boolean async)
     {
         mAsync = async;
         return (R) this;

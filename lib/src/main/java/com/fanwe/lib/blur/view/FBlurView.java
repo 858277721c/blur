@@ -12,7 +12,7 @@ import com.fanwe.lib.blur.core.CompatBlur;
 
 import java.lang.ref.WeakReference;
 
-public class FBlurView extends View
+public class FBlurView extends View implements BlurView
 {
     public FBlurView(Context context)
     {
@@ -65,34 +65,22 @@ public class FBlurView extends View
         return mBlur;
     }
 
-    /**
-     * {@link Blur#setRadius(int)}
-     *
-     * @param radius
-     */
+    @Override
     public final void setBlurRadius(int radius)
     {
         getBlur().setRadius(radius);
     }
 
-    /**
-     * {@link Blur#setDownSampling(int)}
-     *
-     * @param downSampling
-     */
-    public final void setDownSampling(int downSampling)
+    @Override
+    public final void setBlurDownSampling(int downSampling)
     {
         getBlur().setDownSampling(downSampling);
     }
 
-    /**
-     * {@link Blur#setColor(int)}
-     *
-     * @param colorOverlay
-     */
-    public final void setColorOverlay(int colorOverlay)
+    @Override
+    public final void setBlurColor(int color)
     {
-        getBlur().setColor(colorOverlay);
+        getBlur().setColor(color);
     }
 
     @Override

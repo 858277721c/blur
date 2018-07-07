@@ -39,9 +39,9 @@ public class BlurLayoutActivity extends AppCompatActivity
                 final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
 
                 if (index % 2 == 0)
-                    mBlurLayout.getBlurView().setColorOverlay(COLOR_OVERLAY_GREEN);
+                    mBlurLayout.getBlurView().setBlurColor(COLOR_OVERLAY_GREEN);
                 else
-                    mBlurLayout.getBlurView().setColorOverlay(COLOR_OVERLAY_TRANSPARENT);
+                    mBlurLayout.getBlurView().setBlurColor(COLOR_OVERLAY_TRANSPARENT);
 
                 mImageView.setImageBitmap(bitmap);
                 mBlurLayout.getBlurView().invalidate();

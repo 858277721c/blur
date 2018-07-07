@@ -4,16 +4,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
 
-import com.fanwe.lib.blur.core.Blur;
-import com.fanwe.lib.blur.core.CompatBlur;
-
 public class FBlur
 {
-    private final Blur mBlur;
+    private final Context mContext;
 
     private FBlur(Context context)
     {
-        mBlur = new CompatBlur(context);
+        if (context == null)
+            throw new NullPointerException("context must not be null");
+        mContext = context.getApplicationContext();
     }
 
     /**
@@ -29,11 +28,11 @@ public class FBlur
 
     public BitmapBlurApi from(Bitmap bitmap)
     {
-        return new BitmapBlurApi(bitmap, mBlur);
+        return new BitmapBlurApi(bitmap, mContext);
     }
 
     public ViewBlurApi from(View view)
     {
-        return new ViewBlurApi(view, mBlur);
+        return new ViewBlurApi(view, mContext);
     }
 }

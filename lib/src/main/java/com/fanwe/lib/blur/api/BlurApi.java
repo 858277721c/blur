@@ -1,5 +1,6 @@
 package com.fanwe.lib.blur.api;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,17 +10,15 @@ import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.api.target.ImageViewTarget;
 import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
 import com.fanwe.lib.blur.core.Blur;
+import com.fanwe.lib.blur.core.CompatBlur;
 
 abstract class BlurApi<S, R>
 {
     private final Blur mBlur;
 
-    public BlurApi(S source, Blur blur)
+    public BlurApi(S source, Context context)
     {
-        if (blur == null)
-            throw new NullPointerException("blur must not be null");
-
-        mBlur = blur;
+        mBlur = new CompatBlur(context);
     }
 
     protected final Blur getBlur()

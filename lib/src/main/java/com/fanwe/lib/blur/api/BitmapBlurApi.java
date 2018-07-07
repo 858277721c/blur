@@ -1,16 +1,15 @@
 package com.fanwe.lib.blur.api;
 
+import android.content.Context;
 import android.graphics.Bitmap;
-
-import com.fanwe.lib.blur.core.Blur;
 
 public final class BitmapBlurApi extends BlurApi<Bitmap, BitmapBlurApi>
 {
     private final Bitmap mBitmap;
 
-    BitmapBlurApi(Bitmap source, Blur blur)
+    BitmapBlurApi(Bitmap source, Context context)
     {
-        super(source, blur);
+        super(source, context);
         mBitmap = source;
     }
 

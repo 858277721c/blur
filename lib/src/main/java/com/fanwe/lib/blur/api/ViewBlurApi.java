@@ -1,9 +1,8 @@
 package com.fanwe.lib.blur.api;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
-
-import com.fanwe.lib.blur.core.Blur;
 
 import java.lang.ref.WeakReference;
 
@@ -11,9 +10,9 @@ public final class ViewBlurApi extends BlurApi<View, ViewBlurApi>
 {
     private WeakReference<View> mView;
 
-    ViewBlurApi(View source, Blur blur)
+    ViewBlurApi(View source, Context context)
     {
-        super(source, blur);
+        super(source, context);
         mView = new WeakReference<>(source);
     }
 

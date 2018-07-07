@@ -152,19 +152,16 @@ public class FBlurImageView extends ImageView implements BlurView
         public void run()
         {
             final Bitmap bitmap = drawableToBitmap(mDrawable);
-            if (bitmap != null)
+            final Bitmap blurBitmap = getBlur().blur(bitmap);
+            bitmap.recycle();
+            post(new Runnable()
             {
-                final Bitmap blurBitmap = getBlur().blur(bitmap);
-                bitmap.recycle();
-                post(new Runnable()
+                @Override
+                public void run()
                 {
-                    @Override
-                    public void run()
-                    {
-                        FBlurImageView.super.setImageDrawable(new InternalBitmapDrawable(getResources(), blurBitmap));
-                    }
-                });
-            }
+                    FBlurImageView.super.setImageDrawable(new InternalBitmapDrawable(getResources(), blurBitmap));
+                }
+            });
             mRunnable = null;
         }
     }
@@ -189,7 +186,6 @@ public class FBlurImageView extends ImageView implements BlurView
         final Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
-
         return bitmap;
     }
 }

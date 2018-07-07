@@ -34,9 +34,12 @@ public class FBlurImageView extends ImageView implements BlurView
         super(context, attrs, defStyleAttr);
     }
 
+    private Blur mBlur;
+
     private ExecutorService mExecutorService;
     private Future mFuture;
-    private Blur mBlur;
+    private Runnable mRunnable;
+
     private Drawable mDrawable;
 
     private final Blur getBlur()
@@ -91,6 +94,7 @@ public class FBlurImageView extends ImageView implements BlurView
         if (mFuture != null)
             mFuture.cancel(true);
 
+        mRunnable = runnable;
         mFuture = mExecutorService.submit(runnable);
     }
 
@@ -102,6 +106,14 @@ public class FBlurImageView extends ImageView implements BlurView
 
         if (drawable instanceof InternalBitmapDrawable)
             super.onDraw(canvas);
+    }
+
+    @Override
+    protected void onAttachedToWindow()
+    {
+        super.onAttachedToWindow();
+        if (mRunnable != null)
+            submit(mRunnable);
     }
 
     @Override
@@ -153,6 +165,7 @@ public class FBlurImageView extends ImageView implements BlurView
                     }
                 });
             }
+            mRunnable = null;
         }
     }
 

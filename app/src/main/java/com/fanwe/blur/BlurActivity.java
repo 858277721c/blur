@@ -34,8 +34,7 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
         mTimeLogger.start();
         FBlur.with(BlurActivity.this)
                 .from(bitmap)
-                .into(mImageView)
-                .destroy();
+                .into(mImageView);
         mTimeLogger.print("blur api");
     }
 }

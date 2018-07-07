@@ -117,15 +117,18 @@ abstract class BlurApi<S, R>
     public R into(BlurTarget target)
     {
         if (target != null)
-            new MainThreadTargetWrapper(target).onBlur(blurImplemention());
+        {
+            final MainThreadTargetWrapper wrapper = new MainThreadTargetWrapper(target)
+            {
+                @Override
+                protected void onBlurMainThread(Bitmap bitmap)
+                {
+                    super.onBlurMainThread(bitmap);
+                    mBlur.destroy();
+                }
+            };
+            wrapper.onBlur(blurImplemention());
+        }
         return (R) this;
-    }
-
-    /**
-     * 释放资源，调用此方法后依旧可以使用此对象
-     */
-    public void destroy()
-    {
-        mBlur.destroy();
     }
 }

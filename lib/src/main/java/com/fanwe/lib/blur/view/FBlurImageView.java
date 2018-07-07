@@ -8,6 +8,7 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.fanwe.lib.blur.core.Blur;
@@ -79,7 +80,9 @@ public class FBlurImageView extends ImageView implements BlurView
         final Bitmap bitmap = drawableToBitmap(drawable);
         if (bitmap != null)
         {
+            final long start = System.currentTimeMillis();
             final Bitmap blurBitmap = getBlur().blur(bitmap);
+            Log.i(getClass().getSimpleName(), "time:" + (System.currentTimeMillis() - start));
             drawable = new BitmapDrawable(getResources(), blurBitmap);
             bitmap.recycle();
         }

@@ -22,7 +22,7 @@ public class BlurLayoutActivity extends AppCompatActivity implements View.OnClic
         mImageView = findViewById(R.id.imageview);
         mBlurLayout = findViewById(R.id.view_blur);
 
-        mBlurLayout.getBlurView().setBlurColor(Color.parseColor("#6600FF00"));
+        mBlurLayout.setBlurColor(Color.parseColor("#6600FF00"));
     }
 
     @Override
@@ -31,6 +31,6 @@ public class BlurLayoutActivity extends AppCompatActivity implements View.OnClic
         final Bitmap bitmap = Utils.randomBitmap(BlurLayoutActivity.this);
 
         mImageView.setImageBitmap(bitmap);
-        mBlurLayout.getBlurView().invalidate();
+        mBlurLayout.blur();
     }
 }

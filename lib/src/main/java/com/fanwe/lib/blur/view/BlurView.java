@@ -24,4 +24,9 @@ public interface BlurView
      * @param color
      */
     void setBlurColor(int color);
+
+    /**
+     * 模糊
+     */
+    void blur();
 }

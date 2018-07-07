@@ -84,6 +84,12 @@ public class FBlurView extends View implements BlurView
     }
 
     @Override
+    public void blur()
+    {
+        invalidate();
+    }
+
+    @Override
     protected void onDraw(Canvas canvas)
     {
         super.onDraw(canvas);

@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
-public class FBlurLayout extends FrameLayout
+public class FBlurLayout extends FrameLayout implements BlurView
 {
     public FBlurLayout(Context context)
     {
@@ -24,7 +24,7 @@ public class FBlurLayout extends FrameLayout
 
     private FBlurView mBlurView;
 
-    public FBlurView getBlurView()
+    private FBlurView getBlurView()
     {
         if (mBlurView == null)
             mBlurView = new FBlurView(getContext());
@@ -57,5 +57,29 @@ public class FBlurLayout extends FrameLayout
             blurView.setTarget(null);
             removeView(blurView);
         }
+    }
+
+    @Override
+    public void setBlurRadius(int radius)
+    {
+        getBlurView().setBlurRadius(radius);
+    }
+
+    @Override
+    public void setBlurDownSampling(int downSampling)
+    {
+        getBlurView().setBlurDownSampling(downSampling);
+    }
+
+    @Override
+    public void setBlurColor(int color)
+    {
+        getBlurView().setBlurColor(color);
+    }
+
+    @Override
+    public void blur()
+    {
+        getBlurView().blur();
     }
 }

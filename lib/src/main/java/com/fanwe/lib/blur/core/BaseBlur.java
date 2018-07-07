@@ -74,8 +74,6 @@ public abstract class BaseBlur implements Blur
             if (scaledWidth <= 0 || scaledHeight <= 0)
                 return false;
 
-            if (mBitmapOutput != null)
-                mBitmapOutput.recycle();
             mBitmapOutput = Bitmap.createBitmap(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888);
 
             if (mBitmapInput != null)
@@ -153,10 +151,6 @@ public abstract class BaseBlur implements Blur
         {
             bitmapResult = Bitmap.createScaledBitmap(mBitmapOutput, mWidth, mHeight, true);
         }
-
-        if (bitmapResult == mBitmapOutput)
-            bitmapResult = Bitmap.createBitmap(mBitmapOutput);
-
         return bitmapResult;
     }
 
@@ -175,11 +169,6 @@ public abstract class BaseBlur implements Blur
         {
             mBitmapInput.recycle();
             mBitmapInput = null;
-        }
-        if (mBitmapOutput != null)
-        {
-            mBitmapOutput.recycle();
-            mBitmapOutput = null;
         }
     }
 }

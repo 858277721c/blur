@@ -37,7 +37,6 @@ public class FBlurImageView extends ImageView implements BlurView
         if (mBlur == null)
         {
             mBlur = new CompatBlur(getContext());
-            mBlur.setKeepDownSamplingSize(true);
             mBlur.setDestroyAfterBlur(false);
         }
         return mBlur;

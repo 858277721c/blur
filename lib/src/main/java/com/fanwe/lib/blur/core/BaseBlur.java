@@ -9,7 +9,7 @@ public abstract class BaseBlur implements Blur
 {
     private int mRadius = 10;
     private int mDownSampling = 8;
-    private int mColorOverlay = Color.TRANSPARENT;
+    private int mColor = Color.TRANSPARENT;
     private boolean mKeepDownSamplingSize = false;
     private boolean mDestroyAfterBlur = true;
     private boolean mDownSamplingChanged;
@@ -44,9 +44,9 @@ public abstract class BaseBlur implements Blur
     }
 
     @Override
-    public void setColorOverlay(int colorOverlay)
+    public void setColor(int color)
     {
-        mColorOverlay = colorOverlay;
+        mColor = color;
     }
 
     @Override
@@ -123,7 +123,7 @@ public abstract class BaseBlur implements Blur
             return null;
 
         view.draw(mCanvasInput);
-        mCanvasInput.drawColor(mColorOverlay);
+        mCanvasInput.drawColor(mColor);
 
         return blurImplemention();
     }
@@ -138,7 +138,7 @@ public abstract class BaseBlur implements Blur
             return null;
 
         mCanvasInput.drawBitmap(bitmap, 0, 0, null);
-        mCanvasInput.drawColor(mColorOverlay);
+        mCanvasInput.drawColor(mColor);
 
         return blurImplemention();
     }

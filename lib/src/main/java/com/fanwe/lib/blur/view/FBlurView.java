@@ -86,13 +86,13 @@ public class FBlurView extends View
     }
 
     /**
-     * {@link Blur#setColorOverlay(int)}
+     * {@link Blur#setColor(int)}
      *
      * @param colorOverlay
      */
     public final void setColorOverlay(int colorOverlay)
     {
-        getBlur().setColorOverlay(colorOverlay);
+        getBlur().setColor(colorOverlay);
     }
 
     @Override

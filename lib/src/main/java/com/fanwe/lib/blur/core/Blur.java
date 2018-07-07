@@ -22,9 +22,9 @@ public interface Blur
     /**
      * 设置覆盖层颜色，默认透明
      *
-     * @param colorOverlay
+     * @param color
      */
-    void setColorOverlay(int colorOverlay);
+    void setColor(int color);
 
     /**
      * 设置返回的模糊Bitmap是否要保持压缩后的宽和高，默认false-保持原来的宽和高

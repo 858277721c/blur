@@ -54,9 +54,9 @@ public class CompatBlur implements Blur
     }
 
     @Override
-    public void setColorOverlay(int colorOverlay)
+    public void setColor(int color)
     {
-        getBlur().setColorOverlay(colorOverlay);
+        getBlur().setColor(color);
     }
 
     @Override

@@ -51,14 +51,14 @@ abstract class BlurApi<S, R>
     }
 
     /**
-     * {@link Blur#setColorOverlay(int)}
+     * {@link Blur#setColor(int)}
      *
      * @param color
      * @return
      */
     public R color(int color)
     {
-        mBlur.setColorOverlay(color);
+        mBlur.setColor(color);
         return (R) this;
     }
 

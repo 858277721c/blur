@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -148,6 +150,15 @@ public abstract class ViewBlur<T extends View>
         }
     }
 
+    private Handler mHandler;
+
+    private Handler getHandler()
+    {
+        if (mHandler == null)
+            mHandler = new Handler(Looper.getMainLooper());
+        return mHandler;
+    }
+
     private final class BlurDrawableRunnable implements Runnable
     {
         private final Drawable mDrawable;
@@ -162,19 +173,20 @@ public abstract class ViewBlur<T extends View>
         @Override
         public void run()
         {
-            final T view = getView();
-            if (view == null)
+            if (getView() == null)
                 return;
 
             final Bitmap bitmap = drawableToBitmap(mDrawable);
             final Bitmap bitmapBlurred = mBlur.blur(bitmap);
             bitmap.recycle();
-            view.post(new Runnable()
+            getHandler().post(new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    onBlur(new BlurredBitmapDrawable(null, bitmapBlurred), view);
+                    final T view = getView();
+                    if (view != null)
+                        onBlur(new BlurredBitmapDrawable(view.getResources(), bitmapBlurred), view);
                     mRunnable = null;
                 }
             });

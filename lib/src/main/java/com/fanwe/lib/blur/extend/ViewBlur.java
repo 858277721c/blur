@@ -26,7 +26,6 @@ public abstract class ViewBlur<T extends View>
 
     private ExecutorService mExecutorService;
     private Future mFuture;
-    private Runnable mRunnable;
 
     private Drawable mViewDrawable;
 
@@ -41,13 +40,12 @@ public abstract class ViewBlur<T extends View>
         if (view == null)
         {
             destroy();
-            mRunnable = null;
         }
         return view;
     }
 
     /**
-     * 设置view后对象会被View和ViewTreeObserver一直持有，如果需要释放，可以调用{@link #setView(View)}设置为null来释放当前对象
+     * 设置view后对象会被{@link ViewTreeObserver}持有，如果需要释放，可以调用{@link #setView(View)}设置为null来释放当前对象
      *
      * @param view
      */
@@ -56,14 +54,11 @@ public abstract class ViewBlur<T extends View>
         final T old = getView();
         if (old != view)
         {
-            mRunnable = null;
-
             if (old != null)
             {
                 final ViewTreeObserver observer = old.getViewTreeObserver();
                 if (observer.isAlive())
                     observer.removeOnPreDrawListener(mOnPreDrawListener);
-                old.removeOnAttachStateChangeListener(mOnAttachStateChangeListener);
             }
 
             mView = view == null ? null : new WeakReference<>(view);
@@ -73,7 +68,6 @@ public abstract class ViewBlur<T extends View>
                 final ViewTreeObserver observer = view.getViewTreeObserver();
                 if (observer.isAlive())
                     observer.addOnPreDrawListener(mOnPreDrawListener);
-                view.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
             } else
             {
                 destroy();
@@ -112,8 +106,6 @@ public abstract class ViewBlur<T extends View>
 
     private void submit(Runnable runnable)
     {
-        mRunnable = runnable;
-
         if (isAttachedToWindow(getView()))
         {
             if (mExecutorService == null)
@@ -125,22 +117,6 @@ public abstract class ViewBlur<T extends View>
             mFuture = mExecutorService.submit(runnable);
         }
     }
-
-    private final View.OnAttachStateChangeListener mOnAttachStateChangeListener = new View.OnAttachStateChangeListener()
-    {
-        @Override
-        public void onViewAttachedToWindow(View v)
-        {
-            if (mRunnable != null)
-                submit(mRunnable);
-        }
-
-        @Override
-        public void onViewDetachedFromWindow(View v)
-        {
-            destroy();
-        }
-    };
 
     private void destroy()
     {
@@ -200,7 +176,6 @@ public abstract class ViewBlur<T extends View>
                 final T view = getView();
                 if (view != null)
                     onBlur(drawable, view);
-                mRunnable = null;
             } else
             {
                 getHandler().post(new Runnable()

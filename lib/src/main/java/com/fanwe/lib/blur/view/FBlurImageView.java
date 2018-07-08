@@ -50,7 +50,6 @@ public class FBlurImageView extends ImageView implements BlurView
                 view.setImageDrawable(drawable);
             }
         };
-        mImageViewBlur.setView(this);
     }
 
     @Override
@@ -82,5 +81,19 @@ public class FBlurImageView extends ImageView implements BlurView
     {
         if (getDrawable() instanceof ViewBlur.BlurredBitmapDrawable)
             super.onDraw(canvas);
+    }
+
+    @Override
+    protected void onAttachedToWindow()
+    {
+        super.onAttachedToWindow();
+        mImageViewBlur.setView(this);
+    }
+
+    @Override
+    protected void onDetachedFromWindow()
+    {
+        super.onDetachedFromWindow();
+        mImageViewBlur.setView(null);
     }
 }

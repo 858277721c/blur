@@ -118,6 +118,7 @@ public abstract class ViewBlur<T extends View>
 
     private void destroy()
     {
+        mViewDrawable = null;
         if (mBlur != null)
             mBlur.destroy();
 

@@ -106,13 +106,14 @@ public abstract class ViewBlur<T extends View>
 
     private void submit(Runnable runnable)
     {
+        mRunnable = runnable;
+
         if (mExecutorService == null)
             mExecutorService = Executors.newSingleThreadExecutor();
 
         if (mFuture != null)
             mFuture.cancel(true);
 
-        mRunnable = runnable;
         mFuture = mExecutorService.submit(runnable);
     }
 

@@ -5,10 +5,10 @@
 [![](https://jitpack.io/v/zj565061763/blur.svg)](https://jitpack.io/#zj565061763/blur)
 
 # [Blur](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/fanwe/lib/blur/core/Blur.java)接口
-已经实现的接口的实现类：
-* [FastBlur](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/fanwe/lib/blur/core/FastBlur.java)java算法实现
-* [RenderScriptBlur](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/fanwe/lib/blur/core/RenderScriptBlur.java) RenderScript实现
-* [CompatBlur](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/fanwe/lib/blur/core/CompatBlur.java) 内部优先用RenderScriptBlur，如果失败的话用FastBlur
+库中已有的实现类：
+* [FastBlur](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/fanwe/lib/blur/core/FastBlur.java) 用java算法实现
+* [RenderScriptBlur](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/fanwe/lib/blur/core/RenderScriptBlur.java) 用RenderScript实现
+* [CompatBlur](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/fanwe/lib/blur/core/CompatBlur.java) 优先用RenderScriptBlur，如果失败的话用FastBlur
 
 # 简单使用
 ```java

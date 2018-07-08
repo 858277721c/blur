@@ -28,10 +28,18 @@ public abstract class ViewBlur<T extends View>
 
     private Future mFuture;
     private Drawable mViewDrawable;
+    private Handler mHandler;
 
     public ViewBlur(Blur blur)
     {
         mBlur = blur;
+    }
+
+    private Handler getHandler()
+    {
+        if (mHandler == null)
+            mHandler = new Handler(Looper.getMainLooper());
+        return mHandler;
     }
 
     private T getView()
@@ -122,15 +130,6 @@ public abstract class ViewBlur<T extends View>
             mFuture.cancel(true);
             mFuture = null;
         }
-    }
-
-    private Handler mHandler;
-
-    private Handler getHandler()
-    {
-        if (mHandler == null)
-            mHandler = new Handler(Looper.getMainLooper());
-        return mHandler;
     }
 
     private final class BlurDrawableRunnable implements Runnable

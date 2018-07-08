@@ -173,24 +173,36 @@ public abstract class ViewBlur<T extends View>
         @Override
         public void run()
         {
-            if (getView() == null)
+            final T view = getView();
+            if (view == null)
                 return;
 
             final Bitmap bitmap = drawableToBitmap(mDrawable);
             final Bitmap bitmapBlurred = mBlur.blur(bitmap);
             bitmap.recycle();
 
-            getHandler().post(new Runnable()
+            notifyDrawableBlurred(new BlurredBitmapDrawable(view.getResources(), bitmapBlurred));
+        }
+
+        private void notifyDrawableBlurred(final BlurredBitmapDrawable drawable)
+        {
+            if (Looper.myLooper() == Looper.getMainLooper())
             {
-                @Override
-                public void run()
+                final T view = getView();
+                if (view != null)
+                    onBlur(drawable, view);
+                mRunnable = null;
+            } else
+            {
+                getHandler().post(new Runnable()
                 {
-                    final T view = getView();
-                    if (view != null)
-                        onBlur(new BlurredBitmapDrawable(view.getResources(), bitmapBlurred), view);
-                    mRunnable = null;
-                }
-            });
+                    @Override
+                    public void run()
+                    {
+                        notifyDrawableBlurred(drawable);
+                    }
+                });
+            }
         }
     }
 

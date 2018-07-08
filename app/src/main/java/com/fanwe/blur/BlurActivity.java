@@ -11,7 +11,6 @@ import com.fanwe.lib.blur.core.CompatBlur;
 
 public class BlurActivity extends AppCompatActivity implements View.OnClickListener
 {
-    private final TimeLogger mTimeLogger = new TimeLogger(BlurActivity.class.getSimpleName());
     private ImageView mImageView;
 
     @Override
@@ -26,15 +25,17 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(final View view)
     {
         final Bitmap bitmap = Utils.randomBitmap(this);
-        mTimeLogger.start();
 
         final Bitmap blurBitmap = new CompatBlur(this)
+                // 设置模糊半径，默认10
                 .setRadius(10)
+                // 设置压缩倍数，默认8
                 .setDownSampling(8)
+                // 设置覆盖层颜色，默认透明
                 .setColor(Color.parseColor("#66FFFFFF"))
+                // 执行模糊操作，得到模糊的Bitmap
                 .blur(bitmap);
-        mImageView.setImageBitmap(blurBitmap);
 
-        mTimeLogger.print("blur api");
+        mImageView.setImageBitmap(blurBitmap);
     }
 }

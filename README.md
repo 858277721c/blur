@@ -89,3 +89,36 @@ public class BlurLayoutActivity extends AppCompatActivity implements View.OnClic
     }
 }
 ```
+# 模糊View参数设置
+以上介绍的模糊view都实现了以下接口，可以进行模糊参数设置
+<br>
+```java
+public interface BlurView
+{
+    /**
+     * {@link Blur#setRadius(int)}
+     *
+     * @param radius
+     */
+    void setBlurRadius(int radius);
+
+    /**
+     * {@link Blur#setDownSampling(int)}
+     *
+     * @param downSampling
+     */
+    void setBlurDownSampling(int downSampling);
+
+    /**
+     * {@link Blur#setColor(int)}
+     *
+     * @param color
+     */
+    void setBlurColor(int color);
+
+    /**
+     * 模糊
+     */
+    void blur();
+}
+```

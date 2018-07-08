@@ -3,19 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:text="button" />
-
     <ImageView
         android:id="@+id/imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@color/colorAccent"
+        android:layout_gravity="top|center_horizontal"
+        android:onClick="onClick"
         android:src="@drawable/fj5" />
 
 </FrameLayout>

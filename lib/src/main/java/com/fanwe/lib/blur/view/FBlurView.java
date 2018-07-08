@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.fanwe.lib.blur.core.Blur;
 import com.fanwe.lib.blur.core.BlurFactory;
@@ -50,8 +51,34 @@ public class FBlurView extends View implements BlurView
     {
         final View old = getTarget();
         if (old != target)
+        {
+            if (old != null)
+            {
+                final ViewTreeObserver observer = old.getViewTreeObserver();
+                if (observer.isAlive())
+                    observer.removeOnPreDrawListener(mOnPreDrawListener);
+            }
+
             mTarget = target == null ? null : new WeakReference<>(target);
+
+            if (target != null)
+            {
+                final ViewTreeObserver observer = target.getViewTreeObserver();
+                if (observer.isAlive())
+                    observer.addOnPreDrawListener(mOnPreDrawListener);
+            }
+        }
     }
+
+    private final ViewTreeObserver.OnPreDrawListener mOnPreDrawListener = new ViewTreeObserver.OnPreDrawListener()
+    {
+        @Override
+        public boolean onPreDraw()
+        {
+            blur();
+            return true;
+        }
+    };
 
     private final Blur getBlur()
     {
@@ -85,8 +112,15 @@ public class FBlurView extends View implements BlurView
     @Override
     public void blur()
     {
-        invalidate();
+        if (mBitmapBlurred == null)
+        {
+            mBitmapBlurred = getBlur().blur(getTarget());
+            if (mBitmapBlurred != null)
+                postInvalidate();
+        }
     }
+
+    private Bitmap mBitmapBlurred;
 
     @Override
     protected void onDraw(Canvas canvas)
@@ -97,16 +131,17 @@ public class FBlurView extends View implements BlurView
         if (target == null)
             return;
 
-        final Bitmap bitmap = getBlur().blur(target);
-        if (bitmap != null)
+        if (mBitmapBlurred != null)
         {
             final int scale = getBlur().getDownSampling();
 
             canvas.save();
             canvas.translate(target.getX() - getX(), target.getY() - getY());
             canvas.scale(scale, scale);
-            canvas.drawBitmap(bitmap, 0, 0, null);
+            canvas.drawBitmap(mBitmapBlurred, 0, 0, null);
             canvas.restore();
+
+            mBitmapBlurred = null;
         }
     }
 

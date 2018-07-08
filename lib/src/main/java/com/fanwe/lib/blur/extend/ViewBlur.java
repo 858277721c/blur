@@ -46,6 +46,11 @@ public abstract class ViewBlur<T extends View>
         return view;
     }
 
+    /**
+     * 设置view后对象会被View和ViewTreeObserver一直持有，如果需要释放，可以调用{@link #setView(View)}设置为null来释放当前对象
+     *
+     * @param view
+     */
     public final void setView(T view)
     {
         final T old = getView();

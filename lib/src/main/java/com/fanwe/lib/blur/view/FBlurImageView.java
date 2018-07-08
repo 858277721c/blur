@@ -15,59 +15,66 @@ public class FBlurImageView extends ImageView implements BlurView
     public FBlurImageView(Context context)
     {
         super(context);
-        init();
     }
 
     public FBlurImageView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        init();
     }
 
     public FBlurImageView(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
-        init();
     }
 
     private Blur mBlur;
     private ViewBlur<ImageView> mImageViewBlur;
 
-    private void init()
+    private Blur getBlur()
     {
-        mBlur = new CompatBlur(getContext());
-        mImageViewBlur = new ViewBlur<ImageView>(mBlur)
-        {
-            @Override
-            protected Drawable getViewDrawable(ImageView view)
-            {
-                return view.getDrawable();
-            }
+        if (mBlur == null)
+            mBlur = new CompatBlur(getContext());
+        return mBlur;
+    }
 
-            @Override
-            protected void onBlur(BlurredBitmapDrawable drawable, ImageView view)
+    private ViewBlur<ImageView> getImageViewBlur()
+    {
+        if (mImageViewBlur == null)
+        {
+            mImageViewBlur = new ViewBlur<ImageView>(getBlur())
             {
-                view.setImageDrawable(drawable);
-            }
-        };
+                @Override
+                protected Drawable getViewDrawable(ImageView view)
+                {
+                    return view.getDrawable();
+                }
+
+                @Override
+                protected void onBlur(BlurredBitmapDrawable drawable, ImageView view)
+                {
+                    view.setImageDrawable(drawable);
+                }
+            };
+        }
+        return mImageViewBlur;
     }
 
     @Override
     public final void setBlurRadius(int radius)
     {
-        mBlur.setRadius(radius);
+        getBlur().setRadius(radius);
     }
 
     @Override
     public final void setBlurDownSampling(int downSampling)
     {
-        mBlur.setDownSampling(downSampling);
+        getBlur().setDownSampling(downSampling);
     }
 
     @Override
     public final void setBlurColor(int color)
     {
-        mBlur.setColor(color);
+        getBlur().setColor(color);
     }
 
     @Override
@@ -87,13 +94,13 @@ public class FBlurImageView extends ImageView implements BlurView
     protected void onAttachedToWindow()
     {
         super.onAttachedToWindow();
-        mImageViewBlur.setView(this);
+        getImageViewBlur().setView(this);
     }
 
     @Override
     protected void onDetachedFromWindow()
     {
         super.onDetachedFromWindow();
-        mImageViewBlur.setView(null);
+        getImageViewBlur().setView(null);
     }
 }

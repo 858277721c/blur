@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.fanwe.lib.blur.core.Blur;
@@ -98,8 +97,6 @@ public class FBlurView extends View implements BlurView
         if (target == null)
             return;
 
-        final long start = System.currentTimeMillis();
-
         final Bitmap bitmap = getBlur().blur(target);
         if (bitmap != null)
         {
@@ -111,8 +108,6 @@ public class FBlurView extends View implements BlurView
             canvas.drawBitmap(bitmap, 0, 0, null);
             canvas.restore();
         }
-
-        Log.i(getClass().getSimpleName(), "time:" + (System.currentTimeMillis() - start));
     }
 
     @Override

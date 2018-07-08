@@ -36,18 +36,15 @@ imageView.setImageResource(R.drawable.fj5);
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fl_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onClick"
-        android:text="button"
-        android:textAllCaps="false" />
+        android:text="button" />
 
     <com.fanwe.lib.blur.view.FBlurLayout
         android:id="@+id/view_blur"
@@ -58,8 +55,7 @@ imageView.setImageResource(R.drawable.fj5);
             android:id="@+id/imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/colorAccent" />
+            android:layout_gravity="center" />
 
     </com.fanwe.lib.blur.view.FBlurLayout>
 

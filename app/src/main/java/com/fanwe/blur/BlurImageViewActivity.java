@@ -21,6 +21,7 @@ public class BlurImageViewActivity extends Activity implements View.OnClickListe
     @Override
     public void onClick(View v)
     {
+        // 随机加载一张图片
         final Bitmap bitmap = Utils.randomBitmap(this);
         mImageView.setImageBitmap(bitmap);
     }

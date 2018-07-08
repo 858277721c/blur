@@ -116,7 +116,7 @@ public class FBlurView extends View implements BlurView
         {
             mBitmapBlurred = getBlur().blur(getTarget());
             if (mBitmapBlurred != null)
-                postInvalidate();
+                invalidate();
         }
     }
 
@@ -141,7 +141,14 @@ public class FBlurView extends View implements BlurView
             canvas.drawBitmap(mBitmapBlurred, 0, 0, null);
             canvas.restore();
 
-            mBitmapBlurred = null;
+            post(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    mBitmapBlurred = null;
+                }
+            });
         }
     }
 

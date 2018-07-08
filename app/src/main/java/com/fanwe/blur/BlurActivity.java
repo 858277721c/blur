@@ -24,9 +24,8 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(final View view)
     {
-        final Bitmap bitmap = Utils.randomBitmap(this);
-
-        final Bitmap blurBitmap = new CompatBlur(this)
+        final Bitmap bitmap = Utils.randomBitmap(getApplicationContext());
+        final Bitmap bitmapBlurred = new CompatBlur(getApplicationContext())
                 // 设置模糊半径，默认10
                 .setRadius(10)
                 // 设置压缩倍数，默认8
@@ -36,6 +35,6 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
                 // 执行模糊操作，得到模糊的Bitmap
                 .blur(bitmap);
 
-        mImageView.setImageBitmap(blurBitmap);
+        mImageView.setImageBitmap(bitmapBlurred);
     }
 }

@@ -11,7 +11,7 @@
 * [CompatBlur](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/fanwe/lib/blur/core/CompatBlur.java) 优先用RenderScriptBlur，如果失败的话用FastBlur
 
 ```java
-final Bitmap blurBitmap = new CompatBlur(this)
+final Bitmap bitmapBlurred = new CompatBlur(getApplicationContext())
         // 设置模糊半径，默认10
         .setRadius(10)
         // 设置压缩倍数，默认8

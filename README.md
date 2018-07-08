@@ -10,7 +10,6 @@
 * [RenderScriptBlur](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/fanwe/lib/blur/core/RenderScriptBlur.java) 用RenderScript实现
 * [CompatBlur](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/fanwe/lib/blur/core/CompatBlur.java) 优先用RenderScriptBlur，如果失败的话用FastBlur
 
-# 简单使用
 ```java
 final Bitmap blurBitmap = new CompatBlur(this)
         // 设置模糊半径，默认10

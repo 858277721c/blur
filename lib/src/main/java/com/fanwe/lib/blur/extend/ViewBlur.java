@@ -100,7 +100,7 @@ public abstract class ViewBlur<T extends View>
         if (mViewDrawable != viewDrawable)
         {
             mViewDrawable = viewDrawable;
-            if (!(viewDrawable instanceof BlurredBitmapDrawable))
+            if (viewDrawable != null && !(viewDrawable instanceof BlurredBitmapDrawable))
                 submit(new BlurDrawableRunnable(viewDrawable));
         }
     }

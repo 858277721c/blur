@@ -189,7 +189,6 @@ public abstract class ViewBlur<T extends View>
 
             final Bitmap bitmap = drawableToBitmap(mDrawable);
             final Bitmap bitmapBlurred = mBlur.blur(bitmap);
-            bitmap.recycle();
 
             notifyDrawableBlurred(new BlurredBitmapDrawable(view.getResources(), bitmapBlurred));
         }

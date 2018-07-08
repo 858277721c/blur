@@ -7,26 +7,20 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
 import com.fanwe.lib.blur.core.Blur;
+import com.fanwe.lib.task.FTask;
 
 import java.lang.ref.WeakReference;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public abstract class ViewBlur<T extends View>
 {
     private final Blur mBlur;
     private WeakReference<T> mView;
 
-    private ExecutorService mExecutorService;
-    private Future mFuture;
-
+    private FTask mBlurTask;
     private Drawable mViewDrawable;
 
     public ViewBlur(Blur blur)
@@ -92,100 +86,61 @@ public abstract class ViewBlur<T extends View>
 
     protected abstract void onBlur(BlurredBitmapDrawable drawable, T view);
 
-    private void setViewDrawable(Drawable viewDrawable)
+    private void setViewDrawable(Drawable drawable)
     {
-        if (mViewDrawable != viewDrawable)
+        if (mViewDrawable != drawable)
         {
-            mViewDrawable = viewDrawable;
-            if (viewDrawable != null && !(viewDrawable instanceof BlurredBitmapDrawable))
-                submit(new BlurDrawableRunnable(viewDrawable));
+            mViewDrawable = drawable;
+            if (drawable != null && !(drawable instanceof BlurredBitmapDrawable))
+                submit(drawable);
         }
     }
 
-    private void submit(Runnable runnable)
+    private void submit(final Drawable drawable)
     {
         if (isAttachedToWindow(getView()))
         {
-            if (mExecutorService == null)
-                mExecutorService = Executors.newSingleThreadExecutor();
+            if (mBlurTask != null)
+                mBlurTask.cancel(true);
 
-            if (mFuture != null)
-                mFuture.cancel(true);
+            mBlurTask = new FTask()
+            {
+                @Override
+                protected void onRun() throws Exception
+                {
+                    if (getView() == null)
+                        return;
 
-            mFuture = mExecutorService.submit(runnable);
+                    final Bitmap bitmap = drawableToBitmap(drawable);
+                    final Bitmap bitmapBlurred = mBlur.blur(bitmap);
+
+                    runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            final T view = getView();
+                            if (view != null)
+                                onBlur(new BlurredBitmapDrawable(view.getResources(), bitmapBlurred), view);
+                        }
+                    });
+                }
+            };
+            mBlurTask.submit();
         }
     }
 
     private void destroy()
     {
         mViewDrawable = null;
+
         if (mBlur != null)
             mBlur.destroy();
 
-        if (mFuture != null)
+        if (mBlurTask != null)
         {
-            mFuture.cancel(true);
-            mFuture = null;
-        }
-
-        if (mExecutorService != null)
-        {
-            mExecutorService.shutdownNow();
-            mExecutorService = null;
-        }
-    }
-
-    private Handler mHandler;
-
-    private Handler getHandler()
-    {
-        if (mHandler == null)
-            mHandler = new Handler(Looper.getMainLooper());
-        return mHandler;
-    }
-
-    private final class BlurDrawableRunnable implements Runnable
-    {
-        private final Drawable mDrawable;
-
-        public BlurDrawableRunnable(Drawable drawable)
-        {
-            if (drawable == null)
-                throw new NullPointerException("drawable is null");
-            mDrawable = drawable;
-        }
-
-        @Override
-        public void run()
-        {
-            final T view = getView();
-            if (view == null)
-                return;
-
-            final Bitmap bitmap = drawableToBitmap(mDrawable);
-            final Bitmap bitmapBlurred = mBlur.blur(bitmap);
-
-            notifyDrawableBlurred(new BlurredBitmapDrawable(view.getResources(), bitmapBlurred));
-        }
-
-        private void notifyDrawableBlurred(final BlurredBitmapDrawable drawable)
-        {
-            if (Looper.myLooper() == Looper.getMainLooper())
-            {
-                final T view = getView();
-                if (view != null)
-                    onBlur(drawable, view);
-            } else
-            {
-                getHandler().post(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        notifyDrawableBlurred(drawable);
-                    }
-                });
-            }
+            mBlurTask.cancel(true);
+            mBlurTask = null;
         }
     }
 

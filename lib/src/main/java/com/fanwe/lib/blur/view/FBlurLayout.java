@@ -32,6 +32,30 @@ public class FBlurLayout extends FrameLayout implements BlurView
     }
 
     @Override
+    public void setBlurRadius(int radius)
+    {
+        getBlurView().setBlurRadius(radius);
+    }
+
+    @Override
+    public void setBlurDownSampling(int downSampling)
+    {
+        getBlurView().setBlurDownSampling(downSampling);
+    }
+
+    @Override
+    public void setBlurColor(int color)
+    {
+        getBlurView().setBlurColor(color);
+    }
+
+    @Override
+    public void blur()
+    {
+        getBlurView().blur();
+    }
+
+    @Override
     public void onViewAdded(View child)
     {
         super.onViewAdded(child);
@@ -57,29 +81,5 @@ public class FBlurLayout extends FrameLayout implements BlurView
             blurView.setTarget(null);
             removeView(blurView);
         }
-    }
-
-    @Override
-    public void setBlurRadius(int radius)
-    {
-        getBlurView().setBlurRadius(radius);
-    }
-
-    @Override
-    public void setBlurDownSampling(int downSampling)
-    {
-        getBlurView().setBlurDownSampling(downSampling);
-    }
-
-    @Override
-    public void setBlurColor(int color)
-    {
-        getBlurView().setBlurColor(color);
-    }
-
-    @Override
-    public void blur()
-    {
-        getBlurView().blur();
     }
 }

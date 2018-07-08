@@ -35,10 +35,11 @@ public class FBlurImageView extends ImageView implements BlurView
 
     private void init()
     {
-        mImageViewBlur = new ViewBlur<ImageView>(getBlur())
+        mBlur = new CompatBlur(getContext());
+        mImageViewBlur = new ViewBlur<ImageView>(mBlur)
         {
             @Override
-            protected Drawable getDrawable(ImageView view)
+            protected Drawable getViewDrawable(ImageView view)
             {
                 return view.getDrawable();
             }
@@ -52,32 +53,22 @@ public class FBlurImageView extends ImageView implements BlurView
         mImageViewBlur.setView(this);
     }
 
-    private Blur getBlur()
-    {
-        if (mBlur == null)
-        {
-            mBlur = new CompatBlur(getContext());
-            mBlur.setDestroyAfterBlur(false);
-        }
-        return mBlur;
-    }
-
     @Override
     public final void setBlurRadius(int radius)
     {
-        getBlur().setRadius(radius);
+        mBlur.setRadius(radius);
     }
 
     @Override
     public final void setBlurDownSampling(int downSampling)
     {
-        getBlur().setDownSampling(downSampling);
+        mBlur.setDownSampling(downSampling);
     }
 
     @Override
     public final void setBlurColor(int color)
     {
-        getBlur().setColor(color);
+        mBlur.setColor(color);
     }
 
     @Override

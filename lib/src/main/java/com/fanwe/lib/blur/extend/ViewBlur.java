@@ -27,7 +27,7 @@ public abstract class ViewBlur<T extends View>
     private Future mFuture;
     private Runnable mRunnable;
 
-    private Drawable mDrawable;
+    private Drawable mViewDrawable;
 
     public ViewBlur(Blur blur)
     {
@@ -83,24 +83,24 @@ public abstract class ViewBlur<T extends View>
             final T view = getView();
             if (view != null)
             {
-                final Drawable drawable = getDrawable(view);
-                setDrawable(drawable);
+                final Drawable viewDrawable = getViewDrawable(view);
+                setViewDrawable(viewDrawable);
             }
             return true;
         }
     };
 
-    protected abstract Drawable getDrawable(T view);
+    protected abstract Drawable getViewDrawable(T view);
 
     protected abstract void onBlur(BlurredBitmapDrawable drawable, T view);
 
-    private void setDrawable(Drawable drawable)
+    private void setViewDrawable(Drawable viewDrawable)
     {
-        if (mDrawable != drawable)
+        if (mViewDrawable != viewDrawable)
         {
-            mDrawable = drawable;
-            if (!(drawable instanceof BlurredBitmapDrawable))
-                submit(new BlurDrawableRunnable(drawable));
+            mViewDrawable = viewDrawable;
+            if (!(viewDrawable instanceof BlurredBitmapDrawable))
+                submit(new BlurDrawableRunnable(viewDrawable));
         }
     }
 

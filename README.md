@@ -30,3 +30,65 @@ final Bitmap blurBitmap = new CompatBlur(this)
 ImageView imageView = findViewById(R.id.imageview);
 imageView.setImageResource(R.drawable.fj5);
 ```
+
+# FBlurLayout
+如果需要对某个view进行模糊后展示，只要用这个layout包裹一下目标view即可
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fl_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="button"
+        android:textAllCaps="false" />
+
+    <com.fanwe.lib.blur.view.FBlurLayout
+        android:id="@+id/view_blur"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/colorAccent" />
+
+    </com.fanwe.lib.blur.view.FBlurLayout>
+
+</FrameLayout>
+```
+```java
+public class BlurLayoutActivity extends AppCompatActivity implements View.OnClickListener
+{
+    private ImageView mImageView;
+    private FBlurLayout mBlurLayout;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.act_blur_layout);
+        mImageView = findViewById(R.id.imageview);
+        mBlurLayout = findViewById(R.id.view_blur);
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        // 随机加载一张图片
+        final Bitmap bitmap = Utils.randomBitmap(this);
+        mImageView.setImageBitmap(bitmap);
+
+        // 执行模糊操作
+        mBlurLayout.blur();
+    }
+}
+```

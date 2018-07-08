@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
@@ -108,13 +109,16 @@ public abstract class ViewBlur<T extends View>
     {
         mRunnable = runnable;
 
-        if (mExecutorService == null)
-            mExecutorService = Executors.newSingleThreadExecutor();
+        if (isAttachedToWindow(getView()))
+        {
+            if (mExecutorService == null)
+                mExecutorService = Executors.newSingleThreadExecutor();
 
-        if (mFuture != null)
-            mFuture.cancel(true);
+            if (mFuture != null)
+                mFuture.cancel(true);
 
-        mFuture = mExecutorService.submit(runnable);
+            mFuture = mExecutorService.submit(runnable);
+        }
     }
 
     private final View.OnAttachStateChangeListener mOnAttachStateChangeListener = new View.OnAttachStateChangeListener()
@@ -228,5 +232,16 @@ public abstract class ViewBlur<T extends View>
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
         return bitmap;
+    }
+
+    private static boolean isAttachedToWindow(View view)
+    {
+        if (view == null)
+            return false;
+
+        if (Build.VERSION.SDK_INT >= 19)
+            return view.isAttachedToWindow();
+        else
+            return view.getWindowToken() != null;
     }
 }

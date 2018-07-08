@@ -2,12 +2,12 @@ package com.fanwe.lib.blur.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import com.fanwe.lib.blur.core.Blur;
 import com.fanwe.lib.blur.core.CompatBlur;
-import com.fanwe.lib.blur.extend.ImageViewBlur;
 import com.fanwe.lib.blur.extend.ViewBlur;
 
 public class FBlurImageView extends ImageView implements BlurView
@@ -31,12 +31,25 @@ public class FBlurImageView extends ImageView implements BlurView
     }
 
     private Blur mBlur;
-    private ImageViewBlur mImageViewBlur;
+    private ViewBlur<ImageView> mImageViewBlur;
 
     private void init()
     {
         mBlur = new CompatBlur(getContext());
-        mImageViewBlur = new ImageViewBlur(mBlur);
+        mImageViewBlur = new ViewBlur<ImageView>(mBlur)
+        {
+            @Override
+            protected Drawable getViewDrawable(ImageView view)
+            {
+                return view.getDrawable();
+            }
+
+            @Override
+            protected void onBlur(BlurredBitmapDrawable drawable, ImageView view)
+            {
+                view.setImageDrawable(drawable);
+            }
+        };
         mImageViewBlur.setView(this);
     }
 

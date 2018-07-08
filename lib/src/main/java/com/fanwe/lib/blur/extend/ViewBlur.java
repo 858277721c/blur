@@ -38,9 +38,7 @@ public abstract class ViewBlur<T extends View>
     {
         final T view = mView == null ? null : mView.get();
         if (view == null)
-        {
             destroy();
-        }
         return view;
     }
 

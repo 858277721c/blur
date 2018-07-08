@@ -7,7 +7,7 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 
-public class RenderScriptBlur extends BaseBlur
+class RenderScriptBlur extends BaseBlur
 {
     private final Context mContext;
 

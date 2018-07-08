@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.fanwe.lib.blur.core.Blur;
-import com.fanwe.lib.blur.core.CompatBlur;
+import com.fanwe.lib.blur.core.BlurFactory;
 
 import java.lang.ref.WeakReference;
 
@@ -57,9 +57,9 @@ public class FBlurView extends View implements BlurView
     {
         if (mBlur == null)
         {
-            mBlur = new CompatBlur(getContext());
-            mBlur.setKeepDownSamplingSize(true);
-            mBlur.setDestroyAfterBlur(false);
+            mBlur = BlurFactory.create(getContext())
+                    .setKeepDownSamplingSize(true)
+                    .setDestroyAfterBlur(false);
         }
         return mBlur;
     }

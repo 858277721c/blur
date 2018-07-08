@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import com.fanwe.lib.blur.core.Blur;
-import com.fanwe.lib.blur.core.CompatBlur;
+import com.fanwe.lib.blur.core.BlurFactory;
 import com.fanwe.lib.blur.extend.ViewBlur;
 
 public class FBlurImageView extends ImageView implements BlurView
@@ -33,7 +33,7 @@ public class FBlurImageView extends ImageView implements BlurView
     private Blur getBlur()
     {
         if (mBlur == null)
-            mBlur = new CompatBlur(getContext());
+            mBlur = BlurFactory.create(getContext());
         return mBlur;
     }
 

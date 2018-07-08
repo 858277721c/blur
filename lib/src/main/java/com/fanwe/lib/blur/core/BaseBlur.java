@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.View;
 
-public abstract class BaseBlur implements Blur
+abstract class BaseBlur implements Blur
 {
     private int mRadius = 10;
     private int mDownSampling = 8;

@@ -2,7 +2,7 @@ package com.fanwe.lib.blur.core;
 
 import android.graphics.Bitmap;
 
-public class FastBlur extends BaseBlur
+class FastBlur extends BaseBlur
 {
     @Override
     protected void onBlurImplemention(Bitmap bitmapInput, Bitmap bitmapOutput)

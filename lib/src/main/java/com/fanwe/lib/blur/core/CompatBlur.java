@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.view.View;
 
-public class CompatBlur implements Blur
+class CompatBlur implements Blur
 {
     private final Context mContext;
     private Blur mBlur;

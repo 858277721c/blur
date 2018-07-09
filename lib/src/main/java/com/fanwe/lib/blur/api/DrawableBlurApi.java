@@ -16,7 +16,7 @@ class DrawableBlurApi extends BlurApi<Drawable>
     }
 
     @Override
-    protected Bitmap blurImplemention()
+    protected Bitmap blurSource()
     {
         return getBlur().blur(mDrawable);
     }

@@ -41,7 +41,7 @@ public abstract class BlurApi<S>
      *
      * @return
      */
-    protected abstract Bitmap blurImplemention();
+    protected abstract Bitmap blurSource();
 
     /**
      * 设置是否在子线程执行
@@ -100,7 +100,7 @@ public abstract class BlurApi<S>
                 mFuture = EXECUTOR_SERVICE.submit(new BlurTask(target));
             } else
             {
-                target.onBlur(blurImplemention());
+                target.onBlur(blurSource());
             }
         }
         return this;
@@ -135,7 +135,7 @@ public abstract class BlurApi<S>
         @Override
         public void run()
         {
-            mTarget.onBlur(blurImplemention());
+            mTarget.onBlur(blurSource());
         }
     }
 }

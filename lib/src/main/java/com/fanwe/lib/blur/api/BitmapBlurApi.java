@@ -15,7 +15,7 @@ class BitmapBlurApi extends BlurApi<Bitmap>
     }
 
     @Override
-    public Bitmap blurImplemention()
+    public Bitmap blurSource()
     {
         return getBlur().blur(mBitmap);
     }

@@ -27,9 +27,9 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(final View view)
     {
         // 随机加载一张图片
-        final Bitmap bitmap = Utils.randomBitmap(getApplicationContext());
+        final Bitmap bitmap = Utils.randomBitmap(this);
 
-        mBlurInvoker = BlurApiFactory.create(getApplicationContext())
+        mBlurInvoker = BlurApiFactory.create(this)
                 // 设置模糊半径，默认10
                 .radius(10)
                 // 设置压缩倍数，默认8

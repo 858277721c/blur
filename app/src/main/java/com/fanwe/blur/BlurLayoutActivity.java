@@ -22,7 +22,7 @@ public class BlurLayoutActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v)
     {
         // 随机加载一张图片
-        final Bitmap bitmap = Utils.randomBitmap(getApplicationContext());
+        final Bitmap bitmap = Utils.randomBitmap(this);
         mImageView.setImageBitmap(bitmap);
     }
 }

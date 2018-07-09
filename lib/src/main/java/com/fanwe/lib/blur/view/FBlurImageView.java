@@ -18,10 +18,10 @@ public class FBlurImageView extends ImageView implements BlurView
         super(context, attrs);
 
         final BlurViewAttrs viewAttrs = new BlurViewAttrs(context, attrs);
-        setBlurRadius(viewAttrs.getBlurRadius());
-        setBlurDownSampling(viewAttrs.getBlurDownSampling());
-        setBlurColor(viewAttrs.getBlurColor());
-        setBlurAsync(viewAttrs.isBlurAsync());
+        setBlurRadius(viewAttrs.getRadius());
+        setBlurDownSampling(viewAttrs.getDownSampling());
+        setBlurColor(viewAttrs.getColor());
+        setBlurAsync(viewAttrs.isAsync());
     }
 
     private BlurViewWrapper<ImageView> mBlurViewWrapper;

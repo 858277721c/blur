@@ -5,47 +5,53 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
 
+import com.fanwe.lib.blur.DefaultBlurSettings;
 import com.fanwe.lib.blur.R;
 
 class BlurViewAttrs
 {
-    private int mBlurRadius = 10;
-    private int mBlurDownSampling = 8;
-    private int mBlurColor = Color.TRANSPARENT;
-    private boolean mBlurAsync = false;
+    private int mRadius = 15;
+    private int mDownSampling = 8;
+    private int mColor = Color.TRANSPARENT;
+    private boolean mAsync = false;
 
     public BlurViewAttrs(Context context, AttributeSet attrs)
     {
         if (attrs == null)
             return;
 
+        final DefaultBlurSettings settings = new DefaultBlurSettings(context);
+        mRadius = settings.getRadius();
+        mDownSampling = settings.getDownSampling();
+        mColor = settings.getColor();
+
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.lib_blur_blur_view);
 
-        mBlurRadius = a.getInt(R.styleable.lib_blur_blur_view_blurRadius, mBlurRadius);
-        mBlurDownSampling = a.getInt(R.styleable.lib_blur_blur_view_blurDownSampling, mBlurDownSampling);
-        mBlurColor = a.getInt(R.styleable.lib_blur_blur_view_blurColor, mBlurColor);
-        mBlurAsync = a.getBoolean(R.styleable.lib_blur_blur_view_blurAsync, mBlurAsync);
+        mRadius = a.getInt(R.styleable.lib_blur_blur_view_blurRadius, mRadius);
+        mDownSampling = a.getInt(R.styleable.lib_blur_blur_view_blurDownSampling, mDownSampling);
+        mColor = a.getInt(R.styleable.lib_blur_blur_view_blurColor, mColor);
+        mAsync = a.getBoolean(R.styleable.lib_blur_blur_view_blurAsync, mAsync);
 
         a.recycle();
     }
 
-    public int getBlurRadius()
+    public int getRadius()
     {
-        return mBlurRadius;
+        return mRadius;
     }
 
-    public int getBlurDownSampling()
+    public int getDownSampling()
     {
-        return mBlurDownSampling;
+        return mDownSampling;
     }
 
-    public int getBlurColor()
+    public int getColor()
     {
-        return mBlurColor;
+        return mColor;
     }
 
-    public boolean isBlurAsync()
+    public boolean isAsync()
     {
-        return mBlurAsync;
+        return mAsync;
     }
 }

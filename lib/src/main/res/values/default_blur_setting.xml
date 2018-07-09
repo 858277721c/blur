@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="lib_blur_radius">15</integer>
+    <integer name="lib_blur_down_sampling">8</integer>
+    <color name="lib_blur_color">#00000000</color>
+</resources>

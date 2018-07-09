@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 import com.fanwe.lib.blur.api.BlurApi;
-import com.fanwe.lib.blur.api.FBlur;
+import com.fanwe.lib.blur.api.BlurApiFactory;
 import com.fanwe.lib.blur.api.target.BlurTarget;
 
 import java.lang.ref.WeakReference;
@@ -85,7 +85,7 @@ public class FBlurView extends View implements BlurView
     {
         if (mBlurApi == null)
         {
-            mBlurApi = FBlur.with(getContext())
+            mBlurApi = BlurApiFactory.create(getContext())
                     .keepDownSamplingSize(true)
                     .destroyAfterBlur(false);
         }

@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 import com.fanwe.lib.blur.api.BlurApi;
+import com.fanwe.lib.blur.api.BlurApiFactory;
 import com.fanwe.lib.blur.api.BlurInvoker;
-import com.fanwe.lib.blur.api.FBlur;
 import com.fanwe.lib.blur.api.target.BlurTarget;
 
 import java.lang.ref.WeakReference;
@@ -26,7 +26,7 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
 
     public BlurViewWrapper(Context context)
     {
-        mBlurApi = FBlur.with(context);
+        mBlurApi = BlurApiFactory.create(context);
     }
 
     @Override

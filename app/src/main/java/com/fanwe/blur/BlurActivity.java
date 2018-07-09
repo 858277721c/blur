@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.fanwe.lib.blur.api.BlurApiFactory;
 import com.fanwe.lib.blur.api.BlurInvoker;
-import com.fanwe.lib.blur.api.FBlur;
 
 public class BlurActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -29,7 +29,7 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
         // 随机加载一张图片
         final Bitmap bitmap = Utils.randomBitmap(getApplicationContext());
 
-        mBlurInvoker = FBlur.with(getApplicationContext())
+        mBlurInvoker = BlurApiFactory.create(getApplicationContext())
                 // 设置模糊半径，默认10
                 .radius(10)
                 // 设置压缩倍数，默认8

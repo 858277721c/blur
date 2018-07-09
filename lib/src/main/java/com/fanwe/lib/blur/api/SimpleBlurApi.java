@@ -8,19 +8,14 @@ import android.view.View;
 import com.fanwe.lib.blur.core.Blur;
 import com.fanwe.lib.blur.core.BlurFactory;
 
-public final class FBlur implements BlurApi, BlurApiConfig
+class SimpleBlurApi implements BlurApi, BlurApiConfig
 {
     private final Blur mBlur;
 
-    private FBlur(Context context)
+    SimpleBlurApi(Context context)
     {
         mBlur = BlurFactory.create(context);
         mBlur.setDestroyAfterBlur(true);
-    }
-
-    public static BlurApi with(Context context)
-    {
-        return new FBlur(context);
     }
 
     @Override

@@ -126,7 +126,7 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
             if (mBlurApi != null)
                 mBlurApi.cancelAsync();
 
-            mBlurApi = mBlur.blur(drawable).into(new BlurTarget()
+            mBlurApi = mBlur.blur(drawable).async(true).into(new BlurTarget()
             {
                 @Override
                 public void onBlur(Bitmap bitmap)

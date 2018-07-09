@@ -91,7 +91,7 @@ public class FBlurImageView extends ImageView implements BlurView
         if (mDrawable == drawable)
             return;
         if (drawable instanceof BlurredBitmapDrawable)
-            return;
+            throw new IllegalArgumentException("can not blur BlurredBitmapDrawable");
 
         mDrawable = drawable;
 

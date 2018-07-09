@@ -16,7 +16,7 @@ import java.util.concurrent.Future;
 
 public abstract class BlurApi<S>
 {
-    private static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
 
     private final Blur mBlur;
     private boolean mAsync;

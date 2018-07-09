@@ -87,6 +87,7 @@ public abstract class BlurApi<S>
      * 模糊后设置给某个目标
      *
      * @param target
+     * @return
      */
     public BlurApi into(BlurTarget target)
     {
@@ -113,6 +114,8 @@ public abstract class BlurApi<S>
 
     /**
      * 取消异步请求
+     *
+     * @return
      */
     public BlurApi cancelAsync()
     {

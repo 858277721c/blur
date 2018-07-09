@@ -25,6 +25,12 @@ public class Utils
 
     public static Bitmap randomBitmap(Context context)
     {
+        final int resId = randomDrawableId(context);
+        return BitmapFactory.decodeResource(context.getResources(), resId);
+    }
+
+    public static int randomDrawableId(Context context)
+    {
         while (true)
         {
             final int index = new Random().nextInt(IMAGES.length);
@@ -34,8 +40,6 @@ public class Utils
             sIndex = index;
             break;
         }
-
-        final Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), IMAGES[sIndex]);
-        return bitmap;
+        return IMAGES[sIndex];
     }
 }

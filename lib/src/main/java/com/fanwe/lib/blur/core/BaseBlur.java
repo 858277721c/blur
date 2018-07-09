@@ -3,6 +3,9 @@ package com.fanwe.lib.blur.core;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 abstract class BaseBlur implements Blur
@@ -72,10 +75,13 @@ abstract class BaseBlur implements Blur
         return mDownSampling;
     }
 
-    private boolean init(int width, int height)
+    private boolean init(int width, int height, Bitmap.Config config)
     {
         if (isConfigurationChanged(width, height))
         {
+            if (config == null)
+                config = Bitmap.Config.ARGB_8888;
+
             mDownSamplingChanged = false;
             mWidth = width;
             mHeight = height;
@@ -86,11 +92,11 @@ abstract class BaseBlur implements Blur
             if (scaledWidth <= 0 || scaledHeight <= 0)
                 return false;
 
-            mBitmapOutput = Bitmap.createBitmap(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888);
+            mBitmapOutput = Bitmap.createBitmap(scaledWidth, scaledHeight, config);
 
             if (mBitmapInput != null)
                 mBitmapInput.recycle();
-            mBitmapInput = Bitmap.createBitmap(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888);
+            mBitmapInput = Bitmap.createBitmap(scaledWidth, scaledHeight, config);
 
             mCanvasInput = new Canvas(mBitmapInput);
             mCanvasInput.scale(scale, scale);
@@ -124,13 +130,29 @@ abstract class BaseBlur implements Blur
         if (view == null)
             return null;
 
-        if (!init(view.getWidth(), view.getHeight()))
+        if (!init(view.getWidth(), view.getHeight(), null))
             return null;
 
         view.draw(mCanvasInput);
-        mCanvasInput.drawColor(mColor);
+        return blurInternal();
+    }
 
-        return blurImplemention();
+    @Override
+    public Bitmap blur(Drawable drawable)
+    {
+        if (drawable == null)
+            return null;
+
+        if (drawable instanceof BitmapDrawable)
+            return blur(((BitmapDrawable) drawable).getBitmap());
+
+        final Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
+        if (!init(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), config))
+            return null;
+
+        drawable.setBounds(0, 0, mCanvasInput.getWidth(), mCanvasInput.getHeight());
+        drawable.draw(mCanvasInput);
+        return blurInternal();
     }
 
     @Override
@@ -139,17 +161,16 @@ abstract class BaseBlur implements Blur
         if (bitmap == null)
             return null;
 
-        if (!init(bitmap.getWidth(), bitmap.getHeight()))
+        if (!init(bitmap.getWidth(), bitmap.getHeight(), null))
             return null;
 
         mCanvasInput.drawBitmap(bitmap, 0, 0, null);
-        mCanvasInput.drawColor(mColor);
-
-        return blurImplemention();
+        return blurInternal();
     }
 
-    private Bitmap blurImplemention()
+    private Bitmap blurInternal()
     {
+        mCanvasInput.drawColor(mColor);
         onBlurImplemention(mBitmapInput, mBitmapOutput);
 
         if (mBitmapInput.isRecycled() || mBitmapOutput.isRecycled())

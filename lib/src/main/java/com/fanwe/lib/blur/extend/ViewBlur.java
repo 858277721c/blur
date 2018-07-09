@@ -2,8 +2,6 @@ package com.fanwe.lib.blur.extend;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -107,14 +105,34 @@ public abstract class ViewBlur<T extends View>
         }
     }
 
-    private void blurDrawable(Drawable drawable)
+    private void blurDrawable(final Drawable drawable)
     {
         if (isAttachedToWindow(getView()))
         {
             if (mFuture != null)
                 mFuture.cancel(true);
 
-            mFuture = EXECUTOR_SERVICE.submit(new BlurDrawableRunnable(drawable));
+            mFuture = EXECUTOR_SERVICE.submit(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    if (getView() == null)
+                        return;
+
+                    final Bitmap bitmapBlurred = mBlur.blur(drawable);
+                    getHandler().post(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            final T view = getView();
+                            if (view != null)
+                                onBlur(new BlurredBitmapDrawable(view.getResources(), bitmapBlurred), view);
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -132,60 +150,12 @@ public abstract class ViewBlur<T extends View>
         }
     }
 
-    private final class BlurDrawableRunnable implements Runnable
-    {
-        private final Drawable mDrawable;
-
-        public BlurDrawableRunnable(Drawable drawable)
-        {
-            if (drawable == null)
-                throw new NullPointerException("drawable is null");
-            mDrawable = drawable;
-        }
-
-        @Override
-        public void run()
-        {
-            if (getView() == null)
-                return;
-
-            final Bitmap bitmap = drawableToBitmap(mDrawable);
-            final Bitmap bitmapBlurred = mBlur.blur(bitmap);
-
-            getHandler().post(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    final T view = getView();
-                    if (view != null)
-                        onBlur(new BlurredBitmapDrawable(view.getResources(), bitmapBlurred), view);
-                }
-            });
-        }
-    }
-
     public static final class BlurredBitmapDrawable extends BitmapDrawable
     {
         private BlurredBitmapDrawable(Resources res, Bitmap bitmap)
         {
             super(res, bitmap);
         }
-    }
-
-    private static Bitmap drawableToBitmap(Drawable drawable)
-    {
-        if (drawable == null)
-            return null;
-        if (drawable instanceof BitmapDrawable)
-            return ((BitmapDrawable) drawable).getBitmap();
-
-        final Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
-        final Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), config);
-        final Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
     }
 
     private static boolean isAttachedToWindow(View view)

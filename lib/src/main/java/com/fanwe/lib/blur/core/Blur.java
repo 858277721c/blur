@@ -1,6 +1,7 @@
 package com.fanwe.lib.blur.core;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 public interface Blur
@@ -59,6 +60,14 @@ public interface Blur
      * @return
      */
     Bitmap blur(View view);
+
+    /**
+     * 模糊Drawable
+     *
+     * @param drawable
+     * @return
+     */
+    Bitmap blur(Drawable drawable);
 
     /**
      * 模糊Bitmap，传入的对象不会被回收

@@ -2,6 +2,7 @@ package com.fanwe.lib.blur.core;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
 
@@ -86,6 +87,12 @@ class CompatBlur implements Blur
     public Bitmap blur(View view)
     {
         return getBlur().blur(view);
+    }
+
+    @Override
+    public Bitmap blur(Drawable drawable)
+    {
+        return getBlur().blur(drawable);
     }
 
     @Override

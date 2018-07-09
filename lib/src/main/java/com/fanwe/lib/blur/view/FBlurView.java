@@ -14,6 +14,12 @@ import java.lang.ref.WeakReference;
 
 public class FBlurView extends View implements BlurView
 {
+    private final Blur mBlur;
+    private WeakReference<View> mBlurTarget;
+
+    private Bitmap mBitmapBlurred;
+    private boolean mIsDrawingBlur;
+
     public FBlurView(Context context)
     {
         this(context, null);
@@ -33,9 +39,6 @@ public class FBlurView extends View implements BlurView
         setBlurColor(viewAttrs.getColor());
         setBlurAsync(viewAttrs.isAsync());
     }
-
-    private final Blur mBlur;
-    private WeakReference<View> mBlurTarget;
 
     /**
      * 返回设置的要模糊的view
@@ -122,9 +125,6 @@ public class FBlurView extends View implements BlurView
             invalidate();
         }
     }
-
-    private Bitmap mBitmapBlurred;
-    private boolean mIsDrawingBlur;
 
     @Override
     protected void onDraw(Canvas canvas)

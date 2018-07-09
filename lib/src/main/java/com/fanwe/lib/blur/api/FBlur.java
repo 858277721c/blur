@@ -15,6 +15,7 @@ public final class FBlur
     private FBlur(Context context)
     {
         mBlur = BlurFactory.create(context);
+        mBlur.setDestroyAfterBlur(true);
     }
 
     public static FBlur with(Context context)
@@ -68,6 +69,26 @@ public final class FBlur
     {
         mBlur.setKeepDownSamplingSize(keepDownSamplingSize);
         return this;
+    }
+
+    /**
+     * {@link Blur#setDestroyAfterBlur(boolean)}
+     *
+     * @param destroyAfterBlur
+     * @return
+     */
+    public FBlur destroyAfterBlur(boolean destroyAfterBlur)
+    {
+        mBlur.setDestroyAfterBlur(destroyAfterBlur);
+        return this;
+    }
+
+    /**
+     * {@link Blur#destroy()}
+     */
+    public void destroy()
+    {
+        mBlur.destroy();
     }
 
     /**

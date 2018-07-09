@@ -26,9 +26,7 @@ public abstract class BlurApi<S>
     {
         if (blur == null)
             throw new NullPointerException("blur must not be null");
-
         mBlur = blur;
-        blur.setDestroyAfterBlur(true);
     }
 
     protected final Blur getBlur()

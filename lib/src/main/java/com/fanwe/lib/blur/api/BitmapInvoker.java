@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 import com.fanwe.lib.blur.core.Blur;
 
-class BitmapInvoker extends BlurInvoker<Bitmap>
+class BitmapInvoker extends BaseBlurInvoker<Bitmap>
 {
     private final Bitmap mBitmap;
 

@@ -1,46 +1,12 @@
 package com.fanwe.lib.blur.api;
 
-import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.fanwe.lib.blur.api.target.BackgroundTarget;
 import com.fanwe.lib.blur.api.target.BlurTarget;
-import com.fanwe.lib.blur.api.target.ImageViewTarget;
-import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
-import com.fanwe.lib.blur.core.Blur;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-public abstract class BlurInvoker<S>
+public interface BlurInvoker
 {
-    private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
-
-    private final Blur mBlur;
-    private boolean mAsync;
-    private Future mFuture;
-
-    BlurInvoker(S source, Blur blur)
-    {
-        if (blur == null)
-            throw new NullPointerException("blur must not be null");
-        mBlur = blur;
-    }
-
-    protected final Blur getBlur()
-    {
-        return mBlur;
-    }
-
-    /**
-     * 返回模糊的Bitmap
-     *
-     * @return
-     */
-    protected abstract Bitmap blurSource();
-
     /**
      * 设置是否在子线程执行
      * <br>
@@ -49,11 +15,7 @@ public abstract class BlurInvoker<S>
      * @param async
      * @return
      */
-    public BlurInvoker async(boolean async)
-    {
-        mAsync = async;
-        return this;
-    }
+    BlurInvoker async(boolean async);
 
     /**
      * 模糊后设置给ImageView
@@ -61,12 +23,7 @@ public abstract class BlurInvoker<S>
      * @param imageView
      * @return
      */
-    public BlurInvoker into(ImageView imageView)
-    {
-        if (imageView != null)
-            into(new ImageViewTarget(imageView));
-        return this;
-    }
+    BlurInvoker into(ImageView imageView);
 
     /**
      * 模糊后设置给view的背景
@@ -74,12 +31,7 @@ public abstract class BlurInvoker<S>
      * @param view
      * @return
      */
-    public BlurInvoker intoBackground(View view)
-    {
-        if (view != null)
-            into(new BackgroundTarget(view));
-        return this;
-    }
+    BlurInvoker intoBackground(View view);
 
     /**
      * 模糊后设置给某个目标
@@ -87,53 +39,12 @@ public abstract class BlurInvoker<S>
      * @param target
      * @return
      */
-    public BlurInvoker into(BlurTarget target)
-    {
-        if (target != null)
-        {
-            target = new MainThreadTargetWrapper(target);
-            if (mAsync)
-            {
-                cancelAsync();
-                mFuture = EXECUTOR_SERVICE.submit(new BlurTask(target));
-            } else
-            {
-                target.onBlur(blurSource());
-            }
-        }
-        return this;
-    }
+    BlurInvoker into(BlurTarget target);
 
     /**
      * 取消异步请求
      *
      * @return
      */
-    public BlurInvoker cancelAsync()
-    {
-        if (mFuture != null)
-        {
-            mFuture.cancel(true);
-            mFuture = null;
-        }
-        return this;
-    }
-
-    private final class BlurTask implements Runnable
-    {
-        private final BlurTarget mTarget;
-
-        public BlurTask(BlurTarget target)
-        {
-            if (target == null)
-                throw new NullPointerException("target is null");
-            mTarget = target;
-        }
-
-        @Override
-        public void run()
-        {
-            mTarget.onBlur(blurSource());
-        }
-    }
+    BlurInvoker cancelAsync();
 }

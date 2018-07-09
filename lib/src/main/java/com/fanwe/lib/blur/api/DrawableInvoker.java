@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 
 import com.fanwe.lib.blur.core.Blur;
 
-class DrawableInvoker extends BlurInvoker<Drawable>
+class DrawableInvoker extends BaseBlurInvoker<Drawable>
 {
     private final Drawable mDrawable;
 

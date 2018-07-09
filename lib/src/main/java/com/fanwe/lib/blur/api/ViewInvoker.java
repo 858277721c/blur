@@ -7,7 +7,7 @@ import com.fanwe.lib.blur.core.Blur;
 
 import java.lang.ref.WeakReference;
 
-class ViewInvoker extends BlurInvoker<View>
+class ViewInvoker extends BaseBlurInvoker<View>
 {
     private final WeakReference<View> mView;
 

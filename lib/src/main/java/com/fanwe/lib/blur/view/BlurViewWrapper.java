@@ -133,6 +133,9 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
         if (!isAttachedToWindow(getView()))
             return;
 
+        if (mBlurInvoker != null)
+            mBlurInvoker.cancelAsync();
+
         mBlurInvoker = mBlurApi.blur(drawable).async(mAsync).into(new BlurTarget()
         {
             @Override

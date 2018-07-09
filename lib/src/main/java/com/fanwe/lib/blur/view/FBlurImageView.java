@@ -10,17 +10,17 @@ public class FBlurImageView extends ImageView implements BlurView
 {
     public FBlurImageView(Context context)
     {
-        super(context);
+        this(context, null);
     }
 
     public FBlurImageView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-    }
 
-    public FBlurImageView(Context context, AttributeSet attrs, int defStyleAttr)
-    {
-        super(context, attrs, defStyleAttr);
+        final BlurViewAttrs viewAttrs = new BlurViewAttrs(context, attrs);
+        setBlurRadius(viewAttrs.getBlurRadius());
+        setBlurDownSampling(viewAttrs.getBlurDownSampling());
+        setBlurColor(viewAttrs.getBlurColor());
     }
 
     private BlurViewWrapper<ImageView> mBlurViewWrapper;

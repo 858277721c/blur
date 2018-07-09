@@ -9,50 +9,39 @@ public class FBlurLayout extends FrameLayout implements BlurView
 {
     public FBlurLayout(Context context)
     {
-        super(context);
+        this(context, null);
     }
 
     public FBlurLayout(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+        mBlurView = new FBlurView(context, attrs);
     }
 
-    public FBlurLayout(Context context, AttributeSet attrs, int defStyleAttr)
-    {
-        super(context, attrs, defStyleAttr);
-    }
-
-    private FBlurView mBlurView;
-
-    private FBlurView getBlurView()
-    {
-        if (mBlurView == null)
-            mBlurView = new FBlurView(getContext());
-        return mBlurView;
-    }
+    private final FBlurView mBlurView;
 
     @Override
     public void setBlurRadius(int radius)
     {
-        getBlurView().setBlurRadius(radius);
+        mBlurView.setBlurRadius(radius);
     }
 
     @Override
     public void setBlurDownSampling(int downSampling)
     {
-        getBlurView().setBlurDownSampling(downSampling);
+        mBlurView.setBlurDownSampling(downSampling);
     }
 
     @Override
     public void setBlurColor(int color)
     {
-        getBlurView().setBlurColor(color);
+        mBlurView.setBlurColor(color);
     }
 
     @Override
     public void blur()
     {
-        getBlurView().blur();
+        mBlurView.blur();
     }
 
     @Override
@@ -62,11 +51,10 @@ public class FBlurLayout extends FrameLayout implements BlurView
         if (getChildCount() > 2)
             throw new RuntimeException("can not add child more");
 
-        final FBlurView blurView = getBlurView();
-        if (child != blurView)
+        if (child != mBlurView)
         {
-            blurView.setBlurTarget(child);
-            addView(blurView);
+            mBlurView.setBlurTarget(child);
+            addView(mBlurView);
         }
     }
 
@@ -75,11 +63,10 @@ public class FBlurLayout extends FrameLayout implements BlurView
     {
         super.onViewRemoved(child);
 
-        final FBlurView blurView = getBlurView();
-        if (child != blurView)
+        if (child != mBlurView)
         {
-            blurView.setBlurTarget(null);
-            removeView(blurView);
+            mBlurView.setBlurTarget(null);
+            removeView(mBlurView);
         }
     }
 }

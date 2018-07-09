@@ -16,17 +16,17 @@ public class FBlurView extends View implements BlurView
 {
     public FBlurView(Context context)
     {
-        super(context);
+        this(context, null);
     }
 
     public FBlurView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-    }
 
-    public FBlurView(Context context, AttributeSet attrs, int defStyleAttr)
-    {
-        super(context, attrs, defStyleAttr);
+        final BlurViewAttrs viewAttrs = new BlurViewAttrs(context, attrs);
+        setBlurRadius(viewAttrs.getBlurRadius());
+        setBlurDownSampling(viewAttrs.getBlurDownSampling());
+        setBlurColor(viewAttrs.getBlurColor());
     }
 
     private Blur mBlur;

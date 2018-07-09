@@ -57,6 +57,7 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:src="@drawable/fj5"
+    app:blurColor="#99FFFFFF"
     app:blurDownSampling="8"
     app:blurRadius="10" />
 ```
@@ -65,21 +66,18 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
 如果需要对某个view进行动态模糊，只要用这个layout包裹一下目标view，目标view的内容发生变化后会实时模糊
 ```xml
 <com.fanwe.lib.blur.view.FBlurLayout
-    android:id="@+id/view_blur"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:blurColor="#99FFFFFF"
+    app:blurDownSampling="8"
+    app:blurRadius="10">
 
     <ImageView
-        android:id="@+id/imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:src="@drawable/fj5" />
 
 </com.fanwe.lib.blur.view.FBlurLayout>
-```
-```java
-ImageView imageView = findViewById(R.id.imageview);
-imageView.setImageResource(R.drawable.fj5);
 ```
 
 # FBlurView

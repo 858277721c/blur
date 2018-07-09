@@ -11,6 +11,7 @@
         android:layout_gravity="center"
         android:onClick="onClick"
         android:src="@drawable/fj5"
+        app:blurColor="#99FFFFFF"
         app:blurDownSampling="8"
         app:blurRadius="10" />
 

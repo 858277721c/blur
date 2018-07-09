@@ -148,6 +148,7 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
     {
         mViewDrawable = null;
 
+        mBlur.destroy();
         if (mBlurApi != null)
             mBlurApi.cancelAsync();
     }

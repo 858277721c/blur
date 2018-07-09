@@ -8,101 +8,87 @@ import android.view.View;
 
 class CompatBlur implements Blur
 {
-    private final Context mContext;
-    private Blur mBlur;
+    private final Blur mBlur;
 
     public CompatBlur(Context context)
     {
-        mContext = context.getApplicationContext();
-    }
-
-    private Blur getBlur()
-    {
-        if (mBlur == null)
+        if (Build.VERSION.SDK_INT >= 17)
         {
-            if (Build.VERSION.SDK_INT >= 17)
+            Blur blur = new RenderScriptBlur(context.getApplicationContext());
+            try
             {
-                Blur blur = new RenderScriptBlur(mContext);
-                try
-                {
-                    blur.blur(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888));
-                } catch (Exception e)
-                {
-                    blur.destroy();
-                    blur = new FastBlur();
-                } finally
-                {
-                    mBlur = blur;
-                }
-            } else
+                blur.blur(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888));
+            } catch (Exception e)
             {
-                mBlur = new FastBlur();
+                blur.destroy();
+                blur = new FastBlur();
+            } finally
+            {
+                mBlur = blur;
             }
+        } else
+        {
+            mBlur = new FastBlur();
         }
-        return mBlur;
     }
 
     @Override
     public void setRadius(int radius)
     {
-        getBlur().setRadius(radius);
+        mBlur.setRadius(radius);
     }
 
     @Override
     public void setDownSampling(int downSampling)
     {
-        getBlur().setDownSampling(downSampling);
+        mBlur.setDownSampling(downSampling);
     }
 
     @Override
     public void setColor(int color)
     {
-        getBlur().setColor(color);
+        mBlur.setColor(color);
     }
 
     @Override
     public void setKeepDownSamplingSize(boolean keepDownSamplingSize)
     {
-        getBlur().setKeepDownSamplingSize(keepDownSamplingSize);
+        mBlur.setKeepDownSamplingSize(keepDownSamplingSize);
     }
 
     @Override
     public void setDestroyAfterBlur(boolean destroyAfterBlur)
     {
-        getBlur().setDestroyAfterBlur(destroyAfterBlur);
+        mBlur.setDestroyAfterBlur(destroyAfterBlur);
     }
 
     @Override
     public int getDownSampling()
     {
-        return getBlur().getDownSampling();
+        return mBlur.getDownSampling();
     }
 
     @Override
     public Bitmap blur(View view)
     {
-        return getBlur().blur(view);
+        return mBlur.blur(view);
     }
 
     @Override
     public Bitmap blur(Drawable drawable)
     {
-        return getBlur().blur(drawable);
+        return mBlur.blur(drawable);
     }
 
     @Override
     public Bitmap blur(Bitmap bitmap)
     {
-        return getBlur().blur(bitmap);
+        return mBlur.blur(bitmap);
     }
 
     @Override
     public void destroy()
     {
-        if (mBlur != null)
-        {
-            mBlur.destroy();
-            mBlur = null;
-        }
+        mBlur.destroy();
     }
 }

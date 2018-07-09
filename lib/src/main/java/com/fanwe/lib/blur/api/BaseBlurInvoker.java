@@ -70,9 +70,9 @@ abstract class BaseBlurInvoker<S> implements BlurInvoker
         if (target != null)
         {
             target = new MainThreadTargetWrapper(target);
+            cancelAsync();
             if (mAsync)
             {
-                cancelAsync();
                 mFuture = EXECUTOR_SERVICE.submit(new BlurTask(target));
             } else
             {

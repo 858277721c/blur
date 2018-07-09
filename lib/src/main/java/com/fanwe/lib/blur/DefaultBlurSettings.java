@@ -9,12 +9,17 @@ public class DefaultBlurSettings
     private final int mDownSampling;
     private final int mColor;
 
-    public DefaultBlurSettings(Context context)
+    private DefaultBlurSettings(Context context)
     {
         final Resources resources = context.getResources();
         mRadius = resources.getInteger(R.integer.lib_blur_radius);
         mDownSampling = resources.getInteger(R.integer.lib_blur_down_sampling);
         mColor = resources.getColor(R.color.lib_blur_color);
+    }
+
+    public static DefaultBlurSettings get(Context context)
+    {
+        return new DefaultBlurSettings(context);
     }
 
     public int getRadius()

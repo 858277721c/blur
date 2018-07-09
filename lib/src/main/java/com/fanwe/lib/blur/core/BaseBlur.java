@@ -28,7 +28,7 @@ abstract class BaseBlur implements Blur
 
     public BaseBlur(Context context)
     {
-        final DefaultBlurSettings settings = new DefaultBlurSettings(context);
+        final DefaultBlurSettings settings = DefaultBlurSettings.get(context);
         setRadius(settings.getRadius());
         setDownSampling(settings.getDownSampling());
         setColor(settings.getColor());

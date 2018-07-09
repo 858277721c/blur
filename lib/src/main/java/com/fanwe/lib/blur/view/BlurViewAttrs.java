@@ -20,7 +20,7 @@ class BlurViewAttrs
         if (attrs == null)
             return;
 
-        final DefaultBlurSettings settings = new DefaultBlurSettings(context);
+        final DefaultBlurSettings settings = DefaultBlurSettings.get(context);
         mRadius = settings.getRadius();
         mDownSampling = settings.getDownSampling();
         mColor = settings.getColor();

@@ -23,7 +23,7 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
     private boolean mAsync;
 
     private WeakReference<T> mView;
-    private Drawable mViewDrawable;
+    private Drawable mDrawable;
 
     public BlurViewWrapper(Context context)
     {
@@ -106,7 +106,7 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
         {
             final T view = getView();
             if (view != null)
-                setViewDrawable(getViewDrawable(view));
+                setDrawable(getViewDrawable(view));
             return true;
         }
     };
@@ -115,11 +115,11 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
 
     protected abstract void onDrawableBlurred(BlurredBitmapDrawable drawable, T view);
 
-    private void setViewDrawable(Drawable drawable)
+    private void setDrawable(Drawable drawable)
     {
-        if (mViewDrawable != drawable)
+        if (mDrawable != drawable)
         {
-            mViewDrawable = drawable;
+            mDrawable = drawable;
             if (drawable != null && !(drawable instanceof BlurredBitmapDrawable))
                 blurDrawable(drawable);
         }
@@ -155,8 +155,7 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
 
     private void destroy()
     {
-        mViewDrawable = null;
-
+        mDrawable = null;
         mBlurApi.destroy();
         if (mBlurInvoker != null)
             mBlurInvoker.cancelAsync();

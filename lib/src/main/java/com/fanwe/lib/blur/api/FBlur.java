@@ -8,7 +8,7 @@ import android.view.View;
 import com.fanwe.lib.blur.core.Blur;
 import com.fanwe.lib.blur.core.BlurFactory;
 
-public final class FBlur implements BlurApi
+public final class FBlur implements BlurApi, BlurApiConfig
 {
     private final Blur mBlur;
 
@@ -59,6 +59,12 @@ public final class FBlur implements BlurApi
     }
 
     @Override
+    public BlurApiConfig config()
+    {
+        return this;
+    }
+
+    @Override
     public BlurApi destroy()
     {
         mBlur.destroy();
@@ -81,5 +87,23 @@ public final class FBlur implements BlurApi
     public BlurInvoker blur(Bitmap bitmap)
     {
         return new BitmapInvoker(bitmap, mBlur);
+    }
+
+    @Override
+    public int getRadius()
+    {
+        return mBlur.getRadius();
+    }
+
+    @Override
+    public int getDownSampling()
+    {
+        return mBlur.getDownSampling();
+    }
+
+    @Override
+    public int getColor()
+    {
+        return mBlur.getColor();
     }
 }

@@ -49,6 +49,13 @@ public interface BlurApi
     BlurApi destroyAfterBlur(boolean destroyAfterBlur);
 
     /**
+     * 返回config对象，可以查询设置的参数
+     *
+     * @return
+     */
+    BlurApiConfig config();
+
+    /**
      * {@link Blur#destroy()}
      *
      * @return

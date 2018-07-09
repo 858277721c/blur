@@ -10,19 +10,17 @@ import com.fanwe.lib.blur.api.target.ImageViewTarget;
 import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
 import com.fanwe.lib.blur.core.Blur;
 
-import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public abstract class BlurApi<S>
 {
-    private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
 
     private final Blur mBlur;
     private boolean mAsync;
-    private Map<BlurTask, Future> mMapTask;
+    private Future mFuture;
 
     BlurApi(S source, Blur blur)
     {
@@ -95,15 +93,10 @@ public abstract class BlurApi<S>
         {
             if (mAsync)
             {
-                synchronized (BlurApi.this)
-                {
-                    final BlurTask task = new BlurTask(target);
-                    final Future future = EXECUTOR_SERVICE.submit(task);
+                if (mFuture != null)
+                    mFuture.cancel(true);
 
-                    if (mMapTask == null)
-                        mMapTask = new WeakHashMap<>();
-                    mMapTask.put(task, future);
-                }
+                mFuture = EXECUTOR_SERVICE.submit(new BlurTask(target));
             } else
             {
                 target.onBlur(blurImplemention());
@@ -119,17 +112,8 @@ public abstract class BlurApi<S>
      */
     public BlurApi cancelAsync()
     {
-        synchronized (BlurApi.this)
-        {
-            if (mMapTask != null)
-            {
-                for (Map.Entry<BlurTask, Future> item : mMapTask.entrySet())
-                {
-                    item.getValue().cancel(true);
-                }
-                mMapTask.clear();
-            }
-        }
+        if (mFuture != null)
+            mFuture.cancel(true);
         return this;
     }
 
@@ -148,11 +132,6 @@ public abstract class BlurApi<S>
         public void run()
         {
             mTarget.onBlur(blurImplemention());
-            synchronized (BlurApi.this)
-            {
-                if (mMapTask != null)
-                    mMapTask.remove(this);
-            }
         }
     }
 }

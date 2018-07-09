@@ -130,27 +130,27 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
         if (drawable == null)
             return;
 
-        if (isAttachedToWindow(getView()))
+        if (!isAttachedToWindow(getView()))
+            return;
+
+        if (mBlurInvoker != null)
+            mBlurInvoker.cancelAsync();
+
+        mBlurInvoker = mBlurApi.blur(drawable).async(mAsync).into(new BlurTarget()
         {
-            if (mBlurInvoker != null)
-                mBlurInvoker.cancelAsync();
-
-            mBlurInvoker = mBlurApi.blur(drawable).async(mAsync).into(new BlurTarget()
+            @Override
+            public void onBlur(Bitmap bitmap)
             {
-                @Override
-                public void onBlur(Bitmap bitmap)
-                {
-                    if (bitmap == null)
-                        return;
+                if (bitmap == null)
+                    return;
 
-                    final T view = getView();
-                    if (view == null)
-                        return;
+                final T view = getView();
+                if (view == null)
+                    return;
 
-                    onDrawableBlurred(new BlurredBitmapDrawable(view.getResources(), bitmap), view);
-                }
-            });
-        }
+                onDrawableBlurred(new BlurredBitmapDrawable(view.getResources(), bitmap), view);
+            }
+        });
     }
 
     private void destroy()

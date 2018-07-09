@@ -122,3 +122,6 @@ public interface BlurView
     void blur();
 }
 ```
+
+# 覆盖默认参数
+[default_blur_settings](https://github.com/zj565061763/blur/blob/master/lib/src/main/res/values/default_blur_settings.xml)

@@ -31,11 +31,11 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
 
         mBlurApi = FBlur.with(getApplicationContext())
                 // 设置模糊半径，默认10
-                .setRadius(10)
+                .radius(10)
                 // 设置压缩倍数，默认8
-                .setDownSampling(8)
+                .downSampling(8)
                 // 设置覆盖层颜色，默认透明
-                .setColor(Color.parseColor("#66FFFFFF"))
+                .color(Color.parseColor("#66FFFFFF"))
                 .blur(bitmap)
                 // 设置是否在子线程执行
                 .async(true)

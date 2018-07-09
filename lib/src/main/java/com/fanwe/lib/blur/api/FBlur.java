@@ -28,7 +28,7 @@ public final class FBlur
      * @param radius
      * @return
      */
-    public FBlur setRadius(int radius)
+    public FBlur radius(int radius)
     {
         mBlur.setRadius(radius);
         return this;
@@ -40,7 +40,7 @@ public final class FBlur
      * @param downSampling
      * @return
      */
-    public FBlur setDownSampling(int downSampling)
+    public FBlur downSampling(int downSampling)
     {
         mBlur.setDownSampling(downSampling);
         return this;
@@ -52,7 +52,7 @@ public final class FBlur
      * @param color
      * @return
      */
-    public FBlur setColor(int color)
+    public FBlur color(int color)
     {
         mBlur.setColor(color);
         return this;
@@ -64,7 +64,7 @@ public final class FBlur
      * @param keepDownSamplingSize
      * @return
      */
-    public FBlur setKeepDownSamplingSize(boolean keepDownSamplingSize)
+    public FBlur keepDownSamplingSize(boolean keepDownSamplingSize)
     {
         mBlur.setKeepDownSamplingSize(keepDownSamplingSize);
         return this;

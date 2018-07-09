@@ -31,19 +31,19 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
     @Override
     public void setBlurRadius(int radius)
     {
-        mBlur.setRadius(radius);
+        mBlur.radius(radius);
     }
 
     @Override
     public void setBlurDownSampling(int downSampling)
     {
-        mBlur.setDownSampling(downSampling);
+        mBlur.downSampling(downSampling);
     }
 
     @Override
     public void setBlurColor(int color)
     {
-        mBlur.setColor(color);
+        mBlur.color(color);
     }
 
     @Override

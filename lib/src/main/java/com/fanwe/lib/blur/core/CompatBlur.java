@@ -12,23 +12,25 @@ class CompatBlur implements Blur
 
     public CompatBlur(Context context)
     {
+        context = context.getApplicationContext();
+
         if (Build.VERSION.SDK_INT >= 17)
         {
-            Blur blur = new RenderScriptBlur(context.getApplicationContext());
+            Blur blur = new RenderScriptBlur(context);
             try
             {
                 blur.blur(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888));
             } catch (Exception e)
             {
                 blur.destroy();
-                blur = new FastBlur();
+                blur = new FastBlur(context);
             } finally
             {
                 mBlur = blur;
             }
         } else
         {
-            mBlur = new FastBlur();
+            mBlur = new FastBlur(context);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.fanwe.lib.blur.core;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,9 +8,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import com.fanwe.lib.blur.DefaultBlurSettings;
+
 abstract class BaseBlur implements Blur
 {
-    private int mRadius = 10;
+    private int mRadius = 15;
     private int mDownSampling = 8;
     private int mColor = Color.TRANSPARENT;
     private boolean mKeepDownSamplingSize = false;
@@ -22,6 +25,14 @@ abstract class BaseBlur implements Blur
     private Bitmap mBitmapOutput;
     private Bitmap mBitmapInput;
     private Canvas mCanvasInput;
+
+    public BaseBlur(Context context)
+    {
+        final DefaultBlurSettings settings = new DefaultBlurSettings(context);
+        setRadius(settings.getRadius());
+        setDownSampling(settings.getDownSampling());
+        setColor(settings.getColor());
+    }
 
     @Override
     public void setRadius(int radius)

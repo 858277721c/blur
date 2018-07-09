@@ -31,7 +31,7 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
 
         mBlurInvoker = BlurApiFactory.create(this)
                 // 设置模糊半径
-                .radius(10)
+                .radius(15)
                 // 设置压缩倍数
                 .downSampling(8)
                 // 设置覆盖层颜色

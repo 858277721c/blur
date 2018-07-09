@@ -1,9 +1,15 @@
 package com.fanwe.lib.blur.core;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 class FastBlur extends BaseBlur
 {
+    public FastBlur(Context context)
+    {
+        super(context);
+    }
+
     @Override
     protected void onBlurImplemention(Bitmap bitmapInput, Bitmap bitmapOutput)
     {

@@ -19,6 +19,7 @@ class RenderScriptBlur extends BaseBlur
 
     public RenderScriptBlur(Context context)
     {
+        super(context);
         mContext = context.getApplicationContext();
     }
 

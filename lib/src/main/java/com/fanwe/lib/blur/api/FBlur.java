@@ -59,9 +59,10 @@ public final class FBlur implements BlurApi
     }
 
     @Override
-    public void destroy()
+    public BlurApi destroy()
     {
         mBlur.destroy();
+        return this;
     }
 
     @Override

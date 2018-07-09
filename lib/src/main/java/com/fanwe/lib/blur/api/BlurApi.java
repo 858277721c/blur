@@ -50,8 +50,10 @@ public interface BlurApi
 
     /**
      * {@link Blur#destroy()}
+     *
+     * @return
      */
-    void destroy();
+    BlurApi destroy();
 
     /**
      * 模糊view

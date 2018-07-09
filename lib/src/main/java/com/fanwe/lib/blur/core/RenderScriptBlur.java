@@ -23,12 +23,11 @@ class RenderScriptBlur extends BaseBlur
     }
 
     @Override
-    public Blur setRadius(int radius)
+    public void setRadius(int radius)
     {
         super.setRadius(radius);
         if (mBlurScript != null)
             mBlurScript.setRadius(radius);
-        return this;
     }
 
     private RenderScript getRenderScript()

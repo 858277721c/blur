@@ -10,41 +10,36 @@ public interface Blur
      * 设置模糊半径，默认10
      *
      * @param radius
-     * @return
      */
-    Blur setRadius(int radius);
+    void setRadius(int radius);
 
     /**
      * 设置压缩倍数，默认8
      *
      * @param downSampling
-     * @return
      */
-    Blur setDownSampling(int downSampling);
+    void setDownSampling(int downSampling);
 
     /**
      * 设置覆盖层颜色，默认透明
      *
      * @param color
-     * @return
      */
-    Blur setColor(int color);
+    void setColor(int color);
 
     /**
      * 设置返回的模糊Bitmap是否要保持压缩后的宽和高，默认false-保持原来的宽和高
      *
      * @param keepDownSamplingSize true-保持压缩后的宽和高，false-保持原来的宽和高
-     * @return
      */
-    Blur setKeepDownSamplingSize(boolean keepDownSamplingSize);
+    void setKeepDownSamplingSize(boolean keepDownSamplingSize);
 
     /**
      * 设置调用模糊方法{@link #blur(View)}或者{@link #blur(Bitmap)}后是否自动调用{@link #destroy()}，默认true自动释放
      *
      * @param destroyAfterBlur
-     * @return
      */
-    Blur setDestroyAfterBlur(boolean destroyAfterBlur);
+    void setDestroyAfterBlur(boolean destroyAfterBlur);
 
     /**
      * 返回压缩倍数

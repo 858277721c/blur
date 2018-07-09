@@ -25,17 +25,16 @@ abstract class BaseBlur implements Blur
     private Canvas mCanvasInput;
 
     @Override
-    public Blur setRadius(int radius)
+    public void setRadius(int radius)
     {
         if (radius <= 0 || radius > 25)
             throw new IllegalArgumentException("radius out of range (0 < radius <= 25)");
 
         mRadius = radius;
-        return this;
     }
 
     @Override
-    public Blur setDownSampling(int downSampling)
+    public void setDownSampling(int downSampling)
     {
         if (downSampling <= 0)
             throw new IllegalArgumentException("downSampling out of range (downSampling > 0)");
@@ -45,28 +44,24 @@ abstract class BaseBlur implements Blur
             mDownSampling = downSampling;
             mDownSamplingChanged = true;
         }
-        return this;
     }
 
     @Override
-    public Blur setColor(int color)
+    public void setColor(int color)
     {
         mColor = color;
-        return this;
     }
 
     @Override
-    public Blur setKeepDownSamplingSize(boolean keepDownSamplingSize)
+    public void setKeepDownSamplingSize(boolean keepDownSamplingSize)
     {
         mKeepDownSamplingSize = keepDownSamplingSize;
-        return this;
     }
 
     @Override
-    public Blur setDestroyAfterBlur(boolean destroyAfterBlur)
+    public void setDestroyAfterBlur(boolean destroyAfterBlur)
     {
         mDestroyAfterBlur = destroyAfterBlur;
-        return this;
     }
 
     @Override

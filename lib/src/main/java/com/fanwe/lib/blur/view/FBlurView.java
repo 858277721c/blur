@@ -84,9 +84,9 @@ public class FBlurView extends View implements BlurView
     {
         if (mBlur == null)
         {
-            mBlur = BlurFactory.create(getContext())
-                    .setKeepDownSamplingSize(true)
-                    .setDestroyAfterBlur(false);
+            mBlur = BlurFactory.create(getContext());
+            mBlur.setKeepDownSamplingSize(true);
+            mBlur.setDestroyAfterBlur(false);
         }
         return mBlur;
     }

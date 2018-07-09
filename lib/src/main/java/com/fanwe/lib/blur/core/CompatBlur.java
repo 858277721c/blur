@@ -43,38 +43,33 @@ class CompatBlur implements Blur
     }
 
     @Override
-    public Blur setRadius(int radius)
+    public void setRadius(int radius)
     {
         getBlur().setRadius(radius);
-        return this;
     }
 
     @Override
-    public Blur setDownSampling(int downSampling)
+    public void setDownSampling(int downSampling)
     {
         getBlur().setDownSampling(downSampling);
-        return this;
     }
 
     @Override
-    public Blur setColor(int color)
+    public void setColor(int color)
     {
         getBlur().setColor(color);
-        return this;
     }
 
     @Override
-    public Blur setKeepDownSamplingSize(boolean keepDownSamplingSize)
+    public void setKeepDownSamplingSize(boolean keepDownSamplingSize)
     {
         getBlur().setKeepDownSamplingSize(keepDownSamplingSize);
-        return this;
     }
 
     @Override
-    public Blur setDestroyAfterBlur(boolean destroyAfterBlur)
+    public void setDestroyAfterBlur(boolean destroyAfterBlur)
     {
         getBlur().setDestroyAfterBlur(destroyAfterBlur);
-        return this;
     }
 
     @Override

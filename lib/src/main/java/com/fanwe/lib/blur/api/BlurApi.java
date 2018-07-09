@@ -45,6 +45,8 @@ public abstract class BlurApi<S>
 
     /**
      * 设置是否在子线程执行
+     * <br>
+     * 如果在子线程执行的话，每次发起新的任务都会先取消旧的任务
      *
      * @param async
      * @return
@@ -93,9 +95,7 @@ public abstract class BlurApi<S>
         {
             if (mAsync)
             {
-                if (mFuture != null)
-                    mFuture.cancel(true);
-
+                cancelAsync();
                 mFuture = EXECUTOR_SERVICE.submit(new BlurTask(target));
             } else
             {
@@ -113,7 +113,10 @@ public abstract class BlurApi<S>
     public BlurApi cancelAsync()
     {
         if (mFuture != null)
+        {
             mFuture.cancel(true);
+            mFuture = null;
+        }
         return this;
     }
 

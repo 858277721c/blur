@@ -39,6 +39,12 @@ public class FBlurLayout extends FrameLayout implements BlurView
     }
 
     @Override
+    public void setBlurAsync(boolean async)
+    {
+        mBlurView.setBlurAsync(async);
+    }
+
+    @Override
     public void blur()
     {
         mBlurView.blur();

@@ -26,6 +26,13 @@ public interface BlurView
     void setBlurColor(int color);
 
     /**
+     * 是否在子线程进行模糊，默认false
+     *
+     * @param async
+     */
+    void setBlurAsync(boolean async);
+
+    /**
      * 模糊
      */
     void blur();

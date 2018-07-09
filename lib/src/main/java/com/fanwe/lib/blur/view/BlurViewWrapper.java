@@ -20,6 +20,7 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
 {
     private final BlurApi mBlurApi;
     private BlurInvoker mBlurInvoker;
+    private boolean mBlurAsync;
 
     private WeakReference<T> mView;
     private Drawable mViewDrawable;
@@ -27,6 +28,7 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
     public BlurViewWrapper(Context context)
     {
         mBlurApi = BlurApiFactory.create(context);
+        mBlurApi.destroyAfterBlur(false);
     }
 
     @Override
@@ -45,6 +47,12 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
     public void setBlurColor(int color)
     {
         mBlurApi.color(color);
+    }
+
+    @Override
+    public void setBlurAsync(boolean async)
+    {
+        mBlurAsync = async;
     }
 
     @Override
@@ -127,7 +135,7 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
             if (mBlurInvoker != null)
                 mBlurInvoker.cancelAsync();
 
-            mBlurInvoker = mBlurApi.blur(drawable).async(true).into(new BlurTarget()
+            mBlurInvoker = mBlurApi.blur(drawable).async(mBlurAsync).into(new BlurTarget()
             {
                 @Override
                 public void onBlur(Bitmap bitmap)

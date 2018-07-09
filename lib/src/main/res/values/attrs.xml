@@ -4,5 +4,6 @@
         <attr name="blurRadius" format="integer" />
         <attr name="blurDownSampling" format="integer" />
         <attr name="blurColor" format="color" />
+        <attr name="blurAsync" format="boolean" />
     </declare-styleable>
 </resources>

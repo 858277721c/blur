@@ -12,6 +12,7 @@ class BlurViewAttrs
     private int mBlurRadius = 10;
     private int mBlurDownSampling = 8;
     private int mBlurColor = Color.TRANSPARENT;
+    private boolean mBlurAsync = false;
 
     public BlurViewAttrs(Context context, AttributeSet attrs)
     {
@@ -23,6 +24,7 @@ class BlurViewAttrs
         mBlurRadius = a.getInt(R.styleable.lib_blur_blur_view_blurRadius, mBlurRadius);
         mBlurDownSampling = a.getInt(R.styleable.lib_blur_blur_view_blurDownSampling, mBlurDownSampling);
         mBlurColor = a.getInt(R.styleable.lib_blur_blur_view_blurColor, mBlurColor);
+        mBlurAsync = a.getBoolean(R.styleable.lib_blur_blur_view_blurAsync, mBlurAsync);
 
         a.recycle();
     }
@@ -40,5 +42,10 @@ class BlurViewAttrs
     public int getBlurColor()
     {
         return mBlurColor;
+    }
+
+    public boolean isBlurAsync()
+    {
+        return mBlurAsync;
     }
 }

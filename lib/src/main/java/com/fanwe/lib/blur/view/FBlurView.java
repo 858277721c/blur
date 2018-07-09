@@ -110,6 +110,12 @@ public class FBlurView extends View implements BlurView
     }
 
     @Override
+    public void setBlurAsync(boolean async)
+    {
+
+    }
+
+    @Override
     public void blur()
     {
         if (mBitmapBlurred == null)

@@ -78,54 +78,28 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
         final T old = getView();
         if (old != view)
         {
-            if (old != null)
-            {
-                final ViewTreeObserver observer = old.getViewTreeObserver();
-                if (observer.isAlive())
-                    observer.removeOnPreDrawListener(mOnPreDrawListener);
-            }
-
             mView = view == null ? null : new WeakReference<>(view);
-
-            if (view != null)
-            {
-                final ViewTreeObserver observer = view.getViewTreeObserver();
-                if (observer.isAlive())
-                    observer.addOnPreDrawListener(mOnPreDrawListener);
-            } else
-            {
+            if (view == null)
                 destroy();
-            }
         }
     }
 
-    private final ViewTreeObserver.OnPreDrawListener mOnPreDrawListener = new ViewTreeObserver.OnPreDrawListener()
-    {
-        @Override
-        public boolean onPreDraw()
-        {
-            final T view = getView();
-            if (view != null)
-                setDrawable(getViewDrawable(view));
-            return true;
-        }
-    };
-
-    protected abstract Drawable getViewDrawable(T view);
-
     protected abstract void onDrawableBlurred(BlurredBitmapDrawable drawable, T view);
 
-    private void setDrawable(Drawable drawable)
+    public void blurDrawable(Drawable drawable)
     {
         if (mDrawable != drawable)
         {
             mDrawable = drawable;
-            if (drawable != null && !(drawable instanceof BlurredBitmapDrawable))
-                blurDrawable(drawable);
+            if (drawable != null)
+            {
+                if (!(drawable instanceof BlurredBitmapDrawable))
+                    blurDrawableInternal(drawable);
+            }
         }
     }
 
-    private void blurDrawable(final Drawable drawable)
+    private void blurDrawableInternal(final Drawable drawable)
     {
         if (drawable == null)
             return;

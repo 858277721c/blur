@@ -22,12 +22,6 @@ public class FBlurImageView extends ImageView implements BlurView
         mBlurViewWrapper = new BlurViewWrapper<ImageView>(getContext())
         {
             @Override
-            protected Drawable getViewDrawable(ImageView view)
-            {
-                return view.getDrawable();
-            }
-
-            @Override
             protected void onDrawableBlurred(BlurredBitmapDrawable drawable, ImageView view)
             {
                 view.setImageDrawable(drawable);
@@ -83,6 +77,8 @@ public class FBlurImageView extends ImageView implements BlurView
 
         if (drawable instanceof BlurViewWrapper.BlurredBitmapDrawable)
             super.onDraw(canvas);
+        else
+            mBlurViewWrapper.blurDrawable(drawable);
     }
 
     @Override

@@ -30,27 +30,27 @@ public class FBlurView extends View implements BlurView
     }
 
     private Blur mBlur;
-    private WeakReference<View> mTarget;
+    private WeakReference<View> mBlurTarget;
 
     /**
      * 返回设置的要模糊的view
      *
      * @return
      */
-    public final View getTarget()
+    public final View getBlurTarget()
     {
-        return mTarget == null ? null : mTarget.get();
+        return mBlurTarget == null ? null : mBlurTarget.get();
     }
 
     /**
      * 设置要模糊的view
      *
-     * @param target
+     * @param blurTarget
      */
-    public final void setTarget(View target)
+    public final void setBlurTarget(View blurTarget)
     {
-        final View old = getTarget();
-        if (old != target)
+        final View old = getBlurTarget();
+        if (old != blurTarget)
         {
             if (old != null)
             {
@@ -59,11 +59,11 @@ public class FBlurView extends View implements BlurView
                     observer.removeOnPreDrawListener(mOnPreDrawListener);
             }
 
-            mTarget = target == null ? null : new WeakReference<>(target);
+            mBlurTarget = blurTarget == null ? null : new WeakReference<>(blurTarget);
 
-            if (target != null)
+            if (blurTarget != null)
             {
-                final ViewTreeObserver observer = target.getViewTreeObserver();
+                final ViewTreeObserver observer = blurTarget.getViewTreeObserver();
                 if (observer.isAlive())
                     observer.addOnPreDrawListener(mOnPreDrawListener);
             }
@@ -114,7 +114,7 @@ public class FBlurView extends View implements BlurView
     {
         if (mBitmapBlurred == null)
         {
-            mBitmapBlurred = getBlur().blur(getTarget());
+            mBitmapBlurred = getBlur().blur(getBlurTarget());
             if (mBitmapBlurred != null)
                 invalidate();
         }
@@ -127,7 +127,7 @@ public class FBlurView extends View implements BlurView
     {
         super.onDraw(canvas);
 
-        final View target = getTarget();
+        final View target = getBlurTarget();
         if (target == null)
             return;
 

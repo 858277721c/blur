@@ -20,7 +20,9 @@ public class BlurViewActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.act_blur_view);
         mBlurView = findViewById(R.id.view_blur);
 
-        mBlurView.setTarget(findViewById(R.id.ll_content));
+        // 设置要模糊的目标view
+        mBlurView.setBlurTarget(findViewById(R.id.ll_content));
+        // 设置覆盖层颜色
         mBlurView.setBlurColor(Color.parseColor("#99FFFFFF"));
     }
 

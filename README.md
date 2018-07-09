@@ -65,7 +65,7 @@ imageView.setImageResource(R.drawable.fj5);
 ```
 
 # FBlurLayout
-如果需要对某个view进行模糊后展示，只要用这个layout包裹一下目标view即可
+如果需要对某个view进行动态模糊，只要用这个layout包裹一下目标view，目标view的内容发生变化后会实时模糊
 ```xml
 <com.fanwe.lib.blur.view.FBlurLayout
     android:id="@+id/view_blur"

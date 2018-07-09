@@ -11,7 +11,6 @@ import com.fanwe.lib.blur.core.BlurFactory;
 public final class FBlur
 {
     private final Blur mBlur;
-    private boolean mAsync;
 
     private FBlur(Context context)
     {
@@ -72,18 +71,6 @@ public final class FBlur
     }
 
     /**
-     * 设置是否在子线程执行
-     *
-     * @param async
-     * @return
-     */
-    public FBlur setAsync(boolean async)
-    {
-        mAsync = async;
-        return this;
-    }
-
-    /**
      * 模糊view
      *
      * @param view
@@ -91,7 +78,7 @@ public final class FBlur
      */
     public BlurApi blur(View view)
     {
-        return new ViewBlurApi(view, mAsync, mBlur);
+        return new ViewBlurApi(view, mBlur);
     }
 
     /**
@@ -102,7 +89,7 @@ public final class FBlur
      */
     public BlurApi blur(Drawable drawable)
     {
-        return new DrawableBlurApi(drawable, mAsync, mBlur);
+        return new DrawableBlurApi(drawable, mBlur);
     }
 
     /**
@@ -113,6 +100,6 @@ public final class FBlur
      */
     public BlurApi blur(Bitmap bitmap)
     {
-        return new BitmapBlurApi(bitmap, mAsync, mBlur);
+        return new BitmapBlurApi(bitmap, mBlur);
     }
 }

@@ -24,14 +24,12 @@ public abstract class BlurApi<S>
     private boolean mAsync;
     private Map<BlurTask, Future> mMapTask;
 
-    BlurApi(S source, boolean async, Blur blur)
+    BlurApi(S source, Blur blur)
     {
         if (blur == null)
             throw new NullPointerException("blur must not be null");
 
-        mAsync = async;
         mBlur = blur;
-
         blur.setDestroyAfterBlur(true);
     }
 
@@ -46,6 +44,18 @@ public abstract class BlurApi<S>
      * @return
      */
     protected abstract Bitmap blurImplemention();
+
+    /**
+     * 设置是否在子线程执行
+     *
+     * @param async
+     * @return
+     */
+    public BlurApi async(boolean async)
+    {
+        mAsync = async;
+        return this;
+    }
 
     /**
      * 模糊后设置给ImageView

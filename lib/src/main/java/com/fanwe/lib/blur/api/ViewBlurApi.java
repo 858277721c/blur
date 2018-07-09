@@ -11,9 +11,9 @@ class ViewBlurApi extends BlurApi<View>
 {
     private final WeakReference<View> mView;
 
-    ViewBlurApi(View source, boolean async, Blur blur)
+    ViewBlurApi(View source, Blur blur)
     {
-        super(source, async, blur);
+        super(source, blur);
         mView = new WeakReference<>(source);
     }
 

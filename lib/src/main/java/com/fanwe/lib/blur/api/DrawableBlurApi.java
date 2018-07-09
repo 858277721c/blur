@@ -9,9 +9,9 @@ class DrawableBlurApi extends BlurApi<Drawable>
 {
     private final Drawable mDrawable;
 
-    DrawableBlurApi(Drawable source, boolean async, Blur blur)
+    DrawableBlurApi(Drawable source, Blur blur)
     {
-        super(source, async, blur);
+        super(source, blur);
         mDrawable = source;
     }
 

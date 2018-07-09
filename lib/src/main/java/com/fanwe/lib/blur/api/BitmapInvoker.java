@@ -4,11 +4,11 @@ import android.graphics.Bitmap;
 
 import com.fanwe.lib.blur.core.Blur;
 
-class BitmapBlurApi extends BlurApi<Bitmap>
+class BitmapInvoker extends BlurInvoker<Bitmap>
 {
     private final Bitmap mBitmap;
 
-    BitmapBlurApi(Bitmap source, Blur blur)
+    BitmapInvoker(Bitmap source, Blur blur)
     {
         super(source, blur);
         mBitmap = source;

@@ -5,11 +5,11 @@ import android.graphics.drawable.Drawable;
 
 import com.fanwe.lib.blur.core.Blur;
 
-class DrawableBlurApi extends BlurApi<Drawable>
+class DrawableInvoker extends BlurInvoker<Drawable>
 {
     private final Drawable mDrawable;
 
-    DrawableBlurApi(Drawable source, Blur blur)
+    DrawableInvoker(Drawable source, Blur blur)
     {
         super(source, blur);
         mDrawable = source;

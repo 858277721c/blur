@@ -97,9 +97,9 @@ public final class FBlur
      * @param view
      * @return
      */
-    public BlurApi blur(View view)
+    public BlurInvoker blur(View view)
     {
-        return new ViewBlurApi(view, mBlur);
+        return new ViewInvoker(view, mBlur);
     }
 
     /**
@@ -108,9 +108,9 @@ public final class FBlur
      * @param drawable
      * @return
      */
-    public BlurApi blur(Drawable drawable)
+    public BlurInvoker blur(Drawable drawable)
     {
-        return new DrawableBlurApi(drawable, mBlur);
+        return new DrawableInvoker(drawable, mBlur);
     }
 
     /**
@@ -119,8 +119,8 @@ public final class FBlur
      * @param bitmap
      * @return
      */
-    public BlurApi blur(Bitmap bitmap)
+    public BlurInvoker blur(Bitmap bitmap)
     {
-        return new BitmapBlurApi(bitmap, mBlur);
+        return new BitmapInvoker(bitmap, mBlur);
     }
 }

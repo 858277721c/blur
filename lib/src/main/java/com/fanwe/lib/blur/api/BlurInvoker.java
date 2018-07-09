@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public abstract class BlurApi<S>
+public abstract class BlurInvoker<S>
 {
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
 
@@ -22,7 +22,7 @@ public abstract class BlurApi<S>
     private boolean mAsync;
     private Future mFuture;
 
-    BlurApi(S source, Blur blur)
+    BlurInvoker(S source, Blur blur)
     {
         if (blur == null)
             throw new NullPointerException("blur must not be null");
@@ -49,7 +49,7 @@ public abstract class BlurApi<S>
      * @param async
      * @return
      */
-    public BlurApi async(boolean async)
+    public BlurInvoker async(boolean async)
     {
         mAsync = async;
         return this;
@@ -61,7 +61,7 @@ public abstract class BlurApi<S>
      * @param imageView
      * @return
      */
-    public BlurApi into(ImageView imageView)
+    public BlurInvoker into(ImageView imageView)
     {
         if (imageView != null)
             into(new ImageViewTarget(imageView));
@@ -74,7 +74,7 @@ public abstract class BlurApi<S>
      * @param view
      * @return
      */
-    public BlurApi intoBackground(View view)
+    public BlurInvoker intoBackground(View view)
     {
         if (view != null)
             into(new BackgroundTarget(view));
@@ -87,7 +87,7 @@ public abstract class BlurApi<S>
      * @param target
      * @return
      */
-    public BlurApi into(BlurTarget target)
+    public BlurInvoker into(BlurTarget target)
     {
         if (target != null)
         {
@@ -109,7 +109,7 @@ public abstract class BlurApi<S>
      *
      * @return
      */
-    public BlurApi cancelAsync()
+    public BlurInvoker cancelAsync()
     {
         if (mFuture != null)
         {

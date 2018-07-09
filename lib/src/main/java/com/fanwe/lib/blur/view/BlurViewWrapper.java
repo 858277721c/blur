@@ -9,7 +9,7 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
-import com.fanwe.lib.blur.api.BlurApi;
+import com.fanwe.lib.blur.api.BlurInvoker;
 import com.fanwe.lib.blur.api.FBlur;
 import com.fanwe.lib.blur.api.target.BlurTarget;
 
@@ -18,7 +18,7 @@ import java.lang.ref.WeakReference;
 public abstract class BlurViewWrapper<T extends View> implements BlurView
 {
     private final FBlur mBlur;
-    private BlurApi mBlurApi;
+    private BlurInvoker mBlurInvoker;
 
     private WeakReference<T> mView;
     private Drawable mViewDrawable;
@@ -123,10 +123,10 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
 
         if (isAttachedToWindow(getView()))
         {
-            if (mBlurApi != null)
-                mBlurApi.cancelAsync();
+            if (mBlurInvoker != null)
+                mBlurInvoker.cancelAsync();
 
-            mBlurApi = mBlur.blur(drawable).async(true).into(new BlurTarget()
+            mBlurInvoker = mBlur.blur(drawable).async(true).into(new BlurTarget()
             {
                 @Override
                 public void onBlur(Bitmap bitmap)
@@ -149,8 +149,8 @@ public abstract class BlurViewWrapper<T extends View> implements BlurView
         mViewDrawable = null;
 
         mBlur.destroy();
-        if (mBlurApi != null)
-            mBlurApi.cancelAsync();
+        if (mBlurInvoker != null)
+            mBlurInvoker.cancelAsync();
     }
 
     public static final class BlurredBitmapDrawable extends BitmapDrawable

@@ -87,7 +87,11 @@ imageView.setImageResource(R.drawable.fj5);
 
 # FBlurView
 FBlurLayout内部动态模糊的功能就是用FBlurView实现的
-
+注意：FBlurView相对FBlurView父布局的x和y，必须跟目标view相对目标view父布局的x和y一致，否则会出现模糊view的位置不对
+```java
+FBlurView blurView = findViewById(R.id.view_blur);
+blurView.setBlurTarget(findViewById(R.id.ll_content));
+```
 
 # 模糊View参数设置
 以上介绍的模糊view都实现了以下接口，可以进行模糊参数设置

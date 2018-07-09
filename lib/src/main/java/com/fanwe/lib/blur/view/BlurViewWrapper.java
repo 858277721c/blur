@@ -1,43 +1,54 @@
-package com.fanwe.lib.blur.extend;
+package com.fanwe.lib.blur.view;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
-import com.fanwe.lib.blur.core.Blur;
+import com.fanwe.lib.blur.api.BlurApi;
+import com.fanwe.lib.blur.api.FBlur;
+import com.fanwe.lib.blur.api.target.BlurTarget;
 
 import java.lang.ref.WeakReference;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
-public abstract class ViewBlur<T extends View>
+public abstract class BlurViewWrapper<T extends View> implements BlurView
 {
-    private static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
+    private final FBlur mBlur;
+    private BlurApi mBlurApi;
 
-    private final Blur mBlur;
     private WeakReference<T> mView;
-
-    private Future mFuture;
     private Drawable mViewDrawable;
-    private Handler mHandler;
 
-    public ViewBlur(Blur blur)
+    public BlurViewWrapper(Context context)
     {
-        mBlur = blur;
+        mBlur = FBlur.with(context);
     }
 
-    private Handler getHandler()
+    @Override
+    public void setBlurRadius(int radius)
     {
-        if (mHandler == null)
-            mHandler = new Handler(Looper.getMainLooper());
-        return mHandler;
+        mBlur.setRadius(radius);
+    }
+
+    @Override
+    public void setBlurDownSampling(int downSampling)
+    {
+        mBlur.setDownSampling(downSampling);
+    }
+
+    @Override
+    public void setBlurColor(int color)
+    {
+        mBlur.setColor(color);
+    }
+
+    @Override
+    public void blur()
+    {
     }
 
     private T getView()
@@ -93,7 +104,7 @@ public abstract class ViewBlur<T extends View>
 
     protected abstract Drawable getViewDrawable(T view);
 
-    protected abstract void onBlur(BlurredBitmapDrawable drawable, T view);
+    protected abstract void onDrawableBlurred(BlurredBitmapDrawable drawable, T view);
 
     private void setViewDrawable(Drawable drawable)
     {
@@ -107,30 +118,27 @@ public abstract class ViewBlur<T extends View>
 
     private void blurDrawable(final Drawable drawable)
     {
+        if (drawable == null)
+            return;
+
         if (isAttachedToWindow(getView()))
         {
-            if (mFuture != null)
-                mFuture.cancel(true);
+            if (mBlurApi != null)
+                mBlurApi.cancelAsync();
 
-            mFuture = EXECUTOR_SERVICE.submit(new Runnable()
+            mBlurApi = mBlur.blur(drawable).into(new BlurTarget()
             {
                 @Override
-                public void run()
+                public void onBlur(Bitmap bitmap)
                 {
-                    if (getView() == null)
+                    if (bitmap == null)
                         return;
 
-                    final Bitmap bitmapBlurred = mBlur.blur(drawable);
-                    getHandler().post(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            final T view = getView();
-                            if (view != null)
-                                onBlur(new BlurredBitmapDrawable(view.getResources(), bitmapBlurred), view);
-                        }
-                    });
+                    final T view = getView();
+                    if (view == null)
+                        return;
+
+                    onDrawableBlurred(new BlurredBitmapDrawable(view.getResources(), bitmap), view);
                 }
             });
         }
@@ -140,14 +148,8 @@ public abstract class ViewBlur<T extends View>
     {
         mViewDrawable = null;
 
-        if (mBlur != null)
-            mBlur.destroy();
-
-        if (mFuture != null)
-        {
-            mFuture.cancel(true);
-            mFuture = null;
-        }
+        if (mBlurApi != null)
+            mBlurApi.cancelAsync();
     }
 
     public static final class BlurredBitmapDrawable extends BitmapDrawable

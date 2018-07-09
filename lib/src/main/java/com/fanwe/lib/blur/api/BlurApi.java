@@ -66,7 +66,7 @@ public abstract class BlurApi<S>
     public BlurApi into(ImageView imageView)
     {
         if (imageView != null)
-            into(new MainThreadTargetWrapper(new ImageViewTarget(imageView)));
+            into(new ImageViewTarget(imageView));
         return this;
     }
 
@@ -79,7 +79,7 @@ public abstract class BlurApi<S>
     public BlurApi intoBackground(View view)
     {
         if (view != null)
-            into(new MainThreadTargetWrapper(new BackgroundTarget(view)));
+            into(new BackgroundTarget(view));
         return this;
     }
 
@@ -93,6 +93,7 @@ public abstract class BlurApi<S>
     {
         if (target != null)
         {
+            target = new MainThreadTargetWrapper(target);
             if (mAsync)
             {
                 cancelAsync();

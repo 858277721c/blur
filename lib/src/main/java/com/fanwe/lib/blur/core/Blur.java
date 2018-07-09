@@ -7,21 +7,21 @@ import android.view.View;
 public interface Blur
 {
     /**
-     * 设置模糊半径，默认10
+     * 设置模糊半径
      *
      * @param radius
      */
     void setRadius(int radius);
 
     /**
-     * 设置压缩倍数，默认8
+     * 设置压缩倍数
      *
      * @param downSampling
      */
     void setDownSampling(int downSampling);
 
     /**
-     * 设置覆盖层颜色，默认透明
+     * 设置覆盖层颜色
      *
      * @param color
      */

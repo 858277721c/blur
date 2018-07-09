@@ -26,11 +26,11 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
         final Bitmap bitmap = Utils.randomBitmap(this);
 
         mBlurInvoker = BlurApiFactory.create(this)
-                // 设置模糊半径，默认10
+                // 设置模糊半径
                 .radius(10)
-                // 设置压缩倍数，默认8
+                // 设置压缩倍数
                 .downSampling(8)
-                // 设置覆盖层颜色，默认透明
+                // 设置覆盖层颜色
                 .color(Color.parseColor("#66FFFFFF"))
                 .blur(bitmap)
                 // 设置是否在子线程执行

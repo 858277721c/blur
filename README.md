@@ -67,59 +67,24 @@ imageView.setImageResource(R.drawable.fj5);
 # FBlurLayout
 如果需要对某个view进行模糊后展示，只要用这个layout包裹一下目标view即可
 ```xml
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fanwe.lib.blur.view.FBlurLayout
+    android:id="@+id/view_blur"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/imageview"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:text="button" />
+        android:layout_gravity="center" />
 
-    <com.fanwe.lib.blur.view.FBlurLayout
-        android:id="@+id/view_blur"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-    </com.fanwe.lib.blur.view.FBlurLayout>
-
-</FrameLayout>
+</com.fanwe.lib.blur.view.FBlurLayout>
 ```
 ```java
-public class BlurLayoutActivity extends AppCompatActivity implements View.OnClickListener
-{
-    private ImageView mImageView;
-    private FBlurLayout mBlurLayout;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_blur_layout);
-        mImageView = findViewById(R.id.imageview);
-        mBlurLayout = findViewById(R.id.view_blur);
-    }
-
-    @Override
-    public void onClick(View v)
-    {
-        // 随机加载一张图片
-        final Bitmap bitmap = Utils.randomBitmap(getApplicationContext());
-        mImageView.setImageBitmap(bitmap);
-
-        // 执行模糊操作
-        mBlurLayout.blur();
-    }
-}
+ImageView imageView = findViewById(R.id.imageview);
+imageView.setImageResource(R.drawable.fj5);
 ```
+
 # 模糊View参数设置
 以上介绍的模糊view都实现了以下接口，可以进行模糊参数设置
 <br>

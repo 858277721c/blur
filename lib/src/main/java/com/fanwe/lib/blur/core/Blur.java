@@ -42,11 +42,25 @@ public interface Blur
     void setDestroyAfterBlur(boolean destroyAfterBlur);
 
     /**
+     * 返回模糊半径
+     *
+     * @return
+     */
+    int getRadius();
+
+    /**
      * 返回压缩倍数
      *
      * @return
      */
     int getDownSampling();
+
+    /**
+     * 返回模糊颜色
+     *
+     * @return
+     */
+    int getColor();
 
     /**
      * 得到View的模糊Bitmap

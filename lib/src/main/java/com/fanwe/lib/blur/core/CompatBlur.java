@@ -63,6 +63,18 @@ class CompatBlur implements Blur
     }
 
     @Override
+    public int getRadius()
+    {
+        return mBlur.getRadius();
+    }
+
+    @Override
+    public int getColor()
+    {
+        return mBlur.getColor();
+    }
+
+    @Override
     public int getDownSampling()
     {
         return mBlur.getDownSampling();

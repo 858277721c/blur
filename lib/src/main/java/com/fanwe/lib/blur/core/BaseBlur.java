@@ -65,9 +65,21 @@ abstract class BaseBlur implements Blur
     }
 
     @Override
+    public int getRadius()
+    {
+        return mRadius;
+    }
+
+    @Override
     public int getDownSampling()
     {
         return mDownSampling;
+    }
+
+    @Override
+    public int getColor()
+    {
+        return mColor;
     }
 
     private boolean init(int width, int height, Bitmap.Config config)
@@ -112,11 +124,6 @@ abstract class BaseBlur implements Blur
     protected void onConfigurationChanged(int scaledWidth, int scaledHeight, float scale, Bitmap bitmapInput, Bitmap bitmapOutput)
     {
 
-    }
-
-    protected final int getRadius()
-    {
-        return mRadius;
     }
 
     @Override

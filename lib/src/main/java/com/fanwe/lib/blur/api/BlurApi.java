@@ -31,6 +31,8 @@ public abstract class BlurApi<S>
 
         mAsync = async;
         mBlur = blur;
+
+        blur.setDestroyAfterBlur(true);
     }
 
     protected final Blur getBlur()

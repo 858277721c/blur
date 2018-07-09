@@ -1,14 +1,25 @@
 package com.fanwe.lib.blur.view;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.fanwe.lib.blur.api.BlurApi;
+import com.fanwe.lib.blur.api.BlurApiFactory;
+import com.fanwe.lib.blur.api.BlurInvoker;
+import com.fanwe.lib.blur.api.target.BlurTarget;
+
 public class FBlurImageView extends ImageView implements BlurView
 {
-    private final BlurViewWrapper<ImageView> mBlurViewWrapper;
+    private final BlurApi mBlurApi;
+    private BlurInvoker mBlurInvoker;
+    private boolean mAsync;
+    private Drawable mDrawable;
 
     public FBlurImageView(Context context)
     {
@@ -19,14 +30,8 @@ public class FBlurImageView extends ImageView implements BlurView
     {
         super(context, attrs);
 
-        mBlurViewWrapper = new BlurViewWrapper<ImageView>(getContext())
-        {
-            @Override
-            protected void onDrawableBlurred(BlurredBitmapDrawable drawable, ImageView view)
-            {
-                view.setImageDrawable(drawable);
-            }
-        };
+        mBlurApi = BlurApiFactory.create(context);
+        mBlurApi.destroyAfterBlur(false);
 
         final BlurViewAttrs viewAttrs = BlurViewAttrs.parse(context, attrs);
         setBlurRadius(viewAttrs.getRadius());
@@ -38,31 +43,31 @@ public class FBlurImageView extends ImageView implements BlurView
     @Override
     public final void setBlurRadius(int radius)
     {
-        mBlurViewWrapper.setBlurRadius(radius);
+        mBlurApi.radius(radius);
     }
 
     @Override
     public final void setBlurDownSampling(int downSampling)
     {
-        mBlurViewWrapper.setBlurDownSampling(downSampling);
+        mBlurApi.downSampling(downSampling);
     }
 
     @Override
     public final void setBlurColor(int color)
     {
-        mBlurViewWrapper.setBlurColor(color);
+        mBlurApi.color(color);
     }
 
     @Override
     public void setBlurAsync(boolean async)
     {
-        mBlurViewWrapper.setBlurAsync(async);
+        mAsync = async;
     }
 
     @Override
     public void blur()
     {
-        invalidate();
+
     }
 
     @Override
@@ -72,26 +77,53 @@ public class FBlurImageView extends ImageView implements BlurView
         if (drawable == null)
         {
             super.onDraw(canvas);
-            return;
+        } else
+        {
+            if (drawable instanceof BlurredBitmapDrawable)
+                super.onDraw(canvas);
+            else
+                blurDrawable(drawable);
         }
-
-        if (drawable instanceof BlurViewWrapper.BlurredBitmapDrawable)
-            super.onDraw(canvas);
-        else
-            mBlurViewWrapper.blurDrawable(drawable);
     }
 
-    @Override
-    protected void onAttachedToWindow()
+    private void blurDrawable(Drawable drawable)
     {
-        super.onAttachedToWindow();
-        mBlurViewWrapper.setView(this);
+        if (mDrawable == drawable)
+            return;
+        if (drawable instanceof BlurredBitmapDrawable)
+            return;
+
+        mDrawable = drawable;
+
+        if (mBlurInvoker != null)
+            mBlurInvoker.cancelAsync();
+
+        mBlurInvoker = mBlurApi.blur(drawable).async(mAsync).into(new BlurTarget()
+        {
+            @Override
+            public void onBlur(Bitmap bitmap)
+            {
+                if (bitmap != null)
+                    setImageDrawable(new BlurredBitmapDrawable(getResources(), bitmap));
+            }
+        });
     }
 
     @Override
     protected void onDetachedFromWindow()
     {
         super.onDetachedFromWindow();
-        mBlurViewWrapper.setView(null);
+        mDrawable = null;
+        mBlurApi.destroy();
+        if (mBlurInvoker != null)
+            mBlurInvoker.cancelAsync();
+    }
+
+    private static final class BlurredBitmapDrawable extends BitmapDrawable
+    {
+        private BlurredBitmapDrawable(Resources res, Bitmap bitmap)
+        {
+            super(res, bitmap);
+        }
     }
 }

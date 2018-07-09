@@ -54,14 +54,11 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
 用法和普通的ImageView一样，只不过会把设置的图片进行模糊后展示，模糊的操作是在子线程进行的，所以这边不会阻塞主线程
 ```xml
 <com.fanwe.lib.blur.view.FBlurImageView
-        android:id="@+id/imageview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
-```
-```java
-ImageView imageView = findViewById(R.id.imageview);
-imageView.setImageResource(R.drawable.fj5);
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/fj5"
+    app:blurDownSampling="8"
+    app:blurRadius="10" />
 ```
 
 # FBlurLayout

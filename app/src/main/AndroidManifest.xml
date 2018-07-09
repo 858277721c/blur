@@ -20,6 +20,7 @@
         <activity android:name=".BlurActivity" />
         <activity android:name=".BlurImageViewActivity" />
         <activity android:name=".BlurLayoutActivity" />
+        <activity android:name=".BlurViewActivity" />
 
     </application>
 

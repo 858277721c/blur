@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_blur_layout:
                 startActivity(new Intent(this, BlurLayoutActivity.class));
                 break;
+            case R.id.btn_blur_view:
+                startActivity(new Intent(this, BlurViewActivity.class));
+                break;
         }
     }
 }

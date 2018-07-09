@@ -85,6 +85,10 @@ ImageView imageView = findViewById(R.id.imageview);
 imageView.setImageResource(R.drawable.fj5);
 ```
 
+# FBlurView
+FBlurLayout内部动态模糊的功能就是用FBlurView实现的
+
+
 # 模糊View参数设置
 以上介绍的模糊view都实现了以下接口，可以进行模糊参数设置
 <br>

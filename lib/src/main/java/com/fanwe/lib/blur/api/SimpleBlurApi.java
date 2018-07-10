@@ -160,10 +160,10 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         }
 
         @Override
-        protected final void notifyTarget(final Target target)
+        protected final void notifyTarget(final Target target, boolean async)
         {
             cancelAsync();
-            if (isAsync())
+            if (async)
             {
                 final Future future = EXECUTOR_SERVICE.submit(new Runnable()
                 {
@@ -190,6 +190,22 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
                 target.onBlurred(blurSource());
             }
         }
+
+        private Bitmap blurSource()
+        {
+            if (mMapInvoker == null || mMapInvoker.isEmpty())
+            {
+                return blurSourceImplemention();
+            } else
+            {
+                synchronized (mBlur)
+                {
+                    return blurSourceImplemention();
+                }
+            }
+        }
+
+        protected abstract Bitmap blurSourceImplemention();
     }
 
     private final class ViewInvoker extends InternalInvoker<View>
@@ -203,7 +219,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         }
 
         @Override
-        protected Bitmap blurSource()
+        protected Bitmap blurSourceImplemention()
         {
             final View view = mView == null ? null : mView.get();
             return mBlur.blur(view);
@@ -221,7 +237,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         }
 
         @Override
-        protected Bitmap blurSource()
+        protected Bitmap blurSourceImplemention()
         {
             return mBlur.blur(mDrawable);
         }
@@ -238,7 +254,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         }
 
         @Override
-        protected Bitmap blurSource()
+        protected Bitmap blurSourceImplemention()
         {
             return mBlur.blur(mBitmap);
         }

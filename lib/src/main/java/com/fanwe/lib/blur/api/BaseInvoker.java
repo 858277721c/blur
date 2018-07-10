@@ -1,6 +1,5 @@
 package com.fanwe.lib.blur.api;
 
-import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -39,17 +38,10 @@ abstract class BaseInvoker<S> implements BlurInvoker
         if (target != null)
         {
             target = new MainThreadTargetWrapper(target);
-            notifyTarget(target);
+            notifyTarget(target, mAsync);
         }
         return this;
     }
 
-    protected final boolean isAsync()
-    {
-        return mAsync;
-    }
-
-    protected abstract void notifyTarget(Target target);
-
-    protected abstract Bitmap blurSource();
+    protected abstract void notifyTarget(Target target, boolean async);
 }

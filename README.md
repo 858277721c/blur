@@ -9,7 +9,7 @@
 public class BlurActivity extends AppCompatActivity implements View.OnClickListener
 {
     private ImageView mImageView;
-    private BlurInvoker mBlurInvoker;
+    private BlurApi mBlurApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -19,13 +19,20 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
         mImageView = findViewById(R.id.imageview);
     }
 
+    private BlurApi getBlurApi()
+    {
+        if (mBlurApi == null)
+            mBlurApi = BlurApiFactory.create(this);
+        return mBlurApi;
+    }
+
     @Override
     public void onClick(final View view)
     {
         // 随机加载一张图片
         final Bitmap bitmap = Utils.randomBitmap(this);
 
-        mBlurInvoker = BlurApiFactory.create(this)
+        getBlurApi()
                 // 设置模糊半径
                 .radius(15)
                 // 设置压缩倍数
@@ -42,16 +49,17 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy()
     {
         super.onDestroy();
-
-        // 如果有未完成的子线程任务，取消任务
-        if (mBlurInvoker != null)
-            mBlurInvoker.cancelAsync();
+        /**
+         * 释放资源，并取消所有的子线程任务
+         */
+        if (mBlurApi != null)
+            mBlurApi.destroy();
     }
 }
 ```
 
 # FBlurImageView
-用法和普通的ImageView一样，只不过会把设置的图片进行模糊后展示
+用法和普通的ImageView一样，只不过会把设置的图片进行模糊后展示，可以设置是否在子线程进行模糊操作，默认在UI主线程
 ```xml
 <com.fanwe.lib.blur.view.FBlurImageView
     android:layout_width="wrap_content"

@@ -23,14 +23,20 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
         mImageView = findViewById(R.id.imageview);
     }
 
+    private BlurApi getBlurApi()
+    {
+        if (mBlurApi == null)
+            mBlurApi = BlurApiFactory.create(this);
+        return mBlurApi;
+    }
+
     @Override
     public void onClick(final View view)
     {
         // 随机加载一张图片
         final Bitmap bitmap = Utils.randomBitmap(this);
 
-        mBlurApi = BlurApiFactory.create(this);
-        mBlurApi
+        getBlurApi()
                 // 设置模糊半径
                 .radius(15)
                 // 设置压缩倍数
@@ -47,7 +53,6 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy()
     {
         super.onDestroy();
-
         /**
          * 释放资源，并取消所有的子线程任务
          */

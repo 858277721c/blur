@@ -16,7 +16,6 @@ import com.fanwe.lib.blur.api.BlurInvoker;
 public class FBlurImageView extends ImageView implements BlurView
 {
     private final BlurApi mBlurApi;
-    private BlurInvoker mBlurInvoker;
     private boolean mAsync;
     private Drawable mDrawable;
 
@@ -94,10 +93,7 @@ public class FBlurImageView extends ImageView implements BlurView
 
         mDrawable = drawable;
 
-        if (mBlurInvoker != null)
-            mBlurInvoker.cancelAsync();
-
-        mBlurInvoker = mBlurApi.blur(drawable).async(mAsync).into(new BlurInvoker.Target()
+        mBlurApi.blur(drawable).async(mAsync).into(new BlurInvoker.Target()
         {
             @Override
             public void onBlurred(Bitmap bitmap)
@@ -114,8 +110,6 @@ public class FBlurImageView extends ImageView implements BlurView
         super.onDetachedFromWindow();
         mDrawable = null;
         mBlurApi.destroy();
-        if (mBlurInvoker != null)
-            mBlurInvoker.cancelAsync();
     }
 
     private static final class BlurredBitmapDrawable extends BitmapDrawable

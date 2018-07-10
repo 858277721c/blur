@@ -10,10 +10,13 @@ import com.fanwe.lib.blur.core.BlurFactory;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 class SimpleBlurApi implements BlurApi, BlurApi.Config
 {
@@ -160,27 +163,19 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         }
 
         @Override
-        protected final void notifyTarget(final Target target, boolean async)
+        protected final void notifyTarget(Target target, boolean async)
         {
             cancelAsync();
             if (async)
             {
-                final Future future = EXECUTOR_SERVICE.submit(new Runnable()
+                final Future future = EXECUTOR_SERVICE.submit(new BlurTask(new Callable<Bitmap>()
                 {
                     @Override
-                    public void run()
+                    public Bitmap call() throws Exception
                     {
-                        try
-                        {
-                            target.onBlurred(blurSource());
-                        } finally
-                        {
-                            mMapInvoker.remove(SourceInvoker.this);
-                            if (mBlur.isDestroyAfterBlur())
-                                mBlur.destroy();
-                        }
+                        return blurSource();
                     }
-                });
+                }, this, target));
 
                 if (mMapInvoker == null)
                     mMapInvoker = new ConcurrentHashMap<>();
@@ -206,6 +201,42 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         }
 
         protected abstract Bitmap blurSourceImplemention();
+    }
+
+    private final class BlurTask extends FutureTask<Bitmap>
+    {
+        private final BlurInvoker mInvoker;
+        private final BlurInvoker.Target mTarget;
+
+        public BlurTask(Callable<Bitmap> callable, BlurInvoker invoker, BlurInvoker.Target target)
+        {
+            super(callable);
+            mInvoker = invoker;
+            mTarget = target;
+        }
+
+        @Override
+        protected void done()
+        {
+            synchronized (mBlur)
+            {
+                try
+                {
+                    mTarget.onBlurred(get());
+                } catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                } catch (ExecutionException e)
+                {
+                    e.printStackTrace();
+                } finally
+                {
+                    mMapInvoker.remove(mInvoker);
+                    if (mBlur.isDestroyAfterBlur())
+                        mBlur.destroy();
+                }
+            }
+        }
     }
 
     private final class ViewInvoker extends SourceInvoker<View>

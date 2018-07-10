@@ -32,8 +32,8 @@ public class FBlurView extends View implements BlurView
         super(context, attrs);
 
         mBlurApi = BlurApiFactory.create(context);
-        mBlurApi.keepDownSamplingSize(true);
         mBlurApi.destroyAfterBlur(false);
+        mBlurApi.keepDownSamplingSize(true);
 
         final BlurViewAttrs viewAttrs = BlurViewAttrs.parse(context, attrs);
         setBlurRadius(viewAttrs.getRadius());

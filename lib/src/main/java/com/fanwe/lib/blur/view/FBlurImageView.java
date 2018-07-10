@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -17,7 +19,9 @@ public class FBlurImageView extends ImageView implements BlurView
 {
     private final BlurApi mBlurApi;
     private boolean mAsync;
+
     private Drawable mDrawable;
+    private Drawable mBlurredDrawable;
 
     public FBlurImageView(Context context)
     {
@@ -80,8 +84,51 @@ public class FBlurImageView extends ImageView implements BlurView
             if (drawable instanceof BlurredBitmapDrawable)
                 super.onDraw(canvas);
             else
+            {
+                drawBlurredDrawable(canvas);
                 blurDrawable(drawable);
+            }
         }
+    }
+
+    private void drawBlurredDrawable(Canvas canvas)
+    {
+        final Drawable drawable = mBlurredDrawable;
+
+        if (drawable == null)
+            return;
+
+        final int saveCount = canvas.getSaveCount();
+        canvas.save();
+
+        final Matrix matrix = getImageMatrix();
+        if (matrix == null && getPaddingTop() == 0 && getPaddingLeft() == 0)
+        {
+            drawable.draw(canvas);
+        } else
+        {
+            if (Build.VERSION.SDK_INT >= 16)
+            {
+                if (getCropToPadding())
+                {
+                    final int scrollX = getScrollX();
+                    final int scrollY = getScrollY();
+                    canvas.clipRect(scrollX + getPaddingLeft(), scrollY + getPaddingTop(),
+                            scrollX + getRight() - getLeft() - getPaddingRight(),
+                            scrollY + getBottom() - getTop() - getPaddingBottom());
+                }
+            }
+
+            canvas.translate(getPaddingLeft(), getPaddingTop());
+
+            if (matrix != null)
+            {
+                canvas.concat(matrix);
+            }
+            drawable.draw(canvas);
+        }
+
+        canvas.restoreToCount(saveCount);
     }
 
     private void blurDrawable(Drawable drawable)
@@ -101,7 +148,8 @@ public class FBlurImageView extends ImageView implements BlurView
                 if (bitmap == null)
                     return;
 
-                setImageDrawable(new BlurredBitmapDrawable(getResources(), bitmap));
+                mBlurredDrawable = new BlurredBitmapDrawable(getResources(), bitmap);
+                setImageDrawable(mBlurredDrawable);
             }
         });
     }
@@ -110,7 +158,6 @@ public class FBlurImageView extends ImageView implements BlurView
     protected void onDetachedFromWindow()
     {
         super.onDetachedFromWindow();
-        mDrawable = null;
         mBlurApi.destroy();
     }
 

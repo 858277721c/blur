@@ -121,9 +121,6 @@ abstract class BaseBlur implements Blur
             final Bitmap.Config config = Bitmap.Config.ARGB_8888;
 
             mBitmapOutput = Bitmap.createBitmap(scaledWidth, scaledHeight, config);
-
-            if (mBitmapInput != null)
-                mBitmapInput.recycle();
             mBitmapInput = Bitmap.createBitmap(scaledWidth, scaledHeight, config);
 
             mCanvasInput = new Canvas(mBitmapInput);

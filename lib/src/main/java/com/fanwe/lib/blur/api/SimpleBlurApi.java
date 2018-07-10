@@ -8,10 +8,17 @@ import android.view.View;
 import com.fanwe.lib.blur.core.Blur;
 import com.fanwe.lib.blur.core.BlurFactory;
 
+import java.lang.ref.WeakReference;
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 class SimpleBlurApi implements BlurApi, BlurApi.Config
 {
     private final Blur mBlur;
-    private BlurInvoker mBlurInvoker;
+    private boolean mAsync;
 
     SimpleBlurApi(Context context)
     {
@@ -55,6 +62,13 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     }
 
     @Override
+    public BlurApi async(boolean async)
+    {
+        mAsync = async;
+        return this;
+    }
+
+    @Override
     public Config config()
     {
         return this;
@@ -63,7 +77,6 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     @Override
     public BlurApi destroy()
     {
-        cancelAsync();
         mBlur.destroy();
         return this;
     }
@@ -71,37 +84,19 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     @Override
     public BlurInvoker blur(View view)
     {
-        final BlurInvoker invoker = new ViewInvoker(view, mBlur, config());
-        initBlurInvoker(invoker);
-        return invoker;
+        return new ViewInvoker(view, mAsync);
     }
 
     @Override
     public BlurInvoker blur(Drawable drawable)
     {
-        final BlurInvoker invoker = new DrawableInvoker(drawable, mBlur, config());
-        initBlurInvoker(invoker);
-        return invoker;
+        return new DrawableInvoker(drawable, mAsync);
     }
 
     @Override
     public BlurInvoker blur(Bitmap bitmap)
     {
-        final BlurInvoker invoker = new BitmapInvoker(bitmap, mBlur, config());
-        initBlurInvoker(invoker);
-        return invoker;
-    }
-
-    private void initBlurInvoker(BlurInvoker blurInvoker)
-    {
-        cancelAsync();
-        mBlurInvoker = blurInvoker;
-    }
-
-    private void cancelAsync()
-    {
-        if (mBlurInvoker != null)
-            mBlurInvoker.cancelAsync();
+        return new BitmapInvoker(bitmap, mAsync);
     }
 
     @Override
@@ -132,5 +127,107 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     public boolean isDestroyAfterBlur()
     {
         return mBlur.isDestroyAfterBlur();
+    }
+
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
+    private Map<BlurInvoker, Future> mMapInvoker;
+
+    private abstract class InternalInvoker<S> extends BaseInvoker<S>
+    {
+        public InternalInvoker(S source, boolean async)
+        {
+            super(source, async);
+        }
+
+        @Override
+        public final BlurInvoker cancelAsync()
+        {
+            if (mMapInvoker != null)
+            {
+                final Future future = mMapInvoker.get(this);
+                if (future != null)
+                    future.cancel(true);
+            }
+            return this;
+        }
+
+        @Override
+        protected final void notifyTarget(final Target target)
+        {
+            cancelAsync();
+            if (isAsync())
+            {
+                final Future future = EXECUTOR_SERVICE.submit(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        synchronized (mBlur)
+                        {
+                            target.onBlurred(blurSource());
+                        }
+                    }
+                });
+
+                if (mMapInvoker == null)
+                    mMapInvoker = new WeakHashMap<>();
+                mMapInvoker.put(this, future);
+            } else
+            {
+                target.onBlurred(blurSource());
+            }
+        }
+    }
+
+    private final class ViewInvoker extends InternalInvoker<View>
+    {
+        private final WeakReference<View> mView;
+
+        public ViewInvoker(View source, boolean async)
+        {
+            super(source, async);
+            mView = new WeakReference<>(source);
+        }
+
+        @Override
+        protected Bitmap blurSource()
+        {
+            final View view = mView == null ? null : mView.get();
+            return mBlur.blur(view);
+        }
+    }
+
+    private final class DrawableInvoker extends InternalInvoker<Drawable>
+    {
+        private final Drawable mDrawable;
+
+        public DrawableInvoker(Drawable source, boolean async)
+        {
+            super(source, async);
+            mDrawable = source;
+        }
+
+        @Override
+        protected Bitmap blurSource()
+        {
+            return mBlur.blur(mDrawable);
+        }
+    }
+
+    private final class BitmapInvoker extends InternalInvoker<Bitmap>
+    {
+        private final Bitmap mBitmap;
+
+        public BitmapInvoker(Bitmap source, boolean async)
+        {
+            super(source, async);
+            mBitmap = source;
+        }
+
+        @Override
+        protected Bitmap blurSource()
+        {
+            return mBlur.blur(mBitmap);
+        }
     }
 }

@@ -16,7 +16,6 @@ import com.fanwe.lib.blur.api.BlurInvoker;
 public class FBlurImageView extends ImageView implements BlurView
 {
     private BlurApi mBlurApi;
-    private boolean mAsync;
     private Drawable mDrawable;
 
     public FBlurImageView(Context context)
@@ -69,7 +68,7 @@ public class FBlurImageView extends ImageView implements BlurView
     @Override
     public void setBlurAsync(boolean async)
     {
-        mAsync = async;
+        getBlurApi().async(async);
     }
 
     @Override
@@ -103,7 +102,7 @@ public class FBlurImageView extends ImageView implements BlurView
         if (drawable instanceof BlurredBitmapDrawable)
             throw new IllegalArgumentException("can not blur BlurredBitmapDrawable");
 
-        getBlurApi().blur(drawable).async(mAsync).into(new BlurInvoker.Target()
+        getBlurApi().blur(drawable).into(new BlurInvoker.Target()
         {
             @Override
             public void onBlurred(Bitmap bitmap)

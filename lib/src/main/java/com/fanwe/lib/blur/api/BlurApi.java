@@ -52,6 +52,14 @@ public interface BlurApi
     BlurApi destroyAfterBlur(boolean destroyAfterBlur);
 
     /**
+     * 是否在子线程执行模糊操作
+     *
+     * @param async
+     * @return
+     */
+    BlurApi async(boolean async);
+
+    /**
      * 返回config对象，可以查询设置的参数
      *
      * @return

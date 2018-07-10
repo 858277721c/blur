@@ -32,15 +32,9 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
 
     private Blur getBlur()
     {
-        if (needSynchronized())
-        {
-            if (mSynchronizedBlur == null)
-                mSynchronizedBlur = BlurFactory.synchronizedBlur(mBlur);
-            return mSynchronizedBlur;
-        } else
-        {
-            return mBlur;
-        }
+        if (mSynchronizedBlur == null)
+            mSynchronizedBlur = BlurFactory.synchronizedBlur(mBlur);
+        return mSynchronizedBlur;
     }
 
     @Override

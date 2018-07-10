@@ -3,6 +3,7 @@ package com.fanwe.lib.blur.view;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -16,6 +17,7 @@ public class FBlurImageView extends ImageView implements BlurView
 {
     private BlurApi mBlurApi;
     private boolean mAsync;
+    private Drawable mDrawable;
 
     public FBlurImageView(Context context)
     {
@@ -70,29 +72,30 @@ public class FBlurImageView extends ImageView implements BlurView
     @Override
     public void blur()
     {
-
+        setImageDrawable(mDrawable);
     }
 
     @Override
-    public void setImageResource(int resId)
+    protected void onDraw(Canvas canvas)
     {
-        final Drawable drawable = getResources().getDrawable(resId);
-        setImageDrawable(drawable);
-    }
+        final Drawable drawable = getDrawable();
+        if (drawable == null)
+        {
+            super.onDraw(canvas);
+            return;
+        }
 
-    @Override
-    public void setImageDrawable(Drawable drawable)
-    {
         if (drawable instanceof BlurredBitmapDrawable)
-            super.setImageDrawable(drawable);
+            super.onDraw(canvas);
         else
+        {
+            mDrawable = drawable;
             blurDrawable(drawable);
+        }
     }
 
     private void blurDrawable(Drawable drawable)
     {
-        if (drawable == null)
-            return;
         if (drawable instanceof BlurredBitmapDrawable)
             throw new IllegalArgumentException("can not blur BlurredBitmapDrawable");
 

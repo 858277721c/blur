@@ -78,6 +78,14 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     public BlurApi destroy()
     {
         mBlur.destroy();
+        if (mMapInvoker != null)
+        {
+            for (Map.Entry<BlurInvoker, Future> item : mMapInvoker.entrySet())
+            {
+                item.getValue().cancel(true);
+            }
+            mMapInvoker.clear();
+        }
         return this;
     }
 

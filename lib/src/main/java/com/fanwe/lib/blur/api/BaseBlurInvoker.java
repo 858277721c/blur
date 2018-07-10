@@ -92,11 +92,11 @@ abstract class BaseBlurInvoker<S> implements BlurInvoker
     {
         if (mFuture != null)
         {
+            Log.i(getClass().getName(), this + " try cancelled");
             if (mFuture.cancel(true))
             {
                 Log.e(getClass().getName(), this + " cancelled");
             }
-            mFuture = null;
         }
         return this;
     }

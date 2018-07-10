@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import com.fanwe.lib.blur.api.BlurApi;
 import com.fanwe.lib.blur.api.BlurApiFactory;
 import com.fanwe.lib.blur.api.BlurInvoker;
-import com.fanwe.lib.blur.api.target.BlurTarget;
 
 public class FBlurImageView extends ImageView implements BlurView
 {
@@ -98,10 +97,10 @@ public class FBlurImageView extends ImageView implements BlurView
         if (mBlurInvoker != null)
             mBlurInvoker.cancelAsync();
 
-        mBlurInvoker = mBlurApi.blur(drawable).async(mAsync).into(new BlurTarget()
+        mBlurInvoker = mBlurApi.blur(drawable).async(mAsync).into(new BlurInvoker.Target()
         {
             @Override
-            public void onBlur(Bitmap bitmap)
+            public void onBlurred(Bitmap bitmap)
             {
                 if (bitmap != null)
                     setImageDrawable(new BlurredBitmapDrawable(getResources(), bitmap));

@@ -1,9 +1,8 @@
 package com.fanwe.lib.blur.api;
 
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
-
-import com.fanwe.lib.blur.api.target.BlurTarget;
 
 public interface BlurInvoker
 {
@@ -39,7 +38,7 @@ public interface BlurInvoker
      * @param target
      * @return
      */
-    BlurInvoker into(BlurTarget target);
+    BlurInvoker into(Target target);
 
     /**
      * 取消异步请求
@@ -47,4 +46,14 @@ public interface BlurInvoker
      * @return
      */
     BlurInvoker cancelAsync();
+
+    interface Target
+    {
+        /**
+         * 模糊回调
+         *
+         * @param bitmap 模糊后的Bitamp，可能为null
+         */
+        void onBlurred(Bitmap bitmap);
+    }
 }

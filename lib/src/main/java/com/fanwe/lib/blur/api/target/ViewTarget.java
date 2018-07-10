@@ -3,9 +3,11 @@ package com.fanwe.lib.blur.api.target;
 import android.graphics.Bitmap;
 import android.view.View;
 
+import com.fanwe.lib.blur.api.BlurInvoker;
+
 import java.lang.ref.WeakReference;
 
-public abstract class ViewTarget<T extends View> implements BlurTarget
+public abstract class ViewTarget<T extends View> implements BlurInvoker.Target
 {
     private final WeakReference<T> mView;
 
@@ -20,10 +22,10 @@ public abstract class ViewTarget<T extends View> implements BlurTarget
     }
 
     @Override
-    public final void onBlur(Bitmap bitmap)
+    public final void onBlurred(Bitmap bitmap)
     {
-        onBlur(bitmap, getView());
+        onBlurred(bitmap, getView());
     }
 
-    public abstract void onBlur(Bitmap bitmap, T view);
+    public abstract void onBlurred(Bitmap bitmap, T view);
 }

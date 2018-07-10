@@ -4,7 +4,9 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 
-public abstract class MainThreadTarget implements BlurTarget
+import com.fanwe.lib.blur.api.BlurInvoker;
+
+public abstract class MainThreadTarget implements BlurInvoker.Target
 {
     private Handler mHandler;
 
@@ -16,11 +18,11 @@ public abstract class MainThreadTarget implements BlurTarget
     }
 
     @Override
-    public final void onBlur(final Bitmap bitmap)
+    public final void onBlurred(final Bitmap bitmap)
     {
         if (Looper.myLooper() == Looper.getMainLooper())
         {
-            onBlurMainThread(bitmap);
+            onBlurredMainThread(bitmap);
         } else
         {
             getHandler().post(new Runnable()
@@ -28,11 +30,11 @@ public abstract class MainThreadTarget implements BlurTarget
                 @Override
                 public void run()
                 {
-                    onBlurMainThread(bitmap);
+                    onBlurredMainThread(bitmap);
                 }
             });
         }
     }
 
-    public abstract void onBlurMainThread(Bitmap bitmap);
+    public abstract void onBlurredMainThread(Bitmap bitmap);
 }

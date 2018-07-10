@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.fanwe.lib.blur.api.target.BackgroundTarget;
-import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.api.target.ImageViewTarget;
 import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
 import com.fanwe.lib.blur.core.Blur;
@@ -65,7 +64,7 @@ abstract class BaseBlurInvoker<S> implements BlurInvoker
     }
 
     @Override
-    public BlurInvoker into(BlurTarget target)
+    public BlurInvoker into(Target target)
     {
         if (target != null)
         {
@@ -76,7 +75,7 @@ abstract class BaseBlurInvoker<S> implements BlurInvoker
                 mFuture = EXECUTOR_SERVICE.submit(new BlurTask(target));
             } else
             {
-                target.onBlur(blurSource());
+                target.onBlurred(blurSource());
             }
         }
         return this;
@@ -95,9 +94,9 @@ abstract class BaseBlurInvoker<S> implements BlurInvoker
 
     private final class BlurTask implements Runnable
     {
-        private final BlurTarget mTarget;
+        private final Target mTarget;
 
-        public BlurTask(BlurTarget target)
+        public BlurTask(Target target)
         {
             if (target == null)
                 throw new NullPointerException("target is null");
@@ -107,7 +106,7 @@ abstract class BaseBlurInvoker<S> implements BlurInvoker
         @Override
         public void run()
         {
-            mTarget.onBlur(blurSource());
+            mTarget.onBlurred(blurSource());
         }
     }
 }

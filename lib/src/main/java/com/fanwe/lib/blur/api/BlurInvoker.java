@@ -41,7 +41,7 @@ public interface BlurInvoker
     BlurInvoker into(Target target);
 
     /**
-     * 取消异步请求
+     * 取消子线程任务
      *
      * @return
      */

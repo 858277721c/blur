@@ -9,7 +9,7 @@ public interface BlurInvoker
     /**
      * 设置是否在子线程执行
      * <br>
-     * 如果在子线程执行的话，每次发起新的任务都会先取消旧的任务
+     * 每次执行模糊操作{@link #into(ImageView)},{@link #intoBackground(View)},{@link #into(Target)}，都会先取消旧的子线程任务
      *
      * @param async
      * @return

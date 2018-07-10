@@ -51,12 +51,12 @@ public class FBlurView extends View implements BlurView
     /**
      * 设置要模糊的view
      *
-     * @param blurTarget
+     * @param target
      */
-    public final void setBlurTarget(View blurTarget)
+    public final void setBlurTarget(View target)
     {
         final View old = getBlurTarget();
-        if (old != blurTarget)
+        if (old != target)
         {
             if (old != null)
             {
@@ -65,11 +65,11 @@ public class FBlurView extends View implements BlurView
                     observer.removeOnPreDrawListener(mOnPreDrawListener);
             }
 
-            mBlurTarget = blurTarget == null ? null : new WeakReference<>(blurTarget);
+            mBlurTarget = target == null ? null : new WeakReference<>(target);
 
-            if (blurTarget != null)
+            if (target != null)
             {
-                final ViewTreeObserver observer = blurTarget.getViewTreeObserver();
+                final ViewTreeObserver observer = target.getViewTreeObserver();
                 if (observer.isAlive())
                     observer.addOnPreDrawListener(mOnPreDrawListener);
 

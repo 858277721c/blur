@@ -18,14 +18,17 @@ abstract class BaseBlurInvoker<S> implements BlurInvoker
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
 
     private final Blur mBlur;
+    private final BlurApi.Config mConfig;
+
     private boolean mAsync;
     private Future mFuture;
 
-    BaseBlurInvoker(S source, Blur blur)
+    BaseBlurInvoker(S source, Blur blur, BlurApi.Config config)
     {
-        if (blur == null)
-            throw new NullPointerException("blur must not be null");
+        if (blur == null || config == null)
+            throw new NullPointerException("params must not be null");
         mBlur = blur;
+        mConfig = config;
     }
 
     protected final Blur getBlur()
@@ -107,7 +110,14 @@ abstract class BaseBlurInvoker<S> implements BlurInvoker
         @Override
         public void run()
         {
-            mTarget.onBlurred(blurSource());
+            try
+            {
+                mTarget.onBlurred(blurSource());
+            } finally
+            {
+                if (mConfig.isDestroyAfterBlur())
+                    mBlur.destroy();
+            }
         }
     }
 }

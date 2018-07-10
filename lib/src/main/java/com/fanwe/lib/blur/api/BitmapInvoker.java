@@ -8,9 +8,9 @@ class BitmapInvoker extends BaseBlurInvoker<Bitmap>
 {
     private final Bitmap mBitmap;
 
-    BitmapInvoker(Bitmap source, Blur blur)
+    BitmapInvoker(Bitmap source, Blur blur, BlurApi.Config config)
     {
-        super(source, blur);
+        super(source, blur, config);
         mBitmap = source;
     }
 

@@ -11,9 +11,9 @@ class ViewInvoker extends BaseBlurInvoker<View>
 {
     private final WeakReference<View> mView;
 
-    ViewInvoker(View source, Blur blur)
+    ViewInvoker(View source, Blur blur, BlurApi.Config config)
     {
-        super(source, blur);
+        super(source, blur, config);
         mView = new WeakReference<>(source);
     }
 

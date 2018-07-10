@@ -63,6 +63,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     @Override
     public BlurApi destroy()
     {
+        cancelAsync();
         mBlur.destroy();
         return this;
     }
@@ -70,7 +71,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     @Override
     public BlurInvoker blur(View view)
     {
-        final BlurInvoker invoker = new ViewInvoker(view, mBlur);
+        final BlurInvoker invoker = new ViewInvoker(view, mBlur, config());
         initBlurInvoker(invoker);
         return invoker;
     }
@@ -78,7 +79,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     @Override
     public BlurInvoker blur(Drawable drawable)
     {
-        final BlurInvoker invoker = new DrawableInvoker(drawable, mBlur);
+        final BlurInvoker invoker = new DrawableInvoker(drawable, mBlur, config());
         initBlurInvoker(invoker);
         return invoker;
     }
@@ -86,17 +87,21 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     @Override
     public BlurInvoker blur(Bitmap bitmap)
     {
-        final BlurInvoker invoker = new BitmapInvoker(bitmap, mBlur);
+        final BlurInvoker invoker = new BitmapInvoker(bitmap, mBlur, config());
         initBlurInvoker(invoker);
         return invoker;
     }
 
     private void initBlurInvoker(BlurInvoker blurInvoker)
     {
+        cancelAsync();
+        mBlurInvoker = blurInvoker;
+    }
+
+    private void cancelAsync()
+    {
         if (mBlurInvoker != null)
             mBlurInvoker.cancelAsync();
-
-        mBlurInvoker = blurInvoker;
     }
 
     @Override

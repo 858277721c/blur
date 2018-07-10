@@ -9,9 +9,9 @@ class DrawableInvoker extends BaseBlurInvoker<Drawable>
 {
     private final Drawable mDrawable;
 
-    DrawableInvoker(Drawable source, Blur blur)
+    DrawableInvoker(Drawable source, Blur blur, BlurApi.Config config)
     {
-        super(source, blur);
+        super(source, blur, config);
         mDrawable = source;
     }
 

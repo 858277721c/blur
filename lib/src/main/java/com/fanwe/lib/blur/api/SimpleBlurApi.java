@@ -8,7 +8,7 @@ import android.view.View;
 import com.fanwe.lib.blur.core.Blur;
 import com.fanwe.lib.blur.core.BlurFactory;
 
-class SimpleBlurApi implements BlurApi, BlurApiConfig
+class SimpleBlurApi implements BlurApi, BlurApi.Config
 {
     private final Blur mBlur;
     private BlurInvoker mBlurInvoker;
@@ -55,7 +55,7 @@ class SimpleBlurApi implements BlurApi, BlurApiConfig
     }
 
     @Override
-    public BlurApiConfig config()
+    public Config config()
     {
         return this;
     }

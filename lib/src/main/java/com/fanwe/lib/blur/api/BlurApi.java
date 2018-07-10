@@ -53,7 +53,7 @@ public interface BlurApi
      *
      * @return
      */
-    BlurApiConfig config();
+    Config config();
 
     /**
      * {@link Blur#destroy()}
@@ -85,4 +85,29 @@ public interface BlurApi
      * @return
      */
     BlurInvoker blur(Bitmap bitmap);
+
+
+    interface Config
+    {
+        /**
+         * {@link Blur#getRadius()}
+         *
+         * @return
+         */
+        int getRadius();
+
+        /**
+         * {@link Blur#getDownSampling()}
+         *
+         * @return
+         */
+        int getDownSampling();
+
+        /**
+         * {@link Blur#getColor()}
+         *
+         * @return
+         */
+        int getColor();
+    }
 }

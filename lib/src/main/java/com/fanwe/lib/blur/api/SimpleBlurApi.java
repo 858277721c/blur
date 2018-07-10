@@ -80,6 +80,15 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     @Override
     public BlurApi destroy()
     {
+        if (mMapInvoker != null)
+        {
+            for (Map.Entry<BlurInvoker, Future> item : mMapInvoker.entrySet())
+            {
+                item.getValue().cancel(true);
+            }
+            mMapInvoker.clear();
+        }
+
         if (needSynchronized())
         {
             synchronized (mBlur)
@@ -89,15 +98,6 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         } else
         {
             mBlur.destroy();
-        }
-
-        if (mMapInvoker != null)
-        {
-            for (Map.Entry<BlurInvoker, Future> item : mMapInvoker.entrySet())
-            {
-                item.getValue().cancel(true);
-            }
-            mMapInvoker.clear();
         }
         return this;
     }

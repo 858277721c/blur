@@ -7,11 +7,11 @@ import com.fanwe.lib.blur.api.target.BackgroundTarget;
 import com.fanwe.lib.blur.api.target.ImageViewTarget;
 import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
 
-abstract class BaseInvoker<S> implements BlurInvoker
+abstract class BaseInvoker implements BlurInvoker
 {
     private final boolean mAsync;
 
-    public BaseInvoker(S source, boolean async)
+    public BaseInvoker(boolean async)
     {
         mAsync = async;
     }

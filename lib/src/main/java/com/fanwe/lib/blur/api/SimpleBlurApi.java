@@ -140,11 +140,11 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
     private Map<BlurInvoker, Future> mMapInvoker;
 
-    private abstract class InternalInvoker<S> extends BaseInvoker<S>
+    private abstract class SourceInvoker<S> extends BaseInvoker
     {
-        public InternalInvoker(S source, boolean async)
+        public SourceInvoker(S source, boolean async)
         {
-            super(source, async);
+            super(async);
         }
 
         @Override
@@ -175,7 +175,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
                             target.onBlurred(blurSource());
                         } finally
                         {
-                            mMapInvoker.remove(InternalInvoker.this);
+                            mMapInvoker.remove(SourceInvoker.this);
                             if (mBlur.isDestroyAfterBlur())
                                 mBlur.destroy();
                         }
@@ -208,7 +208,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         protected abstract Bitmap blurSourceImplemention();
     }
 
-    private final class ViewInvoker extends InternalInvoker<View>
+    private final class ViewInvoker extends SourceInvoker<View>
     {
         private final WeakReference<View> mView;
 
@@ -226,7 +226,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         }
     }
 
-    private final class DrawableInvoker extends InternalInvoker<Drawable>
+    private final class DrawableInvoker extends SourceInvoker<Drawable>
     {
         private final Drawable mDrawable;
 
@@ -243,7 +243,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         }
     }
 
-    private final class BitmapInvoker extends InternalInvoker<Bitmap>
+    private final class BitmapInvoker extends SourceInvoker<Bitmap>
     {
         private final Bitmap mBitmap;
 

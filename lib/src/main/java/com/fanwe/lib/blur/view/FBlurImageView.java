@@ -86,8 +86,9 @@ public class FBlurImageView extends ImageView implements BlurView
         }
 
         if (drawable instanceof BlurredBitmapDrawable)
+        {
             super.onDraw(canvas);
-        else
+        } else
         {
             mDrawable = drawable;
             blurDrawable(drawable);

@@ -36,10 +36,10 @@ public class FBlurView extends View implements BlurView
         mBlurApi.keepDownSamplingSize(true);
 
         final BlurViewAttrs viewAttrs = BlurViewAttrs.parse(context, attrs);
-        setBlurRadius(viewAttrs.getRadius());
-        setBlurDownSampling(viewAttrs.getDownSampling());
-        setBlurColor(viewAttrs.getColor());
-        setBlurAsync(viewAttrs.isAsync());
+        setBlurRadius(viewAttrs.getBlurRadius());
+        setBlurDownSampling(viewAttrs.getBlurDownSampling());
+        setBlurColor(viewAttrs.getBlurColor());
+        setBlurAsync(viewAttrs.isBlurAsync());
     }
 
     /**

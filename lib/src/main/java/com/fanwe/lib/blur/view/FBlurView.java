@@ -156,25 +156,25 @@ public class FBlurView extends View implements BlurView
         if (target == null)
             return;
 
-        if (mBitmapBlurred != null)
+        if (mBitmapBlurred == null || mBitmapBlurred.isRecycled())
+            return;
+
+        final int scale = getBlurApi().config().getDownSampling();
+
+        canvas.save();
+        canvas.translate(target.getX() - getX(), target.getY() - getY());
+        canvas.scale(scale, scale);
+        canvas.drawBitmap(mBitmapBlurred, 0, 0, null);
+        canvas.restore();
+
+        post(new Runnable()
         {
-            final int scale = getBlurApi().config().getDownSampling();
-
-            canvas.save();
-            canvas.translate(target.getX() - getX(), target.getY() - getY());
-            canvas.scale(scale, scale);
-            canvas.drawBitmap(mBitmapBlurred, 0, 0, null);
-            canvas.restore();
-
-            post(new Runnable()
+            @Override
+            public void run()
             {
-                @Override
-                public void run()
-                {
-                    mIsDrawingBlur = false;
-                }
-            });
-        }
+                mIsDrawingBlur = false;
+            }
+        });
     }
 
     @Override

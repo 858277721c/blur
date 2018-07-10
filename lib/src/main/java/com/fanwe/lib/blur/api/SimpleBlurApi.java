@@ -29,38 +29,43 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         mBlur.setDestroyAfterBlur(true);
     }
 
+    private Blur getBlur()
+    {
+        return mBlur;
+    }
+
     @Override
     public BlurApi radius(int radius)
     {
-        mBlur.setRadius(radius);
+        getBlur().setRadius(radius);
         return this;
     }
 
     @Override
     public BlurApi downSampling(int downSampling)
     {
-        mBlur.setDownSampling(downSampling);
+        getBlur().setDownSampling(downSampling);
         return this;
     }
 
     @Override
     public BlurApi color(int color)
     {
-        mBlur.setColor(color);
+        getBlur().setColor(color);
         return this;
     }
 
     @Override
     public BlurApi keepDownSamplingSize(boolean keepDownSamplingSize)
     {
-        mBlur.setKeepDownSamplingSize(keepDownSamplingSize);
+        getBlur().setKeepDownSamplingSize(keepDownSamplingSize);
         return this;
     }
 
     @Override
     public BlurApi destroyAfterBlur(boolean destroyAfterBlur)
     {
-        mBlur.setDestroyAfterBlur(destroyAfterBlur);
+        getBlur().setDestroyAfterBlur(destroyAfterBlur);
         return this;
     }
 
@@ -89,16 +94,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
             mMapInvoker.clear();
         }
 
-        if (needSynchronized())
-        {
-            synchronized (mBlur)
-            {
-                mBlur.destroy();
-            }
-        } else
-        {
-            mBlur.destroy();
-        }
+        getBlur().destroy();
         return this;
     }
 
@@ -123,31 +119,31 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     @Override
     public int getRadius()
     {
-        return mBlur.getRadius();
+        return getBlur().getRadius();
     }
 
     @Override
     public int getDownSampling()
     {
-        return mBlur.getDownSampling();
+        return getBlur().getDownSampling();
     }
 
     @Override
     public int getColor()
     {
-        return mBlur.getColor();
+        return getBlur().getColor();
     }
 
     @Override
     public boolean isKeepDownSamplingSize()
     {
-        return mBlur.isKeepDownSamplingSize();
+        return getBlur().isKeepDownSamplingSize();
     }
 
     @Override
     public boolean isDestroyAfterBlur()
     {
-        return mBlur.isDestroyAfterBlur();
+        return getBlur().isDestroyAfterBlur();
     }
 
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
@@ -204,16 +200,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
 
         private Bitmap blurSource()
         {
-            if (needSynchronized())
-            {
-                synchronized (mBlur)
-                {
-                    return blurSourceImplemention();
-                }
-            } else
-            {
-                return blurSourceImplemention();
-            }
+            return blurSourceImplemention();
         }
 
         protected abstract Bitmap blurSourceImplemention();
@@ -234,23 +221,20 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         @Override
         protected void done()
         {
-            synchronized (mBlur)
+            try
             {
-                try
-                {
-                    mTarget.onBlurred(get());
-                } catch (InterruptedException e)
-                {
-                    e.printStackTrace();
-                } catch (ExecutionException e)
-                {
-                    e.printStackTrace();
-                } finally
-                {
-                    mMapInvoker.remove(mInvoker);
-                    if (mBlur.isDestroyAfterBlur())
-                        mBlur.destroy();
-                }
+                mTarget.onBlurred(get());
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            } catch (ExecutionException e)
+            {
+                e.printStackTrace();
+            } finally
+            {
+                mMapInvoker.remove(mInvoker);
+                if (getBlur().isDestroyAfterBlur())
+                    getBlur().destroy();
             }
         }
     }
@@ -269,7 +253,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         protected Bitmap blurSourceImplemention()
         {
             final View view = mView == null ? null : mView.get();
-            return mBlur.blur(view);
+            return getBlur().blur(view);
         }
     }
 
@@ -286,7 +270,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         @Override
         protected Bitmap blurSourceImplemention()
         {
-            return mBlur.blur(mDrawable);
+            return getBlur().blur(mDrawable);
         }
     }
 
@@ -303,7 +287,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         @Override
         protected Bitmap blurSourceImplemention()
         {
-            return mBlur.blur(mBitmap);
+            return getBlur().blur(mBitmap);
         }
     }
 }

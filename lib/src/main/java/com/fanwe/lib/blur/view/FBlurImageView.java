@@ -17,6 +17,7 @@ public class FBlurImageView extends ImageView implements BlurView
 {
     private BlurApi mBlurApi;
     private Drawable mDrawable;
+    private boolean mIsAttachedToWindow;
 
     public FBlurImageView(Context context)
     {
@@ -101,6 +102,8 @@ public class FBlurImageView extends ImageView implements BlurView
     {
         if (drawable instanceof BlurredBitmapDrawable)
             throw new IllegalArgumentException("can not blur BlurredBitmapDrawable");
+        if (!mIsAttachedToWindow)
+            throw new RuntimeException("can not blur when view is detached");
 
         getBlurApi().blur(drawable).into(new BlurTarget()
         {
@@ -116,9 +119,17 @@ public class FBlurImageView extends ImageView implements BlurView
     }
 
     @Override
+    protected void onAttachedToWindow()
+    {
+        super.onAttachedToWindow();
+        mIsAttachedToWindow = true;
+    }
+
+    @Override
     protected void onDetachedFromWindow()
     {
         super.onDetachedFromWindow();
+        mIsAttachedToWindow = false;
         if (mBlurApi != null)
             mBlurApi.destroy();
     }

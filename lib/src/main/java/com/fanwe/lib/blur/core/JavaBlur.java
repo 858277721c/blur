@@ -3,9 +3,9 @@ package com.fanwe.lib.blur.core;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-class FastBlur extends BaseBlur
+class JavaBlur extends BaseBlur
 {
-    public FastBlur(Context context)
+    public JavaBlur(Context context)
     {
         super(context);
     }

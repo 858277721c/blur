@@ -23,14 +23,14 @@ class CompatBlur implements Blur
             } catch (Exception e)
             {
                 blur.destroy();
-                blur = new FastBlur(context);
+                blur = new JavaBlur(context);
             } finally
             {
                 mBlur = blur;
             }
         } else
         {
-            mBlur = new FastBlur(context);
+            mBlur = new JavaBlur(context);
         }
     }
 

@@ -4,12 +4,13 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 
+/**
+ * 注意：每次执行模糊操作{@link #into(ImageView)},{@link #intoBackground(View)},{@link #into(Target)}之前，都会先调用{@link #cancelAsync()}方法尝试取消已经发起的子线程任务
+ */
 public interface BlurInvoker
 {
     /**
      * 设置是否在子线程执行
-     * <br>
-     * 每次执行模糊操作{@link #into(ImageView)},{@link #intoBackground(View)},{@link #into(Target)}，都会先取消旧的子线程任务
      *
      * @param async
      * @return

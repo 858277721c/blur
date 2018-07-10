@@ -98,8 +98,10 @@ public class FBlurImageView extends ImageView implements BlurView
             @Override
             public void onBlurred(Bitmap bitmap)
             {
-                if (bitmap != null)
-                    setImageDrawable(new BlurredBitmapDrawable(getResources(), bitmap));
+                if (bitmap == null)
+                    return;
+
+                setImageDrawable(new BlurredBitmapDrawable(getResources(), bitmap));
             }
         });
     }

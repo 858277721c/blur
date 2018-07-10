@@ -152,7 +152,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         {
             if (mMapInvoker != null)
             {
-                final Future future = mMapInvoker.get(this);
+                final Future future = mMapInvoker.remove(this);
                 if (future != null)
                     future.cancel(true);
             }

@@ -170,17 +170,14 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
                     @Override
                     public void run()
                     {
-                        synchronized (mBlur)
+                        try
                         {
-                            try
-                            {
-                                target.onBlurred(blurSource());
-                            } finally
-                            {
-                                mMapInvoker.remove(InternalInvoker.this);
-                                if (mBlur.isDestroyAfterBlur())
-                                    mBlur.destroy();
-                            }
+                            target.onBlurred(blurSource());
+                        } finally
+                        {
+                            mMapInvoker.remove(InternalInvoker.this);
+                            if (mBlur.isDestroyAfterBlur())
+                                mBlur.destroy();
                         }
                     }
                 });

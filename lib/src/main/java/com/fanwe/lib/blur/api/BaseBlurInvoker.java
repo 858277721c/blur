@@ -1,6 +1,7 @@
 package com.fanwe.lib.blur.api;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -77,6 +78,7 @@ abstract class BaseBlurInvoker<S> implements BlurInvoker
             if (mAsync)
             {
                 mFuture = EXECUTOR_SERVICE.submit(new BlurTask(target));
+                Log.i(getClass().getName(), this + " submit");
             } else
             {
                 target.onBlurred(blurSource());
@@ -90,7 +92,10 @@ abstract class BaseBlurInvoker<S> implements BlurInvoker
     {
         if (mFuture != null)
         {
-            mFuture.cancel(true);
+            if (mFuture.cancel(true))
+            {
+                Log.e(getClass().getName(), this + " cancelled");
+            }
             mFuture = null;
         }
         return this;

@@ -9,7 +9,7 @@ import android.view.ViewTreeObserver;
 
 import com.fanwe.lib.blur.api.BlurApi;
 import com.fanwe.lib.blur.api.BlurApiFactory;
-import com.fanwe.lib.blur.api.BlurInvoker;
+import com.fanwe.lib.blur.api.BlurTarget;
 
 import java.lang.ref.WeakReference;
 
@@ -131,7 +131,7 @@ public class FBlurView extends View implements BlurView
         getBlurApi().blur(getBlurTarget()).into(mInvokeTarget);
     }
 
-    private final BlurInvoker.Target mInvokeTarget = new BlurInvoker.Target()
+    private final BlurTarget mInvokeTarget = new BlurTarget()
     {
         @Override
         public void onBlurred(Bitmap bitmap)

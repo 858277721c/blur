@@ -33,7 +33,7 @@ abstract class BaseInvoker implements BlurInvoker
     }
 
     @Override
-    public final BlurInvoker into(Target target)
+    public final BlurInvoker into(BlurTarget target)
     {
         if (target != null)
         {
@@ -43,5 +43,5 @@ abstract class BaseInvoker implements BlurInvoker
         return this;
     }
 
-    protected abstract void notifyTarget(Target target, boolean async);
+    protected abstract void notifyTarget(BlurTarget target, boolean async);
 }

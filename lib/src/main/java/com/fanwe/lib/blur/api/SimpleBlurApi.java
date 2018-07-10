@@ -163,7 +163,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         }
 
         @Override
-        protected final void notifyTarget(Target target, boolean async)
+        protected final void notifyTarget(BlurTarget target, boolean async)
         {
             cancelAsync();
             if (async)
@@ -206,9 +206,9 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     private final class BlurTask extends FutureTask<Bitmap>
     {
         private final BlurInvoker mInvoker;
-        private final BlurInvoker.Target mTarget;
+        private final BlurTarget mTarget;
 
-        public BlurTask(Callable<Bitmap> callable, BlurInvoker invoker, BlurInvoker.Target target)
+        public BlurTask(Callable<Bitmap> callable, BlurInvoker invoker, BlurTarget target)
         {
             super(callable);
             mInvoker = invoker;

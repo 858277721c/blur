@@ -7,6 +7,7 @@
     <com.fanwe.lib.blur.view.FBlurLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:blurAsync="false"
         app:blurColor="#99FFFFFF"
         app:blurDownSampling="8"
         app:blurRadius="10">
@@ -15,6 +16,7 @@
             android:id="@+id/imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:onClick="onClick"
             android:src="@drawable/fj5" />
 

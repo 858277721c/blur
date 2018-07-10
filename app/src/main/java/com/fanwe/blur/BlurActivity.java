@@ -7,13 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.fanwe.lib.blur.api.BlurApi;
 import com.fanwe.lib.blur.api.BlurApiFactory;
-import com.fanwe.lib.blur.api.BlurInvoker;
 
 public class BlurActivity extends AppCompatActivity implements View.OnClickListener
 {
     private ImageView mImageView;
-    private BlurInvoker mBlurInvoker;
+    private BlurApi mBlurApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,7 +29,8 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
         // 随机加载一张图片
         final Bitmap bitmap = Utils.randomBitmap(this);
 
-        mBlurInvoker = BlurApiFactory.create(this)
+        mBlurApi = BlurApiFactory.create(this);
+        mBlurApi
                 // 设置模糊半径
                 .radius(15)
                 // 设置压缩倍数
@@ -47,8 +48,10 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
     {
         super.onDestroy();
 
-        // 如果有未完成的子线程任务，取消任务
-        if (mBlurInvoker != null)
-            mBlurInvoker.cancelAsync();
+        /**
+         * 释放资源，并取消所有的子线程任务
+         */
+        if (mBlurApi != null)
+            mBlurApi.destroy();
     }
 }

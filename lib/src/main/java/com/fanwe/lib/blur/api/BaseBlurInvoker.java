@@ -110,13 +110,16 @@ abstract class BaseBlurInvoker<S> implements BlurInvoker
         @Override
         public void run()
         {
-            try
+            synchronized (mBlur)
             {
-                mTarget.onBlurred(blurSource());
-            } finally
-            {
-                if (mConfig.isDestroyAfterBlur())
-                    mBlur.destroy();
+                try
+                {
+                    mTarget.onBlurred(blurSource());
+                } finally
+                {
+                    if (mConfig.isDestroyAfterBlur())
+                        mBlur.destroy();
+                }
             }
         }
     }

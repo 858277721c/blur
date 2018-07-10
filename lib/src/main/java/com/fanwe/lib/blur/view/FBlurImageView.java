@@ -33,6 +33,9 @@ public class FBlurImageView extends ImageView implements BlurView
         setBlurDownSampling(viewAttrs.getBlurDownSampling());
         setBlurColor(viewAttrs.getBlurColor());
         setBlurAsync(viewAttrs.isBlurAsync());
+
+        if (getBackground() == null)
+            setBackgroundColor(viewAttrs.getBlurColor());
     }
 
     private BlurApi getBlurApi()

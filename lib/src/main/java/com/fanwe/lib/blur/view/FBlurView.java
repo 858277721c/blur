@@ -20,6 +20,7 @@ public class FBlurView extends View implements BlurView
 
     private Bitmap mBitmapBlurred;
     private boolean mIsDrawingBlur;
+    private boolean mIsAttachedToWindow;
 
     public FBlurView(Context context)
     {
@@ -128,7 +129,8 @@ public class FBlurView extends View implements BlurView
         if (mIsDrawingBlur)
             return;
 
-        getBlurApi().blur(getBlurTarget()).into(mInvokeTarget);
+        if (mIsAttachedToWindow)
+            getBlurApi().blur(getBlurTarget()).into(mInvokeTarget);
     }
 
     private final BlurTarget mInvokeTarget = new BlurTarget()
@@ -176,9 +178,17 @@ public class FBlurView extends View implements BlurView
     }
 
     @Override
+    protected void onAttachedToWindow()
+    {
+        super.onAttachedToWindow();
+        mIsAttachedToWindow = true;
+    }
+
+    @Override
     protected void onDetachedFromWindow()
     {
         super.onDetachedFromWindow();
+        mIsAttachedToWindow = false;
         if (mBlurApi != null)
             mBlurApi.destroy();
     }

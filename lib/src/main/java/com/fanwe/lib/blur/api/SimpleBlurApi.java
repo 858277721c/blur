@@ -168,7 +168,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
         }
 
         @Override
-        public final BlurInvoker cancelAsync()
+        public final void cancelAsync()
         {
             if (mMapInvoker != null)
             {
@@ -176,7 +176,6 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
                 if (future != null)
                     future.cancel(true);
             }
-            return this;
         }
 
         @Override

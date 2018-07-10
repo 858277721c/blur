@@ -31,8 +31,6 @@ public interface BlurInvoker
 
     /**
      * 取消子线程任务
-     *
-     * @return
      */
-    BlurInvoker cancelAsync();
+    void cancelAsync();
 }

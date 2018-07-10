@@ -12,4 +12,9 @@ public final class BlurFactory
     {
         return new CompatBlur(context);
     }
+
+    public static Blur synchronizedBlur(Blur blur)
+    {
+        return new SynchronizedBlur(blur);
+    }
 }

@@ -119,10 +119,8 @@ abstract class BaseBlur implements Blur
                 return false;
 
             final Bitmap.Config config = Bitmap.Config.ARGB_8888;
-            mBitmapOutput = Bitmap.createBitmap(scaledWidth, scaledHeight, config);
 
-            if (mBitmapInput != null)
-                mBitmapInput.recycle();
+            mBitmapOutput = Bitmap.createBitmap(scaledWidth, scaledHeight, config);
             mBitmapInput = Bitmap.createBitmap(scaledWidth, scaledHeight, config);
 
             mCanvasInput = new Canvas(mBitmapInput);

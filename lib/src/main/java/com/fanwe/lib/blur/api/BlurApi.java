@@ -6,6 +6,9 @@ import android.view.View;
 
 import com.fanwe.lib.blur.core.Blur;
 
+/**
+ * 注意，每次调用{@link #blur(Bitmap)},{@link #blur(Drawable)},{@link #blur(View)}返回一个新的{@link BlurInvoker}对象之前，都会先调用旧对象的{@link BlurInvoker#cancelAsync()}方法取消异步任务
+ */
 public interface BlurApi
 {
     /**

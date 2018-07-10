@@ -77,6 +77,18 @@ class CompatBlur implements Blur
     }
 
     @Override
+    public boolean isKeepDownSamplingSize()
+    {
+        return mBlur.isKeepDownSamplingSize();
+    }
+
+    @Override
+    public boolean isDestroyAfterBlur()
+    {
+        return mBlur.isDestroyAfterBlur();
+    }
+
+    @Override
     public int getDownSampling()
     {
         return mBlur.getDownSampling();

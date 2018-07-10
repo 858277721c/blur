@@ -109,5 +109,19 @@ public interface BlurApi
          * @return
          */
         int getColor();
+
+        /**
+         * {@link Blur#isKeepDownSamplingSize()}
+         *
+         * @return
+         */
+        boolean isKeepDownSamplingSize();
+
+        /**
+         * {@link Blur#isDestroyAfterBlur()}
+         *
+         * @return
+         */
+        boolean isDestroyAfterBlur();
     }
 }

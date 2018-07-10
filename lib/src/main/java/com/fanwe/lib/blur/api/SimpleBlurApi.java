@@ -116,4 +116,16 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     {
         return mBlur.getColor();
     }
+
+    @Override
+    public boolean isKeepDownSamplingSize()
+    {
+        return mBlur.isKeepDownSamplingSize();
+    }
+
+    @Override
+    public boolean isDestroyAfterBlur()
+    {
+        return mBlur.isDestroyAfterBlur();
+    }
 }

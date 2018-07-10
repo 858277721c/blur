@@ -92,6 +92,18 @@ abstract class BaseBlur implements Blur
         return mColor;
     }
 
+    @Override
+    public boolean isKeepDownSamplingSize()
+    {
+        return mKeepDownSamplingSize;
+    }
+
+    @Override
+    public boolean isDestroyAfterBlur()
+    {
+        return mDestroyAfterBlur;
+    }
+
     private boolean init(int width, int height)
     {
         if (isConfigurationChanged(width, height))

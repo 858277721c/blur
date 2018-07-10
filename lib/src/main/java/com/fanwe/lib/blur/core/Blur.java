@@ -63,6 +63,20 @@ public interface Blur
     int getColor();
 
     /**
+     * 是否保持压缩后的宽和高
+     *
+     * @return
+     */
+    boolean isKeepDownSamplingSize();
+
+    /**
+     * 模糊操作后是否自动调用{@link #destroy()}方法
+     *
+     * @return
+     */
+    boolean isDestroyAfterBlur();
+
+    /**
      * 得到View的模糊Bitmap
      *
      * @param view

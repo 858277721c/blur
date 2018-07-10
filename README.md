@@ -50,7 +50,7 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
     {
         super.onDestroy();
         /**
-         * 释放资源，并取消所有的子线程任务
+         * 释放资源，并取消所有和该api对象关联的子线程任务
          */
         if (mBlurApi != null)
             mBlurApi.destroy();

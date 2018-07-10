@@ -11,6 +11,7 @@ import com.fanwe.lib.blur.core.BlurFactory;
 class SimpleBlurApi implements BlurApi, BlurApiConfig
 {
     private final Blur mBlur;
+    private BlurInvoker mBlurInvoker;
 
     SimpleBlurApi(Context context)
     {
@@ -69,19 +70,33 @@ class SimpleBlurApi implements BlurApi, BlurApiConfig
     @Override
     public BlurInvoker blur(View view)
     {
-        return new ViewInvoker(view, mBlur);
+        final BlurInvoker invoker = new ViewInvoker(view, mBlur);
+        initBlurInvoker(invoker);
+        return invoker;
     }
 
     @Override
     public BlurInvoker blur(Drawable drawable)
     {
-        return new DrawableInvoker(drawable, mBlur);
+        final BlurInvoker invoker = new DrawableInvoker(drawable, mBlur);
+        initBlurInvoker(invoker);
+        return invoker;
     }
 
     @Override
     public BlurInvoker blur(Bitmap bitmap)
     {
-        return new BitmapInvoker(bitmap, mBlur);
+        final BlurInvoker invoker = new BitmapInvoker(bitmap, mBlur);
+        initBlurInvoker(invoker);
+        return invoker;
+    }
+
+    private void initBlurInvoker(BlurInvoker blurInvoker)
+    {
+        if (mBlurInvoker != null)
+            mBlurInvoker.cancelAsync();
+
+        mBlurInvoker = blurInvoker;
     }
 
     @Override

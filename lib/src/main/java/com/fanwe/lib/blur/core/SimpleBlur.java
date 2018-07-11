@@ -140,6 +140,7 @@ class SimpleBlur implements Blur
             return blurInternal();
         } finally
         {
+            mConfig.recycle();
             if (mDestroyAfterBlur)
                 destroy();
         }

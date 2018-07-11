@@ -18,4 +18,6 @@ public interface BlurConfig
     Bitmap getBitmapInput();
 
     Canvas getCanvasInput();
+
+    void recycle();
 }

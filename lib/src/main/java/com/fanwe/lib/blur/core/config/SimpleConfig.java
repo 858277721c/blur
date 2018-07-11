@@ -71,4 +71,10 @@ public class SimpleConfig implements BlurConfig
     {
         return mCanvasInput;
     }
+
+    @Override
+    public void recycle()
+    {
+
+    }
 }

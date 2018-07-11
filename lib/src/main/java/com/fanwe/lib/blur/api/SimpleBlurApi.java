@@ -151,13 +151,6 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
     private Map<BlurInvoker, Future> mMapInvoker;
 
-    private boolean needSynchronized()
-    {
-        if (mMapInvoker == null || mMapInvoker.isEmpty())
-            return false;
-        return true;
-    }
-
     private abstract class SourceInvoker<S> extends BaseInvoker
     {
         public SourceInvoker(S source, boolean async)

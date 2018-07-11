@@ -2,7 +2,7 @@ package com.fanwe.lib.blur.core.source;
 
 abstract class BaseSource<T> implements BlurSource
 {
-    private T mSource;
+    private final T mSource;
 
     public BaseSource(T source)
     {

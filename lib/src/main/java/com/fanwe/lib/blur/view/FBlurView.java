@@ -74,6 +74,10 @@ public class FBlurView extends View implements BlurView
                     observer.addOnPreDrawListener(mOnPreDrawListener);
 
                 blur();
+            } else
+            {
+                if (mBlurApi != null)
+                    mBlurApi.destroy();
             }
         }
     }
@@ -120,7 +124,6 @@ public class FBlurView extends View implements BlurView
     @Override
     public void setBlurAsync(boolean async)
     {
-        getBlurApi().async(async);
     }
 
     @Override

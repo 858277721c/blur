@@ -51,14 +51,6 @@ public interface BlurApi
     BlurApi destroyAfterBlur(boolean destroyAfterBlur);
 
     /**
-     * 是否在子线程执行模糊操作
-     *
-     * @param async
-     * @return
-     */
-    BlurApi async(boolean async);
-
-    /**
      * 返回{@link Settings}对象，可以查询设置的参数
      *
      * @return
@@ -96,6 +88,45 @@ public interface BlurApi
      */
     Invoker blur(Drawable drawable);
 
+    interface Invoker
+    {
+        /**
+         * 是否在子线程执行模糊操作
+         *
+         * @param async
+         * @return
+         */
+        Invoker async(boolean async);
+
+        /**
+         * 模糊后设置给ImageView
+         *
+         * @param imageView
+         * @return
+         */
+        Invoker into(ImageView imageView);
+
+        /**
+         * 模糊后设置给view的背景
+         *
+         * @param view
+         * @return
+         */
+        Invoker intoBackground(View view);
+
+        /**
+         * 模糊后设置给某个目标
+         *
+         * @param target
+         * @return
+         */
+        Invoker into(BlurTarget target);
+
+        /**
+         * 取消子线程任务
+         */
+        void cancelAsync();
+    }
 
     interface Settings
     {
@@ -133,37 +164,5 @@ public interface BlurApi
          * @return
          */
         boolean isDestroyAfterBlur();
-    }
-
-    interface Invoker
-    {
-        /**
-         * 模糊后设置给ImageView
-         *
-         * @param imageView
-         * @return
-         */
-        Invoker into(ImageView imageView);
-
-        /**
-         * 模糊后设置给view的背景
-         *
-         * @param view
-         * @return
-         */
-        Invoker intoBackground(View view);
-
-        /**
-         * 模糊后设置给某个目标
-         *
-         * @param target
-         * @return
-         */
-        Invoker into(BlurTarget target);
-
-        /**
-         * 取消子线程任务
-         */
-        void cancelAsync();
     }
 }

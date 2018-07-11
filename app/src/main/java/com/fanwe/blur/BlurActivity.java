@@ -43,9 +43,9 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
                 .downSampling(8)
                 // 设置覆盖层颜色
                 .color(Color.parseColor("#66FFFFFF"))
+                .blur(bitmap)
                 // 设置是否在子线程执行
                 .async(true)
-                .blur(bitmap)
                 .into(mImageView);
     }
 

@@ -147,43 +147,64 @@ abstract class BaseBlur implements Blur
     @Override
     public final Bitmap blur(View view)
     {
-        if (view == null)
-            return null;
+        try
+        {
+            if (view == null)
+                return null;
 
-        if (!init(view.getWidth(), view.getHeight()))
-            return null;
+            if (!init(view.getWidth(), view.getHeight()))
+                return null;
 
-        view.draw(mCanvasInput);
-        return blurInternal();
+            view.draw(mCanvasInput);
+            return blurInternal();
+        } finally
+        {
+            if (mDestroyAfterBlur)
+                destroy();
+        }
     }
 
     @Override
     public Bitmap blur(Drawable drawable)
     {
-        if (drawable == null)
-            return null;
+        try
+        {
+            if (drawable == null)
+                return null;
 
-        if (drawable instanceof BitmapDrawable)
-            return blur(((BitmapDrawable) drawable).getBitmap());
+            if (drawable instanceof BitmapDrawable)
+                return blur(((BitmapDrawable) drawable).getBitmap());
 
-        if (!init(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()))
-            return null;
+            if (!init(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight()))
+                return null;
 
-        drawable.draw(mCanvasInput);
-        return blurInternal();
+            drawable.draw(mCanvasInput);
+            return blurInternal();
+        } finally
+        {
+            if (mDestroyAfterBlur)
+                destroy();
+        }
     }
 
     @Override
     public final Bitmap blur(final Bitmap bitmap)
     {
-        if (bitmap == null)
-            return null;
+        try
+        {
+            if (bitmap == null)
+                return null;
 
-        if (!init(bitmap.getWidth(), bitmap.getHeight()))
-            return null;
+            if (!init(bitmap.getWidth(), bitmap.getHeight()))
+                return null;
 
-        mCanvasInput.drawBitmap(bitmap, 0, 0, null);
-        return blurInternal();
+            mCanvasInput.drawBitmap(bitmap, 0, 0, null);
+            return blurInternal();
+        } finally
+        {
+            if (mDestroyAfterBlur)
+                destroy();
+        }
     }
 
     private Bitmap blurInternal()
@@ -202,9 +223,6 @@ abstract class BaseBlur implements Blur
         {
             bitmapResult = Bitmap.createScaledBitmap(mBitmapOutput, mWidth, mHeight, true);
         }
-
-        if (mDestroyAfterBlur)
-            destroy();
 
         return bitmapResult;
     }

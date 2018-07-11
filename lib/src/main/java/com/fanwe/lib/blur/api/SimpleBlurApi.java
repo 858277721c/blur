@@ -107,6 +107,12 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     }
 
     @Override
+    public BlurInvoker blur(Bitmap bitmap)
+    {
+        return new BitmapInvoker(bitmap, mAsync);
+    }
+
+    @Override
     public BlurInvoker blur(View view)
     {
         return new ViewInvoker(view, mAsync);
@@ -116,12 +122,6 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     public BlurInvoker blur(Drawable drawable)
     {
         return new DrawableInvoker(drawable, mAsync);
-    }
-
-    @Override
-    public BlurInvoker blur(Bitmap bitmap)
-    {
-        return new BitmapInvoker(bitmap, mAsync);
     }
 
     @Override

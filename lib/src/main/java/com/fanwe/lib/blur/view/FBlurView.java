@@ -159,7 +159,7 @@ public class FBlurView extends View implements BlurView
         if (mBitmapBlurred == null || mBitmapBlurred.isRecycled())
             return;
 
-        final int scale = getBlurApi().config().getDownSampling();
+        final int scale = getBlurApi().settings().getDownSampling();
 
         canvas.save();
         canvas.translate(target.getX() - getX(), target.getY() - getY());

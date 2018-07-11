@@ -57,11 +57,11 @@ public interface BlurApi
     BlurApi async(boolean async);
 
     /**
-     * 返回config对象，可以查询设置的参数
+     * 返回{@link Settings}对象，可以查询设置的参数
      *
      * @return
      */
-    Config config();
+    Settings settings();
 
     /**
      * {@link Blur#destroy()}
@@ -95,7 +95,7 @@ public interface BlurApi
     BlurInvoker blur(Drawable drawable);
 
 
-    interface Config
+    interface Settings
     {
         /**
          * {@link Blur#getRadius()}

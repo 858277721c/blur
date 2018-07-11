@@ -78,22 +78,19 @@ class SynchronizedBlur implements Blur
     @Override
     public synchronized Bitmap blur(final View view)
     {
-        final Bitmap bitmapBlurred = mBlur.blur(view);
-        return bitmapBlurred;
+        return mBlur.blur(view);
     }
 
     @Override
     public synchronized Bitmap blur(Drawable drawable)
     {
-        final Bitmap bitmapBlurred = mBlur.blur(drawable);
-        return bitmapBlurred;
+        return mBlur.blur(drawable);
     }
 
     @Override
     public synchronized Bitmap blur(Bitmap bitmap)
     {
-        final Bitmap bitmapBlurred = mBlur.blur(bitmap);
-        return bitmapBlurred;
+        return mBlur.blur(bitmap);
     }
 
     @Override

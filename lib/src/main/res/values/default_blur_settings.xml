@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- 模糊半径 -->
     <integer name="lib_blur_radius">15</integer>
+    <!-- 压缩倍数 -->
     <integer name="lib_blur_down_sampling">8</integer>
+    <!-- 模糊颜色 -->
     <color name="lib_blur_color">#00000000</color>
+    <!-- 库中的view是否在子线程进行模糊 -->
     <bool name="lib_blur_blur_view_async">false</bool>
 </resources>

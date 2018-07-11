@@ -105,7 +105,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     @Override
     public Invoker blur(Bitmap bitmap)
     {
-        final SourceInvoker<Bitmap> invoker = new SourceInvoker<Bitmap>(bitmap)
+        return new SourceInvoker<Bitmap>(bitmap)
         {
             @Override
             protected Bitmap blurSource(Bitmap source)
@@ -113,13 +113,12 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
                 return getBlur().blur(source);
             }
         };
-        return invoker;
     }
 
     @Override
     public Invoker blur(View view)
     {
-        final SourceInvoker<View> invoker = new SourceInvoker<View>(view)
+        return new SourceInvoker<View>(view)
         {
             @Override
             protected Bitmap blurSource(View source)
@@ -127,13 +126,12 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
                 return getBlur().blur(source);
             }
         };
-        return invoker;
     }
 
     @Override
     public Invoker blur(Drawable drawable)
     {
-        final SourceInvoker<Drawable> invoker = new SourceInvoker<Drawable>(drawable)
+        return new SourceInvoker<Drawable>(drawable)
         {
             @Override
             protected Bitmap blurSource(Drawable source)
@@ -141,7 +139,6 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
                 return getBlur().blur(source);
             }
         };
-        return invoker;
     }
 
     @Override

@@ -69,13 +69,13 @@ public class FBlurImageView extends ImageView implements BlurView
     }
 
     @Override
-    public void setBlurAsync(boolean async)
+    public final void setBlurAsync(boolean async)
     {
         mAsync = async;
     }
 
     @Override
-    public void blur()
+    public final void blur()
     {
         setImageDrawable(mDrawable);
     }

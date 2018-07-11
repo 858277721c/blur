@@ -21,31 +21,31 @@ public class FBlurLayout extends FrameLayout implements BlurView
     private final FBlurView mBlurView;
 
     @Override
-    public void setBlurRadius(int radius)
+    public final void setBlurRadius(int radius)
     {
         mBlurView.setBlurRadius(radius);
     }
 
     @Override
-    public void setBlurDownSampling(int downSampling)
+    public final void setBlurDownSampling(int downSampling)
     {
         mBlurView.setBlurDownSampling(downSampling);
     }
 
     @Override
-    public void setBlurColor(int color)
+    public final void setBlurColor(int color)
     {
         mBlurView.setBlurColor(color);
     }
 
     @Override
-    public void setBlurAsync(boolean async)
+    public final void setBlurAsync(boolean async)
     {
         mBlurView.setBlurAsync(async);
     }
 
     @Override
-    public void blur()
+    public final void blur()
     {
         mBlurView.blur();
     }

@@ -228,8 +228,6 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
             } finally
             {
                 mMapInvoker.remove(mInvoker);
-                if (getBlur().isDestroyAfterBlur())
-                    getBlur().destroy();
             }
         }
     }

@@ -16,6 +16,9 @@ public class SimpleConfig implements BlurConfig
     @Override
     public boolean init(int width, int height, int downSampling)
     {
+        if (downSampling <= 0)
+            throw new IllegalArgumentException("downSampling out of range (downSampling > 0)");
+
         mWidth = width;
         mHeight = height;
         mDownSampling = downSampling;

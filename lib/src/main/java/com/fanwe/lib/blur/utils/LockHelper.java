@@ -74,17 +74,17 @@ public class LockHelper
     {
         if (object == null)
             throw new NullPointerException("object is null");
-        try
-        {
-            object.wait(1);
-            object.notify();
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        } catch (IllegalMonitorStateException e)
-        {
-            throw new RuntimeException(object + " object is not locked:" + new LockInfo());
-        }
+//        try
+//        {
+//            object.wait(1);
+//            object.notify();
+//        } catch (InterruptedException e)
+//        {
+//            e.printStackTrace();
+//        } catch (IllegalMonitorStateException e)
+//        {
+//            throw new RuntimeException(object + " object is not locked:" + new LockInfo());
+//        }
     }
 
     private static final class LockInfo

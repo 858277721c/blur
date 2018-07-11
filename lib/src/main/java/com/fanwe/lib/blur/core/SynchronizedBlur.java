@@ -20,66 +20,41 @@ class SynchronizedBlur implements Blur
     @Override
     public synchronized void setRadius(final int radius)
     {
-        LockHelper.synchronizedSession(this, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                mBlur.setRadius(radius);
-            }
-        });
+        LockHelper.lock(this);
+        mBlur.setRadius(radius);
+        LockHelper.unLock(this);
     }
 
     @Override
     public synchronized void setDownSampling(final int downSampling)
     {
-        LockHelper.synchronizedSession(this, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                mBlur.setDownSampling(downSampling);
-            }
-        });
+        LockHelper.lock(this);
+        mBlur.setDownSampling(downSampling);
+        LockHelper.unLock(this);
     }
 
     @Override
     public synchronized void setColor(final int color)
     {
-        LockHelper.synchronizedSession(this, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                mBlur.setColor(color);
-            }
-        });
+        LockHelper.lock(this);
+        mBlur.setColor(color);
+        LockHelper.unLock(this);
     }
 
     @Override
     public synchronized void setKeepDownSamplingSize(final boolean keepDownSamplingSize)
     {
-        LockHelper.synchronizedSession(this, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                mBlur.setKeepDownSamplingSize(keepDownSamplingSize);
-            }
-        });
+        LockHelper.lock(this);
+        mBlur.setKeepDownSamplingSize(keepDownSamplingSize);
+        LockHelper.unLock(this);
     }
 
     @Override
     public synchronized void setDestroyAfterBlur(final boolean destroyAfterBlur)
     {
-        LockHelper.synchronizedSession(this, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                mBlur.setDestroyAfterBlur(destroyAfterBlur);
-            }
-        });
+        LockHelper.lock(this);
+        mBlur.setDestroyAfterBlur(destroyAfterBlur);
+        LockHelper.unLock(this);
     }
 
     @Override
@@ -142,13 +117,8 @@ class SynchronizedBlur implements Blur
     @Override
     public synchronized void destroy()
     {
-        LockHelper.synchronizedSession(this, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                mBlur.destroy();
-            }
-        });
+        LockHelper.lock(this);
+        mBlur.destroy();
+        LockHelper.unLock(this);
     }
 }

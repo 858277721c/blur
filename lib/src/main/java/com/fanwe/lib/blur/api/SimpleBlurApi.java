@@ -21,19 +21,25 @@ import java.util.concurrent.FutureTask;
 class SimpleBlurApi implements BlurApi, BlurApi.Config
 {
     private final Blur mBlur;
-    private final Blur mSynchronizedBlur;
+    private Blur mSynchronizedBlur;
     private boolean mAsync;
 
     public SimpleBlurApi(Context context)
     {
         mBlur = BlurFactory.create(context);
         mBlur.setDestroyAfterBlur(true);
-        mSynchronizedBlur = BlurFactory.synchronizedBlur(mBlur);
     }
 
     private Blur getBlur()
     {
-        return mSynchronizedBlur;
+        if (mMapInvoker == null || mMapInvoker.isEmpty())
+            return mBlur;
+        else
+        {
+            if (mSynchronizedBlur == null)
+                mSynchronizedBlur = BlurFactory.synchronizedBlur(mBlur);
+            return mSynchronizedBlur;
+        }
     }
 
     @Override

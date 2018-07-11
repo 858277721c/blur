@@ -1,9 +1,9 @@
-package com.fanwe.lib.blur.core.config;
+package com.fanwe.lib.blur.core;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-public interface BlurConfig
+interface BlurConfig
 {
     boolean init(int width, int height, int downSampling);
 

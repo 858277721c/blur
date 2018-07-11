@@ -8,8 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import com.fanwe.lib.blur.DefaultBlurSettings;
-import com.fanwe.lib.blur.core.config.BlurConfig;
-import com.fanwe.lib.blur.core.config.SimpleConfig;
 import com.fanwe.lib.blur.core.source.BlurSource;
 import com.fanwe.lib.blur.core.source.BlurSourceFactory;
 import com.fanwe.lib.blur.core.strategy.BlurStrategy;

@@ -24,7 +24,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Config
     private final Blur mSynchronizedBlur;
     private boolean mAsync;
 
-    SimpleBlurApi(Context context)
+    public SimpleBlurApi(Context context)
     {
         mBlur = BlurFactory.create(context);
         mBlur.setDestroyAfterBlur(true);

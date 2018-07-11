@@ -1,9 +1,9 @@
-package com.fanwe.lib.blur.core.config;
+package com.fanwe.lib.blur.core;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-public class SimpleConfig implements BlurConfig
+class SimpleConfig implements BlurConfig
 {
     private int mWidth;
     private int mHeight;

@@ -85,6 +85,7 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
 <com.fanwe.lib.blur.view.FBlurLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:blurAsync="false"
     app:blurColor="#99FFFFFF"
     app:blurDownSampling="8"
     app:blurRadius="10">

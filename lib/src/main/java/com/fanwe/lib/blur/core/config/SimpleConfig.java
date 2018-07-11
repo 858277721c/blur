@@ -75,6 +75,10 @@ public class SimpleConfig implements BlurConfig
     @Override
     public void recycle()
     {
-
+        if (mBitmapInput != null)
+        {
+            mBitmapInput.recycle();
+            mBitmapInput = null;
+        }
     }
 }

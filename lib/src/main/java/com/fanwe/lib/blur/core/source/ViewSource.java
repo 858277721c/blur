@@ -25,28 +25,30 @@ class ViewSource extends BaseSource<View>
     }
 
     @Override
-    public void draw(final Canvas canvas)
+    public void draw(final Canvas canvas, Handler handler)
     {
         if (Looper.myLooper() == Looper.getMainLooper())
+        {
             getSource().draw(canvas);
-        else
+        } else
         {
             synchronized (ViewSource.this)
             {
+                handler.post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        getSource().draw(canvas);
+                        synchronized (ViewSource.this)
+                        {
+                            ViewSource.this.notifyAll();
+                        }
+                    }
+                });
+
                 try
                 {
-                    new Handler(Looper.getMainLooper()).post(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            getSource().draw(canvas);
-                            synchronized (ViewSource.this)
-                            {
-                                ViewSource.this.notifyAll();
-                            }
-                        }
-                    });
                     ViewSource.this.wait();
                 } catch (InterruptedException e)
                 {

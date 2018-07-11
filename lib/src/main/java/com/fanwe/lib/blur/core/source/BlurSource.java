@@ -1,6 +1,7 @@
 package com.fanwe.lib.blur.core.source;
 
 import android.graphics.Canvas;
+import android.os.Handler;
 
 public interface BlurSource
 {
@@ -8,5 +9,5 @@ public interface BlurSource
 
     int getHeight();
 
-    void draw(Canvas canvas);
+    void draw(Canvas canvas, Handler handler);
 }

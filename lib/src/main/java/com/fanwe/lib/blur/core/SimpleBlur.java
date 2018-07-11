@@ -177,7 +177,6 @@ class SimpleBlur implements Blur
     {
         private int mWidth;
         private int mHeight;
-        private int mDownSampling;
 
         private Bitmap mBitmapOutput;
         private Bitmap mBitmapInput;
@@ -185,14 +184,10 @@ class SimpleBlur implements Blur
 
         public boolean init(int width, int height, int downSampling)
         {
-            if (downSampling <= 0)
-                throw new IllegalArgumentException("downSampling out of range (downSampling > 0)");
-
             mWidth = width;
             mHeight = height;
-            mDownSampling = downSampling;
 
-            final float scale = 1.0f / mDownSampling;
+            final float scale = 1.0f / downSampling;
             final int scaledWidth = (int) (width * scale);
             final int scaledHeight = (int) (height * scale);
             if (scaledWidth <= 0 || scaledHeight <= 0)

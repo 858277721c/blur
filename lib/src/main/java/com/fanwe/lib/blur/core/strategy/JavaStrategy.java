@@ -1,22 +1,22 @@
-package com.fanwe.lib.blur.core;
+package com.fanwe.lib.blur.core.strategy;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 
-class JavaBlur extends BaseBlur
+class JavaStrategy extends BaseStrategy
 {
-    public JavaBlur(Context context)
+    @Override
+    public void blur(int radius, Bitmap bitmapInput, Bitmap bitmapOutput)
     {
-        super(context);
+        stack(radius, bitmapInput, bitmapOutput);
     }
 
     @Override
-    protected void onBlurImplemention(Bitmap bitmapInput, Bitmap bitmapOutput)
+    public void destroy()
     {
-        stack(bitmapInput, getRadius(), bitmapOutput);
+
     }
 
-    private static void stack(Bitmap bitmapInput, int radius, Bitmap bitmapOutput)
+    private static void stack(int radius, Bitmap bitmapInput, Bitmap bitmapOutput)
     {
         // Stack Blur v1.0 from
         // http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html

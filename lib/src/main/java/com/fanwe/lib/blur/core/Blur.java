@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import com.fanwe.lib.blur.core.source.BlurSource;
+
 public interface Blur
 {
     /**
@@ -35,7 +37,7 @@ public interface Blur
     void setKeepDownSamplingSize(boolean keepDownSamplingSize);
 
     /**
-     * 设置调用模糊方法{@link #blur(View)}或者{@link #blur(Bitmap)}后是否自动调用{@link #destroy()}，默认true自动释放
+     * 设置调用模糊方法后是否自动调用{@link #destroy()}，默认true自动释放
      *
      * @param destroyAfterBlur
      */
@@ -77,28 +79,36 @@ public interface Blur
     boolean isDestroyAfterBlur();
 
     /**
-     * 得到View的模糊Bitmap
+     * 模糊
      *
-     * @param view
+     * @param source
      * @return
      */
-    Bitmap blur(View view);
+    Bitmap blur(Bitmap source);
 
     /**
-     * 模糊Drawable
+     * 模糊
      *
-     * @param drawable
+     * @param source
      * @return
      */
-    Bitmap blur(Drawable drawable);
+    Bitmap blur(View source);
 
     /**
-     * 模糊Bitmap，传入的对象不会被回收
+     * 模糊
      *
-     * @param bitmap
+     * @param source
      * @return
      */
-    Bitmap blur(Bitmap bitmap);
+    Bitmap blur(Drawable source);
+
+    /**
+     * 模糊
+     *
+     * @param source
+     * @return
+     */
+    Bitmap blur(BlurSource source);
 
     /**
      * 释放资源，调用此方法后依旧可以使用此对象

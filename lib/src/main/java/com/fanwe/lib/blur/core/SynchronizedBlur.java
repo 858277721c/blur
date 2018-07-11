@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import com.fanwe.lib.blur.core.source.BlurSource;
+
 class SynchronizedBlur implements Blur
 {
     private final Blur mBlur;
@@ -76,7 +78,13 @@ class SynchronizedBlur implements Blur
     }
 
     @Override
-    public synchronized Bitmap blur(final View view)
+    public synchronized Bitmap blur(Bitmap bitmap)
+    {
+        return mBlur.blur(bitmap);
+    }
+
+    @Override
+    public synchronized Bitmap blur(View view)
     {
         return mBlur.blur(view);
     }
@@ -88,9 +96,9 @@ class SynchronizedBlur implements Blur
     }
 
     @Override
-    public synchronized Bitmap blur(Bitmap bitmap)
+    public synchronized Bitmap blur(BlurSource source)
     {
-        return mBlur.blur(bitmap);
+        return mBlur.blur(source);
     }
 
     @Override

@@ -10,7 +10,7 @@ public final class BlurFactory
 
     public static Blur create(Context context)
     {
-        return new JavaBlur(context);
+        return new SimpleBlur(context);
     }
 
     public static Blur synchronizedBlur(Blur blur)

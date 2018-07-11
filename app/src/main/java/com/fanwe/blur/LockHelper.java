@@ -1,4 +1,4 @@
-package com.fanwe.lib.blur.utils;
+package com.fanwe.blur;
 
 import java.util.HashMap;
 import java.util.Map;

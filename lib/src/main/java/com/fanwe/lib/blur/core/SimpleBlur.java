@@ -10,6 +10,8 @@ import android.os.Looper;
 import android.view.View;
 
 import com.fanwe.lib.blur.DefaultBlurSettings;
+import com.fanwe.lib.blur.core.config.BlurConfig;
+import com.fanwe.lib.blur.core.config.SimpleConfig;
 import com.fanwe.lib.blur.core.source.BlurSource;
 import com.fanwe.lib.blur.core.source.BlurSourceFactory;
 import com.fanwe.lib.blur.core.strategy.BlurStrategy;
@@ -18,7 +20,6 @@ import com.fanwe.lib.blur.core.strategy.BlurStrategyFactory;
 class SimpleBlur implements Blur
 {
     private static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
-    private final BlurStrategy mStrategy;
 
     private int mRadius = 15;
     private int mDownSampling = 8;
@@ -26,9 +27,13 @@ class SimpleBlur implements Blur
     private boolean mKeepDownSamplingSize = false;
     private boolean mDestroyAfterBlur = true;
 
+    private final BlurStrategy mStrategy;
+    private final BlurConfig mConfig;
+
     public SimpleBlur(Context context)
     {
         mStrategy = BlurStrategyFactory.create(context);
+        mConfig = new SimpleConfig();
 
         final DefaultBlurSettings settings = DefaultBlurSettings.get(context);
         setRadius(settings.getRadius());
@@ -134,25 +139,19 @@ class SimpleBlur implements Blur
         if (source == null)
             return null;
 
-        final int width = source.getWidth();
-        final int height = source.getHeight();
-        if (width <= 0 || height <= 0)
-            return null;
-
-        final BlurConfig config = new BlurConfig();
         try
         {
-            if (!config.init(width, height, mDownSampling))
+            if (!mConfig.init(source.getWidth(), source.getHeight(), mDownSampling))
                 return null;
 
-            if (config.mBitmapInput.isRecycled())
+            if (mConfig.getBitmapInput().isRecycled())
                 throw new RuntimeException("bitmap for canvas is recycled");
 
-            source.draw(config.mCanvasInput, MAIN_HANDLER);
-            return blurInternal(config);
+            source.draw(mConfig.getCanvas(), MAIN_HANDLER);
+            return blurInternal(mConfig);
         } finally
         {
-            config.recycle();
+            mConfig.recycle();
             if (mDestroyAfterBlur)
                 destroy();
         }
@@ -160,9 +159,9 @@ class SimpleBlur implements Blur
 
     private Bitmap blurInternal(BlurConfig config)
     {
-        final Bitmap bitmapOutput = config.mBitmapOutput;
-        final Bitmap bitmapInput = config.mBitmapInput;
-        final Canvas canvas = config.mCanvasInput;
+        final Bitmap bitmapOutput = config.newBitmapOutput();
+        final Bitmap bitmapInput = config.getBitmapInput();
+        final Canvas canvas = config.getCanvas();
 
         canvas.drawColor(mColor);
         mStrategy.blur(mRadius, bitmapInput, bitmapOutput);
@@ -176,7 +175,7 @@ class SimpleBlur implements Blur
             bitmapResult = bitmapOutput;
         } else
         {
-            bitmapResult = Bitmap.createScaledBitmap(bitmapOutput, config.mWidth, config.mHeight, true);
+            bitmapResult = Bitmap.createScaledBitmap(bitmapOutput, config.getWidth(), config.getHeight(), true);
         }
 
         if (bitmapOutput != bitmapResult)
@@ -189,45 +188,5 @@ class SimpleBlur implements Blur
     public void destroy()
     {
         mStrategy.destroy();
-    }
-
-    private static final class BlurConfig
-    {
-        private int mWidth;
-        private int mHeight;
-
-        private Bitmap mBitmapOutput;
-        private Bitmap mBitmapInput;
-        private Canvas mCanvasInput;
-
-        public boolean init(int width, int height, int downSampling)
-        {
-            mWidth = width;
-            mHeight = height;
-
-            final float scale = 1.0f / downSampling;
-            final int scaledWidth = (int) (width * scale);
-            final int scaledHeight = (int) (height * scale);
-            if (scaledWidth <= 0 || scaledHeight <= 0)
-                return false;
-
-            final Bitmap.Config config = Bitmap.Config.ARGB_8888;
-
-            mBitmapOutput = Bitmap.createBitmap(scaledWidth, scaledHeight, config);
-            mBitmapInput = Bitmap.createBitmap(scaledWidth, scaledHeight, config);
-
-            mCanvasInput = new Canvas(mBitmapInput);
-            mCanvasInput.scale(scale, scale);
-            return true;
-        }
-
-        public void recycle()
-        {
-            if (mBitmapInput != null)
-            {
-                mBitmapInput.recycle();
-                mBitmapInput = null;
-            }
-        }
     }
 }

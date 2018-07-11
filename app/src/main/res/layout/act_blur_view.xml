@@ -116,6 +116,6 @@
         app:blurAsync="false"
         app:blurColor="#99FFFFFF"
         app:blurDownSampling="8"
-        app:blurRadius="10" />
+        app:blurRadius="15" />
 
 </FrameLayout>

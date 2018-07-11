@@ -72,7 +72,7 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
 ```
 
 # FBlurLayout
-如果需要对某个view进行动态模糊，只要用这个layout包裹一下目标view，目标view的内容发生变化后会实时模糊
+如果需要对某个view进行动态模糊，只要用这个layout包裹一下目标view，目标view的内容发生变化后会实时模糊，可以设置是否在子线程进行模糊操作，默认在UI主线程
 ```xml
 <com.fanwe.lib.blur.view.FBlurLayout
     android:layout_width="match_parent"
@@ -91,7 +91,7 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
 
 # FBlurView
 FBlurLayout内部动态模糊的功能就是用FBlurView实现的
-注意：FBlurView相对FBlurView父布局的x和y，必须跟目标view相对目标view父布局的x和y一致，否则会出现模糊view的位置不对
+注意：FBlurView相对FBlurView父布局的x和y，必须跟目标view相对目标view父布局的x和y一致，否则会出现模糊view的位置不对，可以设置是否在子线程进行模糊操作，默认在UI主线程
 ```java
 FBlurView blurView = findViewById(R.id.view_blur);
 blurView.setBlurTarget(findViewById(R.id.ll_content));

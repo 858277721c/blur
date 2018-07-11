@@ -39,17 +39,21 @@ class SimpleBlur implements Blur
     @Override
     public void setRadius(int radius)
     {
-        if (radius <= 0 || radius > 25)
+        if (radius > 0 && radius <= 25)
+            mRadius = radius;
+        else
             throw new IllegalArgumentException("radius out of range (0 < radius <= 25)");
-        mRadius = radius;
+
     }
 
     @Override
     public void setDownSampling(int downSampling)
     {
-        if (downSampling <= 0)
+        if (downSampling > 0)
+            mDownSampling = downSampling;
+        else
             throw new IllegalArgumentException("downSampling out of range (downSampling > 0)");
-        mDownSampling = downSampling;
+
     }
 
     @Override

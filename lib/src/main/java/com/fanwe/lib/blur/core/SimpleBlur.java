@@ -133,6 +133,9 @@ class SimpleBlur implements Blur
             if (!config.init(source.getWidth(), source.getHeight(), mDownSampling))
                 return null;
 
+            if (config.mBitmapInput.isRecycled())
+                throw new RuntimeException("bitmap for canvas is recycled");
+
             source.draw(config.mCanvasInput);
             return blurInternal(config);
         } finally

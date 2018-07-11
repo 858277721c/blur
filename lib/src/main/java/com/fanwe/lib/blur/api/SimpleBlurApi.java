@@ -96,7 +96,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     {
         if (mMapInvoker != null)
         {
-            for (Map.Entry<BlurInvoker, Future> item : mMapInvoker.entrySet())
+            for (Map.Entry<Invoker, Future> item : mMapInvoker.entrySet())
             {
                 item.getValue().cancel(true);
             }
@@ -108,19 +108,19 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     }
 
     @Override
-    public BlurInvoker blur(Bitmap bitmap)
+    public Invoker blur(Bitmap bitmap)
     {
         return new BitmapInvoker(bitmap, mAsync);
     }
 
     @Override
-    public BlurInvoker blur(View view)
+    public Invoker blur(View view)
     {
         return new ViewInvoker(view, mAsync);
     }
 
     @Override
-    public BlurInvoker blur(Drawable drawable)
+    public Invoker blur(Drawable drawable)
     {
         return new DrawableInvoker(drawable, mAsync);
     }
@@ -156,7 +156,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     }
 
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
-    private Map<BlurInvoker, Future> mMapInvoker;
+    private Map<Invoker, Future> mMapInvoker;
 
     private abstract class SourceInvoker<S> extends BaseInvoker
     {
@@ -210,10 +210,10 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
 
     private final class BlurTask extends FutureTask<Bitmap>
     {
-        private final BlurInvoker mInvoker;
+        private final Invoker mInvoker;
         private final BlurTarget mTarget;
 
-        public BlurTask(Callable<Bitmap> callable, BlurInvoker invoker, BlurTarget target)
+        public BlurTask(Callable<Bitmap> callable, Invoker invoker, BlurTarget target)
         {
             super(callable);
             mInvoker = invoker;

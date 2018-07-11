@@ -3,7 +3,9 @@ package com.fanwe.lib.blur.api;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.core.Blur;
 
 public interface BlurApi
@@ -76,7 +78,7 @@ public interface BlurApi
      * @param bitmap
      * @return
      */
-    BlurInvoker blur(Bitmap bitmap);
+    Invoker blur(Bitmap bitmap);
 
     /**
      * 模糊view
@@ -84,7 +86,7 @@ public interface BlurApi
      * @param view
      * @return
      */
-    BlurInvoker blur(View view);
+    Invoker blur(View view);
 
     /**
      * 模糊drawable
@@ -92,7 +94,7 @@ public interface BlurApi
      * @param drawable
      * @return
      */
-    BlurInvoker blur(Drawable drawable);
+    Invoker blur(Drawable drawable);
 
 
     interface Settings
@@ -131,5 +133,37 @@ public interface BlurApi
          * @return
          */
         boolean isDestroyAfterBlur();
+    }
+
+    interface Invoker
+    {
+        /**
+         * 模糊后设置给ImageView
+         *
+         * @param imageView
+         * @return
+         */
+        Invoker into(ImageView imageView);
+
+        /**
+         * 模糊后设置给view的背景
+         *
+         * @param view
+         * @return
+         */
+        Invoker intoBackground(View view);
+
+        /**
+         * 模糊后设置给某个目标
+         *
+         * @param target
+         * @return
+         */
+        Invoker into(BlurTarget target);
+
+        /**
+         * 取消子线程任务
+         */
+        void cancelAsync();
     }
 }

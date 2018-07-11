@@ -8,7 +8,7 @@ import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.api.target.ImageViewTarget;
 import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
 
-abstract class BaseInvoker implements BlurInvoker
+abstract class BaseInvoker implements BlurApi.Invoker
 {
     private final boolean mAsync;
 
@@ -18,7 +18,7 @@ abstract class BaseInvoker implements BlurInvoker
     }
 
     @Override
-    public final BlurInvoker into(ImageView imageView)
+    public final BlurApi.Invoker into(ImageView imageView)
     {
         if (imageView != null)
             into(new ImageViewTarget(imageView));
@@ -26,7 +26,7 @@ abstract class BaseInvoker implements BlurInvoker
     }
 
     @Override
-    public final BlurInvoker intoBackground(View view)
+    public final BlurApi.Invoker intoBackground(View view)
     {
         if (view != null)
             into(new BackgroundTarget(view));
@@ -34,7 +34,7 @@ abstract class BaseInvoker implements BlurInvoker
     }
 
     @Override
-    public final BlurInvoker into(BlurTarget target)
+    public final BlurApi.Invoker into(BlurTarget target)
     {
         if (target != null)
         {

@@ -15,19 +15,17 @@ import com.fanwe.lib.blur.core.strategy.BlurStrategyFactory;
 
 class SimpleBlur implements Blur
 {
+    private final BlurStrategy mStrategy;
+
     private int mRadius = 15;
     private int mDownSampling = 8;
     private int mColor = Color.TRANSPARENT;
     private boolean mKeepDownSamplingSize = false;
     private boolean mDestroyAfterBlur = true;
 
-    private final BlurStrategy mStrategy;
-    private final BlurConfig mConfig;
-
     public SimpleBlur(Context context)
     {
         mStrategy = BlurStrategyFactory.create(context);
-        mConfig = new SimpleConfig();
 
         final DefaultBlurSettings settings = DefaultBlurSettings.get(context);
         setRadius(settings.getRadius());
@@ -129,28 +127,27 @@ class SimpleBlur implements Blur
         if (source == null)
             return null;
 
+        final BlurConfig config = new BlurConfig();
         try
         {
-            if (!mConfig.init(source.getWidth(), source.getHeight(), mDownSampling))
+            if (!config.init(source.getWidth(), source.getHeight(), mDownSampling))
                 return null;
 
-            source.draw(mConfig.getCanvasInput());
-            return blurInternal();
+            source.draw(config.mCanvasInput);
+            return blurInternal(config);
         } finally
         {
-            mConfig.recycle();
+            config.recycle();
             if (mDestroyAfterBlur)
                 destroy();
         }
     }
 
-    private Bitmap blurInternal()
+    private Bitmap blurInternal(BlurConfig config)
     {
-        final BlurConfig config = mConfig;
-
-        final Bitmap bitmapOutput = config.getBitmapOutput();
-        final Bitmap bitmapInput = config.getBitmapInput();
-        final Canvas canvas = config.getCanvasInput();
+        final Bitmap bitmapOutput = config.mBitmapOutput;
+        final Bitmap bitmapInput = config.mBitmapInput;
+        final Canvas canvas = config.mCanvasInput;
 
         canvas.drawColor(mColor);
         mStrategy.blur(mRadius, bitmapInput, bitmapOutput);
@@ -164,7 +161,7 @@ class SimpleBlur implements Blur
             bitmapResult = bitmapOutput;
         } else
         {
-            bitmapResult = Bitmap.createScaledBitmap(bitmapOutput, config.getWidth(), config.getHeight(), true);
+            bitmapResult = Bitmap.createScaledBitmap(bitmapOutput, config.mWidth, config.mHeight, true);
         }
 
         return bitmapResult;
@@ -174,5 +171,50 @@ class SimpleBlur implements Blur
     public void destroy()
     {
         mStrategy.destroy();
+    }
+
+    private static final class BlurConfig
+    {
+        private int mWidth;
+        private int mHeight;
+        private int mDownSampling;
+
+        private Bitmap mBitmapOutput;
+        private Bitmap mBitmapInput;
+        private Canvas mCanvasInput;
+
+        public boolean init(int width, int height, int downSampling)
+        {
+            if (downSampling <= 0)
+                throw new IllegalArgumentException("downSampling out of range (downSampling > 0)");
+
+            mWidth = width;
+            mHeight = height;
+            mDownSampling = downSampling;
+
+            final float scale = 1.0f / mDownSampling;
+            final int scaledWidth = (int) (width * scale);
+            final int scaledHeight = (int) (height * scale);
+            if (scaledWidth <= 0 || scaledHeight <= 0)
+                return false;
+
+            final Bitmap.Config config = Bitmap.Config.ARGB_8888;
+
+            mBitmapOutput = Bitmap.createBitmap(scaledWidth, scaledHeight, config);
+            mBitmapInput = Bitmap.createBitmap(scaledWidth, scaledHeight, config);
+
+            mCanvasInput = new Canvas(mBitmapInput);
+            mCanvasInput.scale(scale, scale);
+            return true;
+        }
+
+        public void recycle()
+        {
+            if (mBitmapInput != null)
+            {
+                mBitmapInput.recycle();
+                mBitmapInput = null;
+            }
+        }
     }
 }

@@ -120,7 +120,7 @@ public class LockHelper
                 return false;
 
             final LockInfo other = (LockInfo) obj;
-            return mThreadId != other.mThreadId;
+            return mThreadId == other.mThreadId;
         }
 
         @Override

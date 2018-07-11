@@ -179,6 +179,9 @@ class SimpleBlur implements Blur
             bitmapResult = Bitmap.createScaledBitmap(bitmapOutput, config.mWidth, config.mHeight, true);
         }
 
+        if (bitmapResult != bitmapOutput)
+            bitmapOutput.recycle();
+
         return bitmapResult;
     }
 

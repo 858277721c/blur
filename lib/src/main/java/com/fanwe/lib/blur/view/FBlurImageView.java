@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 import com.fanwe.lib.blur.api.BlurApi;
 import com.fanwe.lib.blur.api.BlurApiFactory;
-import com.fanwe.lib.blur.api.BlurTarget;
+import com.fanwe.lib.blur.api.target.BlurTarget;
 
 public class FBlurImageView extends ImageView implements BlurView
 {

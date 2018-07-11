@@ -9,7 +9,7 @@ import android.view.ViewTreeObserver;
 
 import com.fanwe.lib.blur.api.BlurApi;
 import com.fanwe.lib.blur.api.BlurApiFactory;
-import com.fanwe.lib.blur.api.BlurTarget;
+import com.fanwe.lib.blur.api.target.BlurTarget;
 
 import java.lang.ref.WeakReference;
 

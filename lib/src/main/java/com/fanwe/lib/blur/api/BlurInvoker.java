@@ -3,6 +3,8 @@ package com.fanwe.lib.blur.api;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.fanwe.lib.blur.api.target.BlurTarget;
+
 public interface BlurInvoker
 {
     /**

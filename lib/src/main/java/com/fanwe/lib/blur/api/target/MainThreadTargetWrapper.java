@@ -2,8 +2,6 @@ package com.fanwe.lib.blur.api.target;
 
 import android.graphics.Bitmap;
 
-import com.fanwe.lib.blur.api.BlurTarget;
-
 public class MainThreadTargetWrapper extends MainThreadTarget
 {
     private final BlurTarget mTarget;

@@ -20,6 +20,7 @@ class BlurViewAttrs
         mBlurRadius = settings.getRadius();
         mBlurDownSampling = settings.getDownSampling();
         mBlurColor = settings.getColor();
+        mBlurAsync = context.getResources().getBoolean(R.bool.lib_blur_blur_view_async);
 
         if (attrs != null)
         {

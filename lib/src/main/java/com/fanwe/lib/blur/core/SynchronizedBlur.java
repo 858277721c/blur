@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import com.fanwe.lib.blur.utils.LockHelper;
+
 class SynchronizedBlur implements Blur
 {
     private final Blur mBlur;
@@ -16,33 +18,68 @@ class SynchronizedBlur implements Blur
     }
 
     @Override
-    public synchronized void setRadius(int radius)
+    public synchronized void setRadius(final int radius)
     {
-        mBlur.setRadius(radius);
+        LockHelper.synchronizedSession(this, new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                mBlur.setRadius(radius);
+            }
+        });
     }
 
     @Override
-    public synchronized void setDownSampling(int downSampling)
+    public synchronized void setDownSampling(final int downSampling)
     {
-        mBlur.setDownSampling(downSampling);
+        LockHelper.synchronizedSession(this, new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                mBlur.setDownSampling(downSampling);
+            }
+        });
     }
 
     @Override
-    public synchronized void setColor(int color)
+    public synchronized void setColor(final int color)
     {
-        mBlur.setColor(color);
+        LockHelper.synchronizedSession(this, new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                mBlur.setColor(color);
+            }
+        });
     }
 
     @Override
-    public synchronized void setKeepDownSamplingSize(boolean keepDownSamplingSize)
+    public synchronized void setKeepDownSamplingSize(final boolean keepDownSamplingSize)
     {
-        mBlur.setKeepDownSamplingSize(keepDownSamplingSize);
+        LockHelper.synchronizedSession(this, new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                mBlur.setKeepDownSamplingSize(keepDownSamplingSize);
+            }
+        });
     }
 
     @Override
-    public synchronized void setDestroyAfterBlur(boolean destroyAfterBlur)
+    public synchronized void setDestroyAfterBlur(final boolean destroyAfterBlur)
     {
-        mBlur.setDestroyAfterBlur(destroyAfterBlur);
+        LockHelper.synchronizedSession(this, new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                mBlur.setDestroyAfterBlur(destroyAfterBlur);
+            }
+        });
     }
 
     @Override
@@ -76,26 +113,42 @@ class SynchronizedBlur implements Blur
     }
 
     @Override
-    public synchronized Bitmap blur(View view)
+    public synchronized Bitmap blur(final View view)
     {
-        return mBlur.blur(view);
+        LockHelper.lock(this);
+        final Bitmap bitmapBlurred = mBlur.blur(view);
+        LockHelper.unLock(this);
+        return bitmapBlurred;
     }
 
     @Override
     public synchronized Bitmap blur(Drawable drawable)
     {
-        return mBlur.blur(drawable);
+        LockHelper.lock(this);
+        final Bitmap bitmapBlurred = mBlur.blur(drawable);
+        LockHelper.unLock(this);
+        return bitmapBlurred;
     }
 
     @Override
     public synchronized Bitmap blur(Bitmap bitmap)
     {
-        return mBlur.blur(bitmap);
+        LockHelper.lock(this);
+        final Bitmap bitmapBlurred = mBlur.blur(bitmap);
+        LockHelper.unLock(this);
+        return bitmapBlurred;
     }
 
     @Override
     public synchronized void destroy()
     {
-        mBlur.destroy();
+        LockHelper.synchronizedSession(this, new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                mBlur.destroy();
+            }
+        });
     }
 }

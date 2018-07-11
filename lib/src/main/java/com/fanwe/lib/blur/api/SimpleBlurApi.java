@@ -105,40 +105,19 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     @Override
     public Invoker blur(Bitmap bitmap)
     {
-        return new SourceInvoker<Bitmap>(bitmap)
-        {
-            @Override
-            protected Bitmap blurSource(Bitmap source)
-            {
-                return getBlur().blur(source);
-            }
-        };
+        return new BitmapInvoker(bitmap);
     }
 
     @Override
     public Invoker blur(View view)
     {
-        return new SourceInvoker<View>(view)
-        {
-            @Override
-            protected Bitmap blurSource(View source)
-            {
-                return getBlur().blur(source);
-            }
-        };
+        return new ViewInvoker(view);
     }
 
     @Override
     public Invoker blur(Drawable drawable)
     {
-        return new SourceInvoker<Drawable>(drawable)
-        {
-            @Override
-            protected Bitmap blurSource(Drawable source)
-            {
-                return getBlur().blur(source);
-            }
-        };
+        return new DrawableInvoker(drawable);
     }
 
     @Override
@@ -283,6 +262,48 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
             {
                 mMapInvoker.remove(mInvoker);
             }
+        }
+    }
+
+    private final class BitmapInvoker extends SourceInvoker<Bitmap>
+    {
+        public BitmapInvoker(Bitmap source)
+        {
+            super(source);
+        }
+
+        @Override
+        protected Bitmap blurSource(Bitmap source)
+        {
+            return getBlur().blur(source);
+        }
+    }
+
+    private final class ViewInvoker extends SourceInvoker<View>
+    {
+        public ViewInvoker(View source)
+        {
+            super(source);
+        }
+
+        @Override
+        protected Bitmap blurSource(View source)
+        {
+            return getBlur().blur(source);
+        }
+    }
+
+    private final class DrawableInvoker extends SourceInvoker<Drawable>
+    {
+        public DrawableInvoker(Drawable source)
+        {
+            super(source);
+        }
+
+        @Override
+        protected Bitmap blurSource(Drawable source)
+        {
+            return getBlur().blur(source);
         }
     }
 }

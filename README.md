@@ -22,7 +22,15 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
     private BlurApi getBlurApi()
     {
         if (mBlurApi == null)
+        {
             mBlurApi = BlurApiFactory.create(this);
+            /**
+             * 设置当前对象在模糊方法被调用之后是否自动释放资源
+             * 当API版本支持RenderScript的时候，如果需要频繁的模糊操作，可以持有BlurApi对象，并设置为false，避免一直创建对象，效率会高很多
+             * 在最后需要销毁的地方销毁BlurlApi对象即可
+             */
+            mBlurApi.destroyAfterBlur(false);
+        }
         return mBlurApi;
     }
 

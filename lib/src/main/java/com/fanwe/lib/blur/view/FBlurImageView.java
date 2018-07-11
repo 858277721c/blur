@@ -16,7 +16,7 @@ import com.fanwe.lib.blur.api.target.BlurTarget;
 public class FBlurImageView extends ImageView implements BlurView
 {
     private BlurApi mBlurApi;
-    private boolean mAsync;
+    private boolean mBlurAsync;
 
     private Drawable mDrawable;
     private boolean mIsAttachedToWindow;
@@ -71,7 +71,7 @@ public class FBlurImageView extends ImageView implements BlurView
     @Override
     public final void setBlurAsync(boolean async)
     {
-        mAsync = async;
+        mBlurAsync = async;
     }
 
     @Override
@@ -107,7 +107,7 @@ public class FBlurImageView extends ImageView implements BlurView
         if (!mIsAttachedToWindow)
             throw new RuntimeException("can not blur when view is detached");
 
-        getBlurApi().blur(drawable).async(mAsync).into(new BlurTarget()
+        getBlurApi().blur(drawable).async(mBlurAsync).into(new BlurTarget()
         {
             @Override
             public void onBlurred(Bitmap bitmap)

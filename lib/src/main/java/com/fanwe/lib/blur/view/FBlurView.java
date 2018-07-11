@@ -16,7 +16,8 @@ import java.lang.ref.WeakReference;
 public class FBlurView extends View implements BlurView
 {
     private BlurApi mBlurApi;
-    private boolean mAsync;
+    private boolean mBlurAsync;
+
     private WeakReference<View> mBlurTarget;
 
     private Bitmap mBitmapBlurred;
@@ -123,19 +124,19 @@ public class FBlurView extends View implements BlurView
     }
 
     @Override
-    public void setBlurAsync(boolean async)
+    public final void setBlurAsync(boolean async)
     {
-        mAsync = async;
+        mBlurAsync = async;
     }
 
     @Override
-    public void blur()
+    public final void blur()
     {
         if (mIsDrawingBlur)
             return;
 
         if (mIsAttachedToWindow)
-            getBlurApi().blur(getBlurTarget()).async(mAsync).into(mInvokeTarget);
+            getBlurApi().blur(getBlurTarget()).async(mBlurAsync).into(mInvokeTarget);
     }
 
     private final BlurTarget mInvokeTarget = new BlurTarget()

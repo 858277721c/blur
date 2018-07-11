@@ -134,10 +134,15 @@ class SimpleBlur implements Blur
         if (source == null)
             return null;
 
+        final int width = source.getWidth();
+        final int height = source.getHeight();
+        if (width <= 0 || height <= 0)
+            return null;
+
         final BlurConfig config = new BlurConfig();
         try
         {
-            if (!config.init(source.getWidth(), source.getHeight(), mDownSampling))
+            if (!config.init(width, height, mDownSampling))
                 return null;
 
             if (config.mBitmapInput.isRecycled())

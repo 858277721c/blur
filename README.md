@@ -107,45 +107,7 @@ blurView.setBlurTarget(findViewById(R.id.ll_content));
 ```
 
 # 模糊View参数设置
-以上介绍的模糊view都实现了以下接口，可以进行模糊参数设置
-<br>
-```java
-public interface BlurView
-{
-    /**
-     * {@link Blur#setRadius(int)}
-     *
-     * @param radius
-     */
-    void setBlurRadius(int radius);
-
-    /**
-     * {@link Blur#setDownSampling(int)}
-     *
-     * @param downSampling
-     */
-    void setBlurDownSampling(int downSampling);
-
-    /**
-     * {@link Blur#setColor(int)}
-     *
-     * @param color
-     */
-    void setBlurColor(int color);
-
-    /**
-     * 是否在子线程进行模糊，默认false
-     *
-     * @param async
-     */
-    void setBlurAsync(boolean async);
-
-    /**
-     * 模糊
-     */
-    void blur();
-}
-```
+以上介绍的模糊view都实现了[BlurView]()接口，可以进行模糊参数设置
 
 # ImageViewBlur
 如果你不想使用BlurApi接口，也不想使用FBlurImageView，那么可以使用ImageViewBlur，仅支持在主线程模糊

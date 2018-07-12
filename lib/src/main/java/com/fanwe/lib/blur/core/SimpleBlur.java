@@ -151,7 +151,6 @@ class SimpleBlur implements Blur
             return blurInternal(mConfig);
         } finally
         {
-            mConfig.recycle();
             if (mDestroyAfterBlur)
                 destroy();
         }
@@ -188,5 +187,6 @@ class SimpleBlur implements Blur
     public void destroy()
     {
         mStrategy.destroy();
+        mConfig.recycle();
     }
 }

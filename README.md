@@ -147,5 +147,18 @@ public interface BlurView
 }
 ```
 
+# ImageViewBlur
+如果你不想使用BlurApi接口，也不想使用FBlurImageView，那么可以使用ImageViewBlur，仅支持在主线程模糊
+```java
+ImageViewBlur blur = new ImageViewBlur(this);
+/**
+ * 设置要模糊的ImageView，此时blur对象会被ImageView和ViewTreeObserver持有，如果blur对象不再被需要的时候可以调用blur.setTarget(null)方法来释放指向blur对象的引用
+ */
+blur.setTarget(mImageView);
+```
+
+# ViewBackgroundBlur
+ViewBackgroundBlur的使用方式和ImageViewBlur一样，不同的是它监听模糊的是View的背景
+
 # 覆盖默认参数
 [default_blur_settings](https://github.com/zj565061763/blur/blob/master/lib/src/main/res/values/default_blur_settings.xml)

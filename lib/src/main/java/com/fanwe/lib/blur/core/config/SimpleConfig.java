@@ -2,7 +2,6 @@ package com.fanwe.lib.blur.core.config;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Log;
 
 public class SimpleConfig implements BlurConfig
 {
@@ -17,8 +16,6 @@ public class SimpleConfig implements BlurConfig
     private Canvas mCanvas;
 
     private boolean mHasInit;
-
-    private boolean mIsDebug = true;
 
     @Override
     public boolean init(int width, int height, int downSampling)
@@ -81,18 +78,12 @@ public class SimpleConfig implements BlurConfig
         {
 
             if (mBitmapInput != null)
-            {
                 mBitmapInput.recycle();
-                if (mIsDebug)
-                    Log.e(getClass().getSimpleName(), mBitmapInput + " recycled");
-            }
 
             mBitmapInput = Bitmap.createBitmap(mScaledWidth, mScaledHeight, Bitmap.Config.ARGB_8888);
+
             mCanvas = new Canvas(mBitmapInput);
             mCanvas.scale(mScale, mScale);
-
-            if (mIsDebug)
-                Log.i(getClass().getSimpleName(), mBitmapInput + " created:" + mScaledWidth + "," + mScaledHeight);
         }
         return mBitmapInput;
     }
@@ -111,8 +102,6 @@ public class SimpleConfig implements BlurConfig
         if (mBitmapInput != null)
         {
             mBitmapInput.recycle();
-            if (mIsDebug)
-                Log.e(getClass().getSimpleName(), mBitmapInput + " recycled in recycle method");
             mBitmapInput = null;
         }
     }

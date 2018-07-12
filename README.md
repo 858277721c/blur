@@ -4,7 +4,7 @@
 # Gradle
 [![](https://jitpack.io/v/zj565061763/blur.svg)](https://jitpack.io/#zj565061763/blur)
 
-# 使用API
+# BlurApi
 ```java
 public class BlurActivity extends AppCompatActivity implements View.OnClickListener
 {

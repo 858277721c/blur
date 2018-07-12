@@ -20,10 +20,9 @@ abstract class ViewDrawableBlur<T extends View> extends ViewBlur<T>
     }
 
     @Override
-    protected void onUpdate(T target, BlurApi blurApi)
+    protected final void onUpdate(T target, BlurApi blurApi)
     {
         final Drawable drawable = getDrawable(target);
-
         if (mDrawable != drawable)
         {
             mDrawable = drawable;

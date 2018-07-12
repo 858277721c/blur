@@ -18,6 +18,7 @@ abstract class ViewBlur<T extends View>
     public ViewBlur(Context context)
     {
         mBlurApi = BlurApiFactory.create(context);
+        mBlurApi.destroyAfterBlur(false);
     }
 
     public final BlurApi getBlurApi()

@@ -13,6 +13,7 @@ import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
 import com.fanwe.lib.blur.core.Blur;
 import com.fanwe.lib.blur.core.BlurFactory;
 
+import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -155,14 +156,12 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
 
     private abstract class SourceInvoker<S> implements Invoker
     {
-        private final S mSource;
         private boolean mAsync;
         private boolean mHasInvoke;
         private ExecutorService mExecutorService;
 
         public SourceInvoker(S source)
         {
-            mSource = source;
         }
 
         @Override
@@ -223,6 +222,10 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
 
         private void notifyTargetInternal(BlurTarget target)
         {
+            S source = getSource();
+            if (source == null)
+                return;
+
             cancel();
             if (mAsync)
             {
@@ -232,7 +235,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
                     @Override
                     public Bitmap call() throws Exception
                     {
-                        return blurSource(mSource);
+                        return blurSource(getSource());
                     }
                 }, this, target));
 
@@ -241,9 +244,11 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
                 mMapInvoker.put(this, future);
             } else
             {
-                target.onBlurred(blurSource(mSource));
+                target.onBlurred(blurSource(source));
             }
         }
+
+        protected abstract S getSource();
 
         protected abstract Bitmap blurSource(S source);
     }
@@ -281,9 +286,18 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
 
     private final class BitmapInvoker extends SourceInvoker<Bitmap>
     {
+        private final Bitmap mBitmap;
+
         public BitmapInvoker(Bitmap source)
         {
             super(source);
+            mBitmap = source;
+        }
+
+        @Override
+        protected Bitmap getSource()
+        {
+            return mBitmap;
         }
 
         @Override
@@ -295,9 +309,18 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
 
     private final class ViewInvoker extends SourceInvoker<View>
     {
+        private final WeakReference<View> mView;
+
         public ViewInvoker(View source)
         {
             super(source);
+            mView = new WeakReference<>(source);
+        }
+
+        @Override
+        protected View getSource()
+        {
+            return mView == null ? null : mView.get();
         }
 
         @Override
@@ -309,9 +332,18 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
 
     private final class DrawableInvoker extends SourceInvoker<Drawable>
     {
+        private final Drawable mDrawable;
+
         public DrawableInvoker(Drawable source)
         {
             super(source);
+            mDrawable = source;
+        }
+
+        @Override
+        protected Drawable getSource()
+        {
+            return mDrawable;
         }
 
         @Override

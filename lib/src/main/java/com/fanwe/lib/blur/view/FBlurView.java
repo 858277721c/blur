@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference;
 
 public class FBlurView extends View implements BlurView
 {
-    private BlurApi mBlurApi;
+    private final BlurApi mBlurApi;
     private boolean mBlurAsync;
 
     private WeakReference<View> mBlurTarget;
@@ -32,6 +32,10 @@ public class FBlurView extends View implements BlurView
     public FBlurView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+
+        mBlurApi = BlurApiFactory.create(getContext());
+        mBlurApi.destroyAfterBlur(false);
+        mBlurApi.keepDownSamplingSize(true);
 
         final BlurViewAttrs viewAttrs = BlurViewAttrs.parse(context, attrs);
         setBlurRadius(viewAttrs.getBlurRadius());
@@ -78,8 +82,7 @@ public class FBlurView extends View implements BlurView
                 blur();
             } else
             {
-                if (mBlurApi != null)
-                    mBlurApi.destroy();
+                mBlurApi.destroy();
             }
         }
     }
@@ -94,33 +97,22 @@ public class FBlurView extends View implements BlurView
         }
     };
 
-    private BlurApi getBlurApi()
-    {
-        if (mBlurApi == null)
-        {
-            mBlurApi = BlurApiFactory.create(getContext());
-            mBlurApi.destroyAfterBlur(false);
-            mBlurApi.keepDownSamplingSize(true);
-        }
-        return mBlurApi;
-    }
-
     @Override
     public final void setBlurRadius(int radius)
     {
-        getBlurApi().radius(radius);
+        mBlurApi.radius(radius);
     }
 
     @Override
     public final void setBlurDownSampling(int downSampling)
     {
-        getBlurApi().downSampling(downSampling);
+        mBlurApi.downSampling(downSampling);
     }
 
     @Override
     public final void setBlurColor(int color)
     {
-        getBlurApi().color(color);
+        mBlurApi.color(color);
     }
 
     @Override
@@ -136,7 +128,7 @@ public class FBlurView extends View implements BlurView
             return;
 
         if (mIsAttachedToWindow)
-            getBlurApi().blur(getBlurTarget()).async(mBlurAsync).into(mInvokeTarget);
+            mBlurApi.blur(getBlurTarget()).async(mBlurAsync).into(mInvokeTarget);
     }
 
     private final BlurTarget mInvokeTarget = new BlurTarget()
@@ -165,7 +157,7 @@ public class FBlurView extends View implements BlurView
         if (mBitmapBlurred == null || mBitmapBlurred.isRecycled())
             return;
 
-        final int scale = getBlurApi().settings().getDownSampling();
+        final int scale = mBlurApi.settings().getDownSampling();
 
         canvas.save();
         canvas.translate(target.getX() - getX(), target.getY() - getY());
@@ -195,7 +187,6 @@ public class FBlurView extends View implements BlurView
     {
         super.onDetachedFromWindow();
         mIsAttachedToWindow = false;
-        if (mBlurApi != null)
-            mBlurApi.destroy();
+        mBlurApi.destroy();
     }
 }

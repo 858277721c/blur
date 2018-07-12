@@ -114,7 +114,8 @@ blurView.setBlurTarget(findViewById(R.id.ll_content));
 ```java
 ImageViewBlur blur = new ImageViewBlur(this);
 /**
- * 设置要模糊的ImageView，此时blur对象会被ImageView和ViewTreeObserver持有，如果blur对象不再被需要的时候可以调用blur.setTarget(null)方法来释放指向blur对象的引用
+ * 设置要模糊的ImageView，此时blur对象会被ImageView和ViewTreeObserver持有
+ * 如果blur对象不再被需要的时候可以调用blur.setTarget(null)方法来释放指向blur对象的引用
  */
 blur.setTarget(mImageView);
 ```

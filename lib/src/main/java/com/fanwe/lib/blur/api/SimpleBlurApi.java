@@ -157,6 +157,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     {
         private final S mSource;
         private boolean mAsync;
+        private boolean mHasInvoke;
 
         public SourceInvoker(S source)
         {
@@ -187,10 +188,14 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
         }
 
         @Override
-        public final Invoker into(BlurTarget target)
+        public final synchronized Invoker into(BlurTarget target)
         {
             if (target != null)
             {
+                if (mHasInvoke)
+                    throw new RuntimeException("current instance's (into(BlurTarget)) method can only be called once");
+
+                mHasInvoke = true;
                 target = new MainThreadTargetWrapper(target);
                 notifyTargetInternal(target);
             }

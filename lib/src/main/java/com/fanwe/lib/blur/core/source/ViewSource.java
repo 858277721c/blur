@@ -38,7 +38,7 @@ class ViewSource implements BlurSource
     @Override
     public void draw(final Canvas canvas, final Handler handler)
     {
-        final View view = getView();
+        View view = getView();
         if (view == null)
             return;
 

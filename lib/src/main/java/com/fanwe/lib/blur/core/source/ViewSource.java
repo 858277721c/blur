@@ -5,41 +5,60 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 
-class ViewSource extends BaseSource<View>
+import java.lang.ref.WeakReference;
+
+class ViewSource implements BlurSource
 {
+    private final WeakReference<View> mView;
+
     public ViewSource(View source)
     {
-        super(source);
+        mView = new WeakReference<>(source);
+    }
+
+    private View getView()
+    {
+        return mView == null ? null : mView.get();
     }
 
     @Override
     public int getWidth()
     {
-        return getSource().getWidth();
+        final View view = getView();
+        return view == null ? 0 : view.getWidth();
     }
 
     @Override
     public int getHeight()
     {
-        return getSource().getHeight();
+        final View view = getView();
+        return view == null ? 0 : view.getHeight();
     }
 
     @Override
-    public void draw(final Canvas canvas, Handler handler)
+    public void draw(final Canvas canvas, final Handler handler)
     {
+        final View view = getView();
+        if (view == null)
+            return;
+
         if (Looper.myLooper() == Looper.getMainLooper())
         {
-            getSource().draw(canvas);
+            view.draw(canvas);
         } else
         {
             synchronized (ViewSource.this)
             {
+                if (handler.getLooper() != Looper.getMainLooper())
+                    throw new RuntimeException("Illegal Handler:" + handler);
+
                 handler.post(new Runnable()
                 {
                     @Override
                     public void run()
                     {
-                        getSource().draw(canvas);
+                        draw(canvas, handler);
+
                         synchronized (ViewSource.this)
                         {
                             ViewSource.this.notifyAll();

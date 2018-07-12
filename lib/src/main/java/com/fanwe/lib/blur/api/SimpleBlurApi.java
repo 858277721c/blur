@@ -172,7 +172,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
         }
 
         @Override
-        public final Invoker into(ImageView imageView)
+        public final Cancelable into(ImageView imageView)
         {
             if (imageView != null)
                 into(new ImageViewTarget(imageView));
@@ -180,7 +180,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
         }
 
         @Override
-        public final Invoker intoBackground(View view)
+        public final Cancelable intoBackground(View view)
         {
             if (view != null)
                 into(new BackgroundTarget(view));
@@ -188,7 +188,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
         }
 
         @Override
-        public final synchronized Invoker into(BlurTarget target)
+        public final synchronized Cancelable into(BlurTarget target)
         {
             if (target != null)
             {
@@ -203,7 +203,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
         }
 
         @Override
-        public final void cancelAsync()
+        public final void cancel()
         {
             if (mMapInvoker != null)
             {
@@ -215,7 +215,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
 
         private void notifyTargetInternal(BlurTarget target)
         {
-            cancelAsync();
+            cancel();
             if (mAsync)
             {
                 final Future future = EXECUTOR_SERVICE.submit(new BlurTask(new Callable<Bitmap>()

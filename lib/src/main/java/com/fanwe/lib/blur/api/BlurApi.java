@@ -88,7 +88,7 @@ public interface BlurApi
      */
     Invoker blur(Drawable drawable);
 
-    interface Invoker
+    interface Invoker extends Cancelable
     {
         /**
          * 是否在子线程执行模糊操作
@@ -104,7 +104,7 @@ public interface BlurApi
          * @param imageView
          * @return
          */
-        Invoker into(ImageView imageView);
+        Cancelable into(ImageView imageView);
 
         /**
          * 模糊后设置给view的背景
@@ -112,7 +112,7 @@ public interface BlurApi
          * @param view
          * @return
          */
-        Invoker intoBackground(View view);
+        Cancelable intoBackground(View view);
 
         /**
          * 模糊后设置给某个目标
@@ -120,12 +120,15 @@ public interface BlurApi
          * @param target
          * @return
          */
-        Invoker into(BlurTarget target);
+        Cancelable into(BlurTarget target);
+    }
 
+    interface Cancelable
+    {
         /**
-         * 取消子线程任务
+         * 取消任务
          */
-        void cancelAsync();
+        void cancel();
     }
 
     interface Settings

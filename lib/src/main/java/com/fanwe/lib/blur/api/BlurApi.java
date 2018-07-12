@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.core.Blur;
 
+import java.util.concurrent.ExecutorService;
+
 public interface BlurApi
 {
     /**
@@ -97,6 +99,14 @@ public interface BlurApi
          * @return
          */
         Invoker async(boolean async);
+
+        /**
+         * 在指定的{@link ExecutorService}上执行
+         *
+         * @param executorService
+         * @return
+         */
+        Invoker executor(ExecutorService executorService);
 
         /**
          * 模糊后设置给ImageView

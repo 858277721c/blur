@@ -45,15 +45,11 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
         final Bitmap bitmap = Utils.randomBitmap(this);
 
         getBlurApi()
-                // 设置模糊半径
-                .setRadius(15)
-                // 设置压缩倍数
-                .setDownSampling(8)
-                // 设置覆盖层颜色
-                .setColor(Color.parseColor("#66FFFFFF"))
+                .setRadius(15) // 设置模糊半径
+                .setDownSampling(8) // 设置压缩倍数
+                .setColor(Color.parseColor("#66FFFFFF")) // 设置覆盖层颜色
                 .blur(bitmap)
-                // 设置是否在子线程执行
-                .async(true)
+                .async(true) // 设置是否在子线程执行
                 .into(mImageView);
     }
 

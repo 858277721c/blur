@@ -59,38 +59,6 @@ public interface BlurApi
     Settings settings();
 
     /**
-     * {@link Blur#blur(Bitmap)}
-     *
-     * @param source
-     * @return
-     */
-    Bitmap bitmap(Bitmap source);
-
-    /**
-     * {@link Blur#blur(View)}
-     *
-     * @param source
-     * @return
-     */
-    Bitmap bitmap(View source);
-
-    /**
-     * {@link Blur#blur(Drawable)}
-     *
-     * @param source
-     * @return
-     */
-    Bitmap bitmap(Drawable source);
-
-    /**
-     * {@link Blur#blur(BlurSource)}
-     *
-     * @param source
-     * @return
-     */
-    Bitmap bitmap(BlurSource source);
-
-    /**
      * 模糊{@link Bitmap}
      *
      * @param source
@@ -138,6 +106,13 @@ public interface BlurApi
          * @return
          */
         Invoker async(boolean async);
+
+        /**
+         * 得到模糊的Bitmap对象
+         *
+         * @return
+         */
+        Bitmap bitmap();
 
         /**
          * 模糊后设置给ImageView

@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <com.fanwe.lib.blur.view.FBlurLayout
+        android:id="@+id/view_blur"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:blurAsync="false"

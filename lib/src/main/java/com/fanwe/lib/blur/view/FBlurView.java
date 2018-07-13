@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewTreeObserver;
 
 import com.fanwe.lib.blur.api.BlurApi;
 import com.fanwe.lib.blur.api.BlurApiFactory;
@@ -21,7 +20,6 @@ public class FBlurView extends View implements BlurView
     private WeakReference<View> mBlurSource;
 
     private Bitmap mBitmapBlurred;
-    private boolean mIsDrawingBlur;
     private boolean mIsAttachedToWindow;
 
     private long mBlurTime;
@@ -66,38 +64,11 @@ public class FBlurView extends View implements BlurView
         final View old = getBlurSource();
         if (old != source)
         {
-            if (old != null)
-            {
-                final ViewTreeObserver observer = old.getViewTreeObserver();
-                if (observer.isAlive())
-                    observer.removeOnPreDrawListener(mOnPreDrawListener);
-            }
-
             mBlurSource = source == null ? null : new WeakReference<>(source);
-
-            if (source != null)
-            {
-                final ViewTreeObserver observer = source.getViewTreeObserver();
-                if (observer.isAlive())
-                    observer.addOnPreDrawListener(mOnPreDrawListener);
-
-                blur();
-            } else
-            {
+            if (source == null)
                 mBlurApi.destroy();
-            }
         }
     }
-
-    private final ViewTreeObserver.OnPreDrawListener mOnPreDrawListener = new ViewTreeObserver.OnPreDrawListener()
-    {
-        @Override
-        public boolean onPreDraw()
-        {
-            blur();
-            return true;
-        }
-    };
 
     @Override
     public final void setBlurRadius(int radius)
@@ -129,14 +100,6 @@ public class FBlurView extends View implements BlurView
         if (!mIsAttachedToWindow)
             return;
 
-        blurInternal();
-    }
-
-    private void blurInternal()
-    {
-        if (mIsDrawingBlur)
-            return;
-
         final long blurTime = System.currentTimeMillis();
         mBlurApi.blur(getBlurSource()).async(mBlurAsync).into(new BlurTarget()
         {
@@ -150,7 +113,6 @@ public class FBlurView extends View implements BlurView
                 {
                     mBlurTime = blurTime;
                     mBitmapBlurred = bitmap;
-                    mIsDrawingBlur = true;
                     invalidate();
                 }
             }
@@ -176,15 +138,6 @@ public class FBlurView extends View implements BlurView
         canvas.scale(scale, scale);
         canvas.drawBitmap(mBitmapBlurred, 0, 0, null);
         canvas.restore();
-
-        post(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                mIsDrawingBlur = false;
-            }
-        });
     }
 
     @Override

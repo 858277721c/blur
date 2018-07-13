@@ -80,32 +80,10 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
     app:blurRadius="10" />
 ```
 
-# FBlurLayout
-如果需要对某个view进行动态模糊，只要用这个layout包裹一下目标view，目标view的内容发生变化后会实时模糊，可以设置是否在子线程进行模糊操作，默认在UI主线程
-```xml
-<com.fanwe.lib.blur.view.FBlurLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:blurAsync="false"
-    app:blurColor="#99FFFFFF"
-    app:blurDownSampling="8"
-    app:blurRadius="10">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/fj5" />
-
-</com.fanwe.lib.blur.view.FBlurLayout>
-```
-
-# FBlurView
-FBlurLayout内部动态模糊的功能就是用FBlurView实现的
-注意：FBlurView相对FBlurView父布局的x和y，必须跟源view相对源view父布局的x和y一致，否则会出现模糊view的位置不对，可以设置是否在子线程进行模糊操作，默认在UI主线程
-```java
-FBlurView blurView = findViewById(R.id.view_blur);
-blurView.setBlurSource(findViewById(R.id.ll_content));
-```
+# View动态模糊
+关于View动态模糊请参考demo
+[BlurLayoutActivity](https://github.com/zj565061763/blur/blob/master/app/src/main/java/com/fanwe/blur/BlurLayoutActivity.java)
+[BlurViewActivity](https://github.com/zj565061763/blur/blob/master/app/src/main/java/com/fanwe/blur/BlurViewActivity.java)
 
 # 模糊View参数设置
 以上介绍的模糊View都实现了[BlurView](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/fanwe/lib/blur/view/BlurView.java)接口，可以进行模糊参数设置

@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.core.Blur;
 import com.fanwe.lib.blur.core.source.BlurSource;
 
@@ -136,7 +135,17 @@ public interface BlurApi
          * @param target
          * @return
          */
-        Cancelable into(BlurTarget target);
+        Cancelable into(Target target);
+    }
+
+    interface Target
+    {
+        /**
+         * 模糊回调
+         *
+         * @param bitmap 模糊后的Bitamp，可能为null
+         */
+        void onBlurred(Bitmap bitmap);
     }
 
     interface Cancelable

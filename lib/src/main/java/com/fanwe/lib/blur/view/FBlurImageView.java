@@ -11,7 +11,6 @@ import android.widget.ImageView;
 
 import com.fanwe.lib.blur.api.BlurApi;
 import com.fanwe.lib.blur.api.BlurApiFactory;
-import com.fanwe.lib.blur.api.target.BlurTarget;
 
 public class FBlurImageView extends ImageView implements BlurView
 {
@@ -107,7 +106,7 @@ public class FBlurImageView extends ImageView implements BlurView
         if (!mIsAttachedToWindow)
             throw new RuntimeException("can not blur when view is detached");
 
-        getBlurApi().blur(drawable).async(mBlurAsync).into(new BlurTarget()
+        getBlurApi().blur(drawable).async(mBlurAsync).into(new BlurApi.Target()
         {
             @Override
             public void onBlurred(Bitmap bitmap)

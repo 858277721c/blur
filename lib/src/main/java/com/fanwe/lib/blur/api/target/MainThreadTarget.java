@@ -4,7 +4,9 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 
-public abstract class MainThreadTarget implements BlurTarget
+import com.fanwe.lib.blur.api.BlurApi;
+
+public abstract class MainThreadTarget implements BlurApi.Target
 {
     private Handler mHandler;
 

@@ -7,7 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import com.fanwe.lib.blur.api.target.BlurTarget;
+import com.fanwe.lib.blur.api.BlurApi;
 
 abstract class ViewDrawableBlur<V extends View> extends BaseViewBlur<V>
 {
@@ -36,7 +36,7 @@ abstract class ViewDrawableBlur<V extends View> extends BaseViewBlur<V>
 
             if (drawable != null && !(drawable instanceof BlurredBitmapDrawable))
             {
-                getBlurApi().blur(drawable).async(mBlurAsync).into(new BlurTarget()
+                getBlurApi().blur(drawable).async(mBlurAsync).into(new BlurApi.Target()
                 {
                     @Override
                     public void onBlurred(Bitmap bitmap)

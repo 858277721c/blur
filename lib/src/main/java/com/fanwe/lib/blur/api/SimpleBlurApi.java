@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.fanwe.lib.blur.api.target.BackgroundTarget;
-import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.api.target.ImageViewTarget;
 import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
 import com.fanwe.lib.blur.core.Blur;
@@ -211,7 +210,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
         }
 
         @Override
-        public final Cancelable into(BlurTarget target)
+        public final Cancelable into(Target target)
         {
             if (target != null)
             {
@@ -232,7 +231,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
             }
         }
 
-        private void notifyTargetInternal(BlurTarget target)
+        private void notifyTargetInternal(Target target)
         {
             cancel();
             if (mAsync)
@@ -260,9 +259,9 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     private final class BlurTask extends FutureTask<Bitmap>
     {
         private final Invoker mInvoker;
-        private final BlurTarget mTarget;
+        private final Target mTarget;
 
-        public BlurTask(Callable<Bitmap> callable, Invoker invoker, BlurTarget target)
+        public BlurTask(Callable<Bitmap> callable, Invoker invoker, Target target)
         {
             super(callable);
             mInvoker = invoker;

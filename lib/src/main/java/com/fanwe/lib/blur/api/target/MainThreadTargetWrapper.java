@@ -2,11 +2,13 @@ package com.fanwe.lib.blur.api.target;
 
 import android.graphics.Bitmap;
 
+import com.fanwe.lib.blur.api.BlurApi;
+
 public class MainThreadTargetWrapper extends MainThreadTarget
 {
-    private final BlurTarget mTarget;
+    private final BlurApi.Target mTarget;
 
-    public MainThreadTargetWrapper(BlurTarget target)
+    public MainThreadTargetWrapper(BlurApi.Target target)
     {
         if (target == null)
             throw new NullPointerException("target is null");

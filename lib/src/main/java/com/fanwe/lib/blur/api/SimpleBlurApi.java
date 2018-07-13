@@ -143,21 +143,27 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     }
 
     @Override
-    public Invoker blur(Bitmap bitmap)
+    public Invoker blur(Bitmap source)
     {
-        return new BitmapInvoker(bitmap);
+        return new BitmapInvoker(source);
     }
 
     @Override
-    public Invoker blur(View view)
+    public Invoker blur(View source)
     {
-        return new ViewInvoker(view);
+        return new ViewInvoker(source);
     }
 
     @Override
-    public Invoker blur(Drawable drawable)
+    public Invoker blur(Drawable source)
     {
-        return new DrawableInvoker(drawable);
+        return new DrawableInvoker(source);
+    }
+
+    @Override
+    public Invoker blur(BlurSource source)
+    {
+        return new BlurSourceInvoker(source);
     }
 
     @Override
@@ -303,18 +309,18 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
 
     private final class BitmapInvoker extends SourceInvoker<Bitmap>
     {
-        private final Bitmap mBitmap;
+        private final Bitmap mSource;
 
         public BitmapInvoker(Bitmap source)
         {
             super(source);
-            mBitmap = source;
+            mSource = source;
         }
 
         @Override
         protected Bitmap getSource()
         {
-            return mBitmap;
+            return mSource;
         }
 
         @Override
@@ -326,18 +332,18 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
 
     private final class ViewInvoker extends SourceInvoker<View>
     {
-        private final WeakReference<View> mView;
+        private final WeakReference<View> mSource;
 
         public ViewInvoker(View source)
         {
             super(source);
-            mView = new WeakReference<>(source);
+            mSource = new WeakReference<>(source);
         }
 
         @Override
         protected View getSource()
         {
-            return mView == null ? null : mView.get();
+            return mSource == null ? null : mSource.get();
         }
 
         @Override
@@ -349,22 +355,45 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
 
     private final class DrawableInvoker extends SourceInvoker<Drawable>
     {
-        private final Drawable mDrawable;
+        private final Drawable mSource;
 
         public DrawableInvoker(Drawable source)
         {
             super(source);
-            mDrawable = source;
+            mSource = source;
         }
 
         @Override
         protected Drawable getSource()
         {
-            return mDrawable;
+            return mSource;
         }
 
         @Override
         protected Bitmap blurSource(Drawable source)
+        {
+            return getBlur().blur(source);
+        }
+    }
+
+    private final class BlurSourceInvoker extends SourceInvoker<BlurSource>
+    {
+        private final BlurSource mSource;
+
+        public BlurSourceInvoker(BlurSource source)
+        {
+            super(source);
+            mSource = source;
+        }
+
+        @Override
+        protected BlurSource getSource()
+        {
+            return mSource;
+        }
+
+        @Override
+        protected Bitmap blurSource(BlurSource source)
         {
             return getBlur().blur(source);
         }

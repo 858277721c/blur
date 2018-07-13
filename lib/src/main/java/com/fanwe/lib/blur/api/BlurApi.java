@@ -91,28 +91,36 @@ public interface BlurApi
     Bitmap bitmap(BlurSource source);
 
     /**
-     * 模糊bitmap
+     * 模糊{@link Bitmap}
      *
-     * @param bitmap
+     * @param source
      * @return
      */
-    Invoker blur(Bitmap bitmap);
+    Invoker blur(Bitmap source);
 
     /**
-     * 模糊view
+     * 模糊{@link View}
      *
-     * @param view
+     * @param source
      * @return
      */
-    Invoker blur(View view);
+    Invoker blur(View source);
 
     /**
-     * 模糊drawable
+     * 模糊{@link Drawable}
      *
-     * @param drawable
+     * @param source
      * @return
      */
-    Invoker blur(Drawable drawable);
+    Invoker blur(Drawable source);
+
+    /**
+     * 模糊{@link BlurSource}
+     *
+     * @param source
+     * @return
+     */
+    Invoker blur(BlurSource source);
 
     /**
      * {@link Blur#destroy()}

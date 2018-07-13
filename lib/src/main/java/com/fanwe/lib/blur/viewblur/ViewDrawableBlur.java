@@ -7,9 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import com.fanwe.lib.blur.api.BlurApi;
-import com.fanwe.lib.blur.api.target.BlurTarget;
-
 abstract class ViewDrawableBlur<T extends View> extends ViewBlur<T>
 {
     private Drawable mDrawable;
@@ -20,35 +17,24 @@ abstract class ViewDrawableBlur<T extends View> extends ViewBlur<T>
     }
 
     @Override
-    protected final void onUpdate(T target, BlurApi blurApi)
+    protected final void onUpdate(T target)
     {
         final Drawable drawable = getDrawable(target);
         if (mDrawable != drawable)
         {
             mDrawable = drawable;
-            if (drawable != null)
+
+            if (drawable != null && !(drawable instanceof BlurredBitmapDrawable))
             {
-                if (!(drawable instanceof BlurredBitmapDrawable))
-                    blurApi.blur(drawable).into(mBlurTarget);
+                final Bitmap bitmapBlurred = getBlurApi().bitmap(drawable);
+                if (bitmapBlurred == null)
+                    return;
+
+                mDrawable = new BlurredBitmapDrawable(target.getContext().getResources(), bitmapBlurred);
+                onDrawableBlurred(mDrawable, target);
             }
         }
     }
-
-    private final BlurTarget mBlurTarget = new BlurTarget()
-    {
-        @Override
-        public void onBlurred(Bitmap bitmap)
-        {
-            if (bitmap == null)
-                return;
-            final T target = getTarget();
-            if (target == null)
-                return;
-
-            mDrawable = new BlurredBitmapDrawable(target.getContext().getResources(), bitmap);
-            onDrawableBlurred(mDrawable, target);
-        }
-    };
 
     protected abstract Drawable getDrawable(T target);
 

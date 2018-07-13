@@ -12,17 +12,22 @@ import java.lang.ref.WeakReference;
 
 abstract class ViewBlur<T extends View>
 {
-    private final BlurApi mBlurApi;
+    private final Context mContext;
+    private BlurApi mBlurApi;
     private WeakReference<T> mTarget;
 
     public ViewBlur(Context context)
     {
-        mBlurApi = BlurApiFactory.create(context);
-        mBlurApi.setDestroyAfterBlur(false);
+        mContext = context.getApplicationContext();
     }
 
     public final BlurApi getBlurApi()
     {
+        if (mBlurApi == null)
+        {
+            mBlurApi = BlurApiFactory.create(mContext);
+            mBlurApi.setDestroyAfterBlur(false);
+        }
         return mBlurApi;
     }
 
@@ -54,10 +59,11 @@ abstract class ViewBlur<T extends View>
                     observer.addOnPreDrawListener(mOnPreDrawListener);
 
                 target.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
-                onUpdate(target, mBlurApi);
+                onUpdate(target);
             } else
             {
-                mBlurApi.destroy();
+                if (mBlurApi != null)
+                    mBlurApi.destroy();
             }
         }
     }
@@ -71,7 +77,7 @@ abstract class ViewBlur<T extends View>
             if (target != null)
             {
                 if (isAttachedToWindow(target))
-                    onUpdate(target, mBlurApi);
+                    onUpdate(target);
             }
             return true;
         }
@@ -82,17 +88,18 @@ abstract class ViewBlur<T extends View>
         @Override
         public void onViewAttachedToWindow(View v)
         {
-            onUpdate(getTarget(), mBlurApi);
+            onUpdate(getTarget());
         }
 
         @Override
         public void onViewDetachedFromWindow(View v)
         {
-            mBlurApi.destroy();
+            if (mBlurApi != null)
+                mBlurApi.destroy();
         }
     };
 
-    protected abstract void onUpdate(T target, BlurApi blurApi);
+    protected abstract void onUpdate(T target);
 
     private static boolean isAttachedToWindow(View view)
     {

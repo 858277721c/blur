@@ -1,8 +1,6 @@
 package com.fanwe.lib.blur.core;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.view.View;
 
 import com.fanwe.lib.blur.core.source.BlurSource;
 
@@ -77,30 +75,6 @@ public interface Blur
      * @return
      */
     boolean isDestroyAfterBlur();
-
-    /**
-     * 模糊
-     *
-     * @param source
-     * @return
-     */
-    Bitmap blur(Bitmap source);
-
-    /**
-     * 模糊
-     *
-     * @param source
-     * @return
-     */
-    Bitmap blur(View source);
-
-    /**
-     * 模糊
-     *
-     * @param source
-     * @return
-     */
-    Bitmap blur(Drawable source);
 
     /**
      * 模糊

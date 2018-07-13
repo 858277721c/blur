@@ -13,8 +13,8 @@ import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
 import com.fanwe.lib.blur.core.Blur;
 import com.fanwe.lib.blur.core.BlurFactory;
 import com.fanwe.lib.blur.core.source.BlurSource;
+import com.fanwe.lib.blur.core.source.BlurSourceFactory;
 
-import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -121,25 +121,33 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     @Override
     public Invoker blur(Bitmap source)
     {
-        return new BitmapInvoker(source);
+        if (source == null)
+            return null;
+        return blur(BlurSourceFactory.create(source));
     }
 
     @Override
     public Invoker blur(View source)
     {
-        return new ViewInvoker(source);
+        if (source == null)
+            return null;
+        return blur(BlurSourceFactory.create(source));
     }
 
     @Override
     public Invoker blur(Drawable source)
     {
-        return new DrawableInvoker(source);
+        if (source == null)
+            return null;
+        return blur(BlurSourceFactory.create(source));
     }
 
     @Override
     public Invoker blur(BlurSource source)
     {
-        return new BlurSourceInvoker(source);
+        if (source == null)
+            return null;
+        return new SourceInvoker(source);
     }
 
     @Override
@@ -161,13 +169,16 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
     private Map<Invoker, Future> mMapInvoker;
 
-    private abstract class SourceInvoker<S> implements Invoker
+    private final class SourceInvoker implements Invoker
     {
+        private final BlurSource mSource;
         private boolean mAsync;
-        private boolean mHasInvoke;
 
-        public SourceInvoker(S source)
+        public SourceInvoker(BlurSource source)
         {
+            if (source == null)
+                throw new NullPointerException("source is null");
+            mSource = source;
         }
 
         @Override
@@ -180,7 +191,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
         @Override
         public final Bitmap bitmap()
         {
-            return blurSource(getSource());
+            return getBlur().blur(mSource);
         }
 
         @Override
@@ -204,10 +215,6 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
         {
             if (target != null)
             {
-                if (mHasInvoke)
-                    throw new RuntimeException("current instance's (into(BlurTarget)) method can only be called once");
-
-                mHasInvoke = true;
                 target = new MainThreadTargetWrapper(target);
                 notifyTargetInternal(target);
             }
@@ -227,10 +234,6 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
 
         private void notifyTargetInternal(BlurTarget target)
         {
-            S source = getSource();
-            if (source == null)
-                return;
-
             cancel();
             if (mAsync)
             {
@@ -240,7 +243,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
                     @Override
                     public Bitmap call() throws Exception
                     {
-                        return blurSource(getSource());
+                        return bitmap();
                     }
                 }, this, target));
 
@@ -249,13 +252,9 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
                 mMapInvoker.put(this, future);
             } else
             {
-                target.onBlurred(blurSource(source));
+                target.onBlurred(bitmap());
             }
         }
-
-        protected abstract S getSource();
-
-        protected abstract Bitmap blurSource(S source);
     }
 
     private final class BlurTask extends FutureTask<Bitmap>
@@ -286,98 +285,6 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
             {
                 mMapInvoker.remove(mInvoker);
             }
-        }
-    }
-
-    private final class BitmapInvoker extends SourceInvoker<Bitmap>
-    {
-        private final Bitmap mSource;
-
-        public BitmapInvoker(Bitmap source)
-        {
-            super(source);
-            mSource = source;
-        }
-
-        @Override
-        protected Bitmap getSource()
-        {
-            return mSource;
-        }
-
-        @Override
-        protected Bitmap blurSource(Bitmap source)
-        {
-            return getBlur().blur(source);
-        }
-    }
-
-    private final class ViewInvoker extends SourceInvoker<View>
-    {
-        private final WeakReference<View> mSource;
-
-        public ViewInvoker(View source)
-        {
-            super(source);
-            mSource = new WeakReference<>(source);
-        }
-
-        @Override
-        protected View getSource()
-        {
-            return mSource == null ? null : mSource.get();
-        }
-
-        @Override
-        protected Bitmap blurSource(View source)
-        {
-            return getBlur().blur(source);
-        }
-    }
-
-    private final class DrawableInvoker extends SourceInvoker<Drawable>
-    {
-        private final Drawable mSource;
-
-        public DrawableInvoker(Drawable source)
-        {
-            super(source);
-            mSource = source;
-        }
-
-        @Override
-        protected Drawable getSource()
-        {
-            return mSource;
-        }
-
-        @Override
-        protected Bitmap blurSource(Drawable source)
-        {
-            return getBlur().blur(source);
-        }
-    }
-
-    private final class BlurSourceInvoker extends SourceInvoker<BlurSource>
-    {
-        private final BlurSource mSource;
-
-        public BlurSourceInvoker(BlurSource source)
-        {
-            super(source);
-            mSource = source;
-        }
-
-        @Override
-        protected BlurSource getSource()
-        {
-            return mSource;
-        }
-
-        @Override
-        protected Bitmap blurSource(BlurSource source)
-        {
-            return getBlur().blur(source);
         }
     }
 }

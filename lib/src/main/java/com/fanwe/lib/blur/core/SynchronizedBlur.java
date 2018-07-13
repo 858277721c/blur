@@ -1,8 +1,6 @@
 package com.fanwe.lib.blur.core;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.view.View;
 
 import com.fanwe.lib.blur.core.source.BlurSource;
 
@@ -75,24 +73,6 @@ class SynchronizedBlur implements Blur
     public boolean isDestroyAfterBlur()
     {
         return mBlur.isDestroyAfterBlur();
-    }
-
-    @Override
-    public synchronized Bitmap blur(Bitmap bitmap)
-    {
-        return mBlur.blur(bitmap);
-    }
-
-    @Override
-    public synchronized Bitmap blur(View view)
-    {
-        return mBlur.blur(view);
-    }
-
-    @Override
-    public synchronized Bitmap blur(Drawable drawable)
-    {
-        return mBlur.blur(drawable);
     }
 
     @Override

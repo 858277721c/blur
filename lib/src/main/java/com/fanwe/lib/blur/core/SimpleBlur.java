@@ -4,16 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
 
 import com.fanwe.lib.blur.DefaultBlurSettings;
 import com.fanwe.lib.blur.core.config.BlurConfig;
 import com.fanwe.lib.blur.core.config.SimpleConfig;
 import com.fanwe.lib.blur.core.source.BlurSource;
-import com.fanwe.lib.blur.core.source.BlurSourceFactory;
 import com.fanwe.lib.blur.core.strategy.BlurStrategy;
 import com.fanwe.lib.blur.core.strategy.BlurStrategyFactory;
 
@@ -107,30 +104,6 @@ class SimpleBlur implements Blur
     public boolean isDestroyAfterBlur()
     {
         return mDestroyAfterBlur;
-    }
-
-    @Override
-    public Bitmap blur(Bitmap source)
-    {
-        if (source == null)
-            return null;
-        return blur(BlurSourceFactory.create(source));
-    }
-
-    @Override
-    public Bitmap blur(View source)
-    {
-        if (source == null)
-            return null;
-        return blur(BlurSourceFactory.create(source));
-    }
-
-    @Override
-    public Bitmap blur(Drawable source)
-    {
-        if (source == null)
-            return null;
-        return blur(BlurSourceFactory.create(source));
     }
 
     @Override

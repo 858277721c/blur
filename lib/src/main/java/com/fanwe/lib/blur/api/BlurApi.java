@@ -101,14 +101,6 @@ public interface BlurApi
         Invoker async(boolean async);
 
         /**
-         * 在指定的{@link ExecutorService}上执行
-         *
-         * @param executorService
-         * @return
-         */
-        Invoker executor(ExecutorService executorService);
-
-        /**
          * 模糊后设置给ImageView
          *
          * @param imageView

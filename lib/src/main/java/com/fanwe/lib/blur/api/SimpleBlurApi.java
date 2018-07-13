@@ -158,7 +158,6 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     {
         private boolean mAsync;
         private boolean mHasInvoke;
-        private ExecutorService mExecutorService;
 
         public SourceInvoker(S source)
         {
@@ -168,13 +167,6 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
         public final Invoker async(boolean async)
         {
             mAsync = async;
-            return this;
-        }
-
-        @Override
-        public Invoker executor(ExecutorService executorService)
-        {
-            mExecutorService = executorService;
             return this;
         }
 
@@ -229,7 +221,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
             cancel();
             if (mAsync)
             {
-                final ExecutorService service = mExecutorService != null ? mExecutorService : EXECUTOR_SERVICE;
+                final ExecutorService service = EXECUTOR_SERVICE;
                 final Future future = service.submit(new BlurTask(new Callable<Bitmap>()
                 {
                     @Override

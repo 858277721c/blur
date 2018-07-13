@@ -40,21 +40,24 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
     }
 
     @Override
-    public final void setRadius(int radius)
+    public final ViewBlur<V> setBlurRadius(int radius)
     {
         getBlurApi().setRadius(radius);
+        return this;
     }
 
     @Override
-    public final void setDownSampling(int downSampling)
+    public final ViewBlur<V> setBlurDownSampling(int downSampling)
     {
         getBlurApi().setDownSampling(downSampling);
+        return this;
     }
 
     @Override
-    public final void setColor(int color)
+    public final ViewBlur<V> setBlurColor(int color)
     {
         getBlurApi().setColor(color);
+        return this;
     }
 
     @Override
@@ -64,7 +67,7 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
     }
 
     @Override
-    public final void setTarget(V target)
+    public final ViewBlur<V> setTarget(V target)
     {
         final V old = getTarget();
         if (old != target)
@@ -83,6 +86,7 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
                 destroyBlurApi();
             }
         }
+        return this;
     }
 
     @Override
@@ -92,7 +96,7 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
     }
 
     @Override
-    public final void setSource(V source)
+    public final ViewBlur<V> setSource(V source)
     {
         final V old = getSource();
         if (old != source)
@@ -122,6 +126,7 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
                 destroyBlurApi();
             }
         }
+        return this;
     }
 
     private final ViewTreeObserver.OnPreDrawListener mOnPreDrawListener = new ViewTreeObserver.OnPreDrawListener()

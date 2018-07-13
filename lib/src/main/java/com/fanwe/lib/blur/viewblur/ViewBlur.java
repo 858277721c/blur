@@ -10,22 +10,25 @@ public interface ViewBlur<V extends View>
      * {@link Blur#setRadius(int)}
      *
      * @param radius
+     * @return
      */
-    void setRadius(int radius);
+    ViewBlur<V> setBlurRadius(int radius);
 
     /**
      * {@link Blur#setDownSampling(int)}
      *
      * @param downSampling
+     * @return
      */
-    void setDownSampling(int downSampling);
+    ViewBlur<V> setBlurDownSampling(int downSampling);
 
     /**
      * {@link Blur#setColor(int)}
      *
      * @param color
+     * @return
      */
-    void setColor(int color);
+    ViewBlur<V> setBlurColor(int color);
 
     /**
      * {@link #setTarget(View)}
@@ -36,8 +39,11 @@ public interface ViewBlur<V extends View>
 
     /**
      * 设置得到模糊数据后，要模糊的目标
+     *
+     * @param target
+     * @return
      */
-    void setTarget(V target);
+    ViewBlur<V> setTarget(V target);
 
     /**
      * {@link #setSource(View)}
@@ -50,6 +56,7 @@ public interface ViewBlur<V extends View>
      * 设置要模糊数据的来源
      *
      * @param source
+     * @return
      */
-    void setSource(V source);
+    ViewBlur<V> setSource(V source);
 }

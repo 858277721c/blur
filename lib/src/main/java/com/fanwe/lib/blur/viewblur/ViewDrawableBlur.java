@@ -17,7 +17,7 @@ abstract class ViewDrawableBlur<V extends View> extends BaseViewBlur<V>
     }
 
     @Override
-    protected final void onUpdate(V source)
+    protected final void onUpdate(V source, V target)
     {
         final Drawable drawable = getDrawable(source);
         if (mDrawable != drawable)
@@ -30,17 +30,10 @@ abstract class ViewDrawableBlur<V extends View> extends BaseViewBlur<V>
                 if (bitmapBlurred == null)
                     return;
 
-                mDrawable = new BlurredBitmapDrawable(source.getContext().getResources(), bitmapBlurred);
-                onDrawableBlurred(mDrawable, source);
+                mDrawable = new BlurredBitmapDrawable(target.getContext().getResources(), bitmapBlurred);
+                onDrawableBlurred(mDrawable, target);
             }
         }
-    }
-
-    @Override
-    protected void onTargetChanged(V oldTarget, V newTarget)
-    {
-        if (newTarget != null && mDrawable instanceof BlurredBitmapDrawable)
-            onDrawableBlurred(mDrawable, newTarget);
     }
 
     /**

@@ -33,6 +33,12 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
         return mBlurApi;
     }
 
+    private void destroyBlurApi()
+    {
+        if (mBlurApi != null)
+            mBlurApi.destroy();
+    }
+
     @Override
     public final void setRadius(int radius)
     {
@@ -70,12 +76,12 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
 
             if (target != null)
                 target.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
+            else
+                destroyBlurApi();
 
-            onTargetChanged(old, target);
+            notifyUpdate();
         }
     }
-
-    protected abstract void onTargetChanged(V oldTarget, V newTarget);
 
     @Override
     public final V getSource()
@@ -114,8 +120,7 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
                 notifyUpdate();
             } else
             {
-                if (mBlurApi != null)
-                    mBlurApi.destroy();
+                destroyBlurApi();
             }
         }
     }
@@ -141,8 +146,7 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
         @Override
         public void onViewDetachedFromWindow(View v)
         {
-            if (mBlurApi != null)
-                mBlurApi.destroy();
+            destroyBlurApi();
         }
     };
 

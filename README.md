@@ -82,7 +82,9 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
 
 # View动态模糊
 关于View动态模糊请参考demo
+<br>
 [BlurLayoutActivity](https://github.com/zj565061763/blur/blob/master/app/src/main/java/com/fanwe/blur/BlurLayoutActivity.java)
+<br>
 [BlurViewActivity](https://github.com/zj565061763/blur/blob/master/app/src/main/java/com/fanwe/blur/BlurViewActivity.java)
 
 # 模糊View参数设置

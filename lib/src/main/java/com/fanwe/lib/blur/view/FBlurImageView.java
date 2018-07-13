@@ -108,7 +108,7 @@ public class FBlurImageView extends ImageView implements BlurView
         if (!mIsAttachedToWindow)
             throw new RuntimeException("can not blur when view is detached");
 
-        final long blurTime = System.nanoTime();
+        final long blurTime = System.currentTimeMillis();
         getBlurApi().blur(drawable).async(mBlurAsync).into(new BlurTarget()
         {
             @Override

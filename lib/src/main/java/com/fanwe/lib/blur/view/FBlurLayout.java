@@ -59,7 +59,7 @@ public class FBlurLayout extends FrameLayout implements BlurView
 
         if (child != mBlurView)
         {
-            mBlurView.setBlurTarget(child);
+            mBlurView.setBlurSource(child);
             addView(mBlurView);
         }
     }
@@ -71,7 +71,7 @@ public class FBlurLayout extends FrameLayout implements BlurView
 
         if (child != mBlurView)
         {
-            mBlurView.setBlurTarget(null);
+            mBlurView.setBlurSource(null);
             removeView(mBlurView);
         }
     }

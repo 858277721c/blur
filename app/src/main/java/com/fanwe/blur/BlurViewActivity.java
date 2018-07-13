@@ -1,7 +1,6 @@
 package com.fanwe.blur;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -21,7 +20,7 @@ public class BlurViewActivity extends AppCompatActivity implements View.OnClickL
         mBlurView = findViewById(R.id.view_blur);
 
         // 设置要模糊的目标view
-        mBlurView.setBlurTarget(findViewById(R.id.ll_content));
+        mBlurView.setBlurSource(findViewById(R.id.ll_content));
     }
 
     @Override

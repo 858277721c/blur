@@ -18,7 +18,7 @@ public class FBlurView extends View implements BlurView
     private final BlurApi mBlurApi;
     private boolean mBlurAsync;
 
-    private WeakReference<View> mBlurTarget;
+    private WeakReference<View> mBlurSource;
 
     private Bitmap mBitmapBlurred;
     private boolean mIsDrawingBlur;
@@ -49,9 +49,9 @@ public class FBlurView extends View implements BlurView
      *
      * @return
      */
-    public final View getBlurTarget()
+    public final View getBlurSource()
     {
-        return mBlurTarget == null ? null : mBlurTarget.get();
+        return mBlurSource == null ? null : mBlurSource.get();
     }
 
     /**
@@ -59,9 +59,9 @@ public class FBlurView extends View implements BlurView
      *
      * @param target
      */
-    public final void setBlurTarget(View target)
+    public final void setBlurSource(View target)
     {
-        final View old = getBlurTarget();
+        final View old = getBlurSource();
         if (old != target)
         {
             if (old != null)
@@ -71,7 +71,7 @@ public class FBlurView extends View implements BlurView
                     observer.removeOnPreDrawListener(mOnPreDrawListener);
             }
 
-            mBlurTarget = target == null ? null : new WeakReference<>(target);
+            mBlurSource = target == null ? null : new WeakReference<>(target);
 
             if (target != null)
             {
@@ -128,7 +128,7 @@ public class FBlurView extends View implements BlurView
             return;
 
         if (mIsAttachedToWindow)
-            mBlurApi.blur(getBlurTarget()).async(mBlurAsync).into(mInvokeTarget);
+            mBlurApi.blur(getBlurSource()).async(mBlurAsync).into(mInvokeTarget);
     }
 
     private final BlurTarget mInvokeTarget = new BlurTarget()
@@ -150,7 +150,7 @@ public class FBlurView extends View implements BlurView
     {
         super.onDraw(canvas);
 
-        final View target = getBlurTarget();
+        final View target = getBlurSource();
         if (target == null)
             return;
 

@@ -14,11 +14,23 @@ abstract class BaseViewBlur<S extends View> implements ViewBlur<S>
 {
     private final Context mContext;
     private BlurApi mBlurApi;
+
     private WeakReference<S> mSource;
+    private WeakReference<S> mTarget;
 
     public BaseViewBlur(Context context)
     {
         mContext = context.getApplicationContext();
+    }
+
+    protected final BlurApi getBlurApi()
+    {
+        if (mBlurApi == null)
+        {
+            mBlurApi = BlurApiFactory.create(mContext);
+            mBlurApi.setDestroyAfterBlur(false);
+        }
+        return mBlurApi;
     }
 
     @Override
@@ -39,15 +51,24 @@ abstract class BaseViewBlur<S extends View> implements ViewBlur<S>
         getBlurApi().setColor(color);
     }
 
-    protected final BlurApi getBlurApi()
+    @Override
+    public S getTarget()
     {
-        if (mBlurApi == null)
-        {
-            mBlurApi = BlurApiFactory.create(mContext);
-            mBlurApi.setDestroyAfterBlur(false);
-        }
-        return mBlurApi;
+        return mTarget == null ? null : mTarget.get();
     }
+
+    @Override
+    public void setTarget(S target)
+    {
+        final S old = getTarget();
+        if (old != target)
+        {
+            mTarget = target == null ? null : new WeakReference<>(target);
+            onTargetChanged(old, target);
+        }
+    }
+
+    protected abstract void onTargetChanged(S oldTarget, S newTarget);
 
     @Override
     public final S getSource()
@@ -79,6 +100,9 @@ abstract class BaseViewBlur<S extends View> implements ViewBlur<S>
                     observer.addOnPreDrawListener(mOnPreDrawListener);
 
                 source.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
+
+                if (getTarget() == null)
+                    setTarget(source);
                 onUpdate(source);
             } else
             {

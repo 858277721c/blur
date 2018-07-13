@@ -18,8 +18,8 @@ public class ImageViewBlur extends ViewDrawableBlur<ImageView>
     }
 
     @Override
-    protected void onDrawableBlurred(Drawable drawable, ImageView source)
+    protected void onDrawableBlurred(Drawable drawable, ImageView target)
     {
-        source.setImageDrawable(drawable);
+        target.setImageDrawable(drawable);
     }
 }

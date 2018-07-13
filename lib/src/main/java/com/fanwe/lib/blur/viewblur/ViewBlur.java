@@ -28,14 +28,26 @@ public interface ViewBlur<S extends View>
     void setColor(int color);
 
     /**
-     * 返回设置的目标源
+     * {@link #setTarget(View)}
+     *
+     * @return
+     */
+    S getTarget();
+
+    /**
+     * 设置得到模糊数据后，要模糊的目标
+     */
+    void setTarget(S target);
+
+    /**
+     * {@link #setSource(View)}
      *
      * @return
      */
     S getSource();
 
     /**
-     * 设置要模糊的目标源
+     * 设置要模糊数据的来源
      *
      * @param source
      */

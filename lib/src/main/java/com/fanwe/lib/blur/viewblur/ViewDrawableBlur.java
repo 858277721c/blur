@@ -36,9 +36,28 @@ abstract class ViewDrawableBlur<S extends View> extends BaseViewBlur<S>
         }
     }
 
+    @Override
+    protected void onTargetChanged(S oldTarget, S newTarget)
+    {
+        if (newTarget != null && mDrawable instanceof BlurredBitmapDrawable)
+            onDrawableBlurred(mDrawable, newTarget);
+    }
+
+    /**
+     * 从数据源拿到Drawable
+     *
+     * @param source
+     * @return
+     */
     protected abstract Drawable getDrawable(S source);
 
-    protected abstract void onDrawableBlurred(Drawable drawable, S source);
+    /**
+     * 把模糊后的Drawable设置给要模糊的目标
+     *
+     * @param drawable
+     * @param target
+     */
+    protected abstract void onDrawableBlurred(Drawable drawable, S target);
 
     private static final class BlurredBitmapDrawable extends BitmapDrawable
     {

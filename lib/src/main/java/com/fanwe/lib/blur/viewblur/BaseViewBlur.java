@@ -10,13 +10,13 @@ import com.fanwe.lib.blur.api.BlurApiFactory;
 
 import java.lang.ref.WeakReference;
 
-abstract class ViewBlur<T extends View>
+abstract class BaseViewBlur<T extends View>
 {
     private final Context mContext;
     private BlurApi mBlurApi;
     private WeakReference<T> mTarget;
 
-    public ViewBlur(Context context)
+    public BaseViewBlur(Context context)
     {
         mContext = context.getApplicationContext();
     }

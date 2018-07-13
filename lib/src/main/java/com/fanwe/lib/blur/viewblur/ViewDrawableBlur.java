@@ -7,7 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-abstract class ViewDrawableBlur<T extends View> extends ViewBlur<T>
+abstract class ViewDrawableBlur<T extends View> extends BaseViewBlur<T>
 {
     private Drawable mDrawable;
 

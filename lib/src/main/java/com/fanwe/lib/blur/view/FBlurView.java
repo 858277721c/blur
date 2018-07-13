@@ -129,6 +129,11 @@ public class FBlurView extends View implements BlurView
         if (!mIsAttachedToWindow)
             return;
 
+        blurInternal();
+    }
+
+    private void blurInternal()
+    {
         if (mIsDrawingBlur)
             return;
 
@@ -143,6 +148,7 @@ public class FBlurView extends View implements BlurView
 
                 if (blurTime >= mBlurTime)
                 {
+                    mBlurTime = blurTime;
                     mBitmapBlurred = bitmap;
                     mIsDrawingBlur = true;
                     invalidate();

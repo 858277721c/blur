@@ -53,6 +53,7 @@ abstract class ViewDrawableBlur<V extends View> extends BaseViewBlur<V>
 
                         if (blurTime >= mBlurTime)
                         {
+                            mBlurTime = blurTime;
                             mDrawable = new BlurredBitmapDrawable(target.getContext().getResources(), bitmap);
                             onDrawableBlurred(mDrawable, target);
                         }

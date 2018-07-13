@@ -47,35 +47,35 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     }
 
     @Override
-    public BlurApi radius(int radius)
+    public BlurApi setRadius(int radius)
     {
         getBlur().setRadius(radius);
         return this;
     }
 
     @Override
-    public BlurApi downSampling(int downSampling)
+    public BlurApi setDownSampling(int downSampling)
     {
         getBlur().setDownSampling(downSampling);
         return this;
     }
 
     @Override
-    public BlurApi color(int color)
+    public BlurApi setColor(int color)
     {
         getBlur().setColor(color);
         return this;
     }
 
     @Override
-    public BlurApi keepDownSamplingSize(boolean keepDownSamplingSize)
+    public BlurApi setKeepDownSamplingSize(boolean keepDownSamplingSize)
     {
         getBlur().setKeepDownSamplingSize(keepDownSamplingSize);
         return this;
     }
 
     @Override
-    public BlurApi destroyAfterBlur(boolean destroyAfterBlur)
+    public BlurApi setDestroyAfterBlur(boolean destroyAfterBlur)
     {
         getBlur().setDestroyAfterBlur(destroyAfterBlur);
         return this;

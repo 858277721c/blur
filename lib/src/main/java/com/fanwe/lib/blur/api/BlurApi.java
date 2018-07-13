@@ -18,7 +18,7 @@ public interface BlurApi
      * @param radius
      * @return
      */
-    BlurApi radius(int radius);
+    BlurApi setRadius(int radius);
 
     /**
      * {@link Blur#setDownSampling(int)}
@@ -26,7 +26,7 @@ public interface BlurApi
      * @param downSampling
      * @return
      */
-    BlurApi downSampling(int downSampling);
+    BlurApi setDownSampling(int downSampling);
 
     /**
      * {@link Blur#setColor(int)}
@@ -34,7 +34,7 @@ public interface BlurApi
      * @param color
      * @return
      */
-    BlurApi color(int color);
+    BlurApi setColor(int color);
 
     /**
      * {@link Blur#setKeepDownSamplingSize(boolean)}
@@ -42,7 +42,7 @@ public interface BlurApi
      * @param keepDownSamplingSize
      * @return
      */
-    BlurApi keepDownSamplingSize(boolean keepDownSamplingSize);
+    BlurApi setKeepDownSamplingSize(boolean keepDownSamplingSize);
 
     /**
      * {@link Blur#setDestroyAfterBlur(boolean)}
@@ -50,7 +50,7 @@ public interface BlurApi
      * @param destroyAfterBlur
      * @return
      */
-    BlurApi destroyAfterBlur(boolean destroyAfterBlur);
+    BlurApi setDestroyAfterBlur(boolean destroyAfterBlur);
 
     /**
      * 返回{@link Settings}对象，可以查询设置的参数

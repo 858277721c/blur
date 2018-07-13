@@ -33,7 +33,7 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
              * 当API版本支持RenderScript的时候，如果需要频繁的模糊操作，可以持有BlurApi对象，并设置为false，避免一直创建对象，效率会高很多
              * 在最后需要销毁的地方销毁BlurlApi对象即可
              */
-            mBlurApi.destroyAfterBlur(false);
+            mBlurApi.setDestroyAfterBlur(false);
         }
         return mBlurApi;
     }
@@ -46,11 +46,11 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
 
         getBlurApi()
                 // 设置模糊半径
-                .radius(15)
+                .setRadius(15)
                 // 设置压缩倍数
-                .downSampling(8)
+                .setDownSampling(8)
                 // 设置覆盖层颜色
-                .color(Color.parseColor("#66FFFFFF"))
+                .setColor(Color.parseColor("#66FFFFFF"))
                 .blur(bitmap)
                 // 设置是否在子线程执行
                 .async(true)

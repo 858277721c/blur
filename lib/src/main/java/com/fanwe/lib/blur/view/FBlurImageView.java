@@ -45,7 +45,7 @@ public class FBlurImageView extends ImageView implements BlurView
         if (mBlurApi == null)
         {
             mBlurApi = BlurApiFactory.create(getContext());
-            mBlurApi.destroyAfterBlur(false);
+            mBlurApi.setDestroyAfterBlur(false);
         }
         return mBlurApi;
     }
@@ -53,19 +53,19 @@ public class FBlurImageView extends ImageView implements BlurView
     @Override
     public final void setBlurRadius(int radius)
     {
-        getBlurApi().radius(radius);
+        getBlurApi().setRadius(radius);
     }
 
     @Override
     public final void setBlurDownSampling(int downSampling)
     {
-        getBlurApi().downSampling(downSampling);
+        getBlurApi().setDownSampling(downSampling);
     }
 
     @Override
     public final void setBlurColor(int color)
     {
-        getBlurApi().color(color);
+        getBlurApi().setColor(color);
     }
 
     @Override

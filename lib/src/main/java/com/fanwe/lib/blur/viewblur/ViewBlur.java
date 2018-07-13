@@ -31,6 +31,14 @@ public interface ViewBlur<V extends View>
     ViewBlur<V> setBlurColor(int color);
 
     /**
+     * 是否在子线程进行模糊，默认false
+     *
+     * @param async
+     * @return
+     */
+    ViewBlur<V> setBlurAsync(boolean async);
+
+    /**
      * {@link #setTarget(View)}
      *
      * @return

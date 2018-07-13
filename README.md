@@ -133,7 +133,7 @@ blurView.setBlurTarget(findViewById(R.id.ll_content));
 以上介绍的模糊View都实现了[BlurView](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/fanwe/lib/blur/view/BlurView.java)接口，可以进行模糊参数设置
 
 # ImageViewBlur
-如果你不想使用BlurApi接口，也不想使用上述的模糊View，那么可以使用ImageViewBlur，仅支持在主线程模糊
+如果你不想使用BlurApi接口，也不想使用上述的FBlurImageView，那么可以使用ImageViewBlur
 ```java
 ImageViewBlur blur = new ImageViewBlur(this);
 /**

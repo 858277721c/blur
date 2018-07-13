@@ -12,6 +12,7 @@ import com.fanwe.lib.blur.api.target.ImageViewTarget;
 import com.fanwe.lib.blur.api.target.MainThreadTargetWrapper;
 import com.fanwe.lib.blur.core.Blur;
 import com.fanwe.lib.blur.core.BlurFactory;
+import com.fanwe.lib.blur.core.source.BlurSource;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;
@@ -131,6 +132,12 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
 
     @Override
     public Bitmap bitmap(Drawable source)
+    {
+        return getBlur().blur(source);
+    }
+
+    @Override
+    public Bitmap bitmap(BlurSource source)
     {
         return getBlur().blur(source);
     }

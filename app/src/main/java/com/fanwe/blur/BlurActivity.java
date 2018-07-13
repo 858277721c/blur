@@ -1,14 +1,17 @@
 package com.fanwe.blur;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.fanwe.lib.blur.api.BlurApi;
 import com.fanwe.lib.blur.api.BlurApiFactory;
+import com.fanwe.lib.blur.core.source.BlurSource;
 
 public class BlurActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -51,6 +54,33 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
                 .blur(bitmap)
                 .async(true) // 设置是否在子线程执行
                 .into(mImageView);
+
+        /**
+         * 直接得到模糊的Bitmap对象
+         */
+        final Bitmap bitmapBlurred = getBlurApi().bitmap(bitmap); // 模糊Bitmap
+        final Bitmap bitmapViewBlurred = getBlurApi().bitmap(view); // 模糊View
+        final Bitmap bitmapDrawableBlurred = getBlurApi().bitmap(view.getBackground()); // 模糊Drawable
+        final Bitmap bitmapSourceBlurred = getBlurApi().bitmap(new BlurSource() // 扩展要模糊的Source
+        {
+            @Override
+            public int getWidth()
+            {
+                return bitmap.getWidth();
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return bitmap.getHeight();
+            }
+
+            @Override
+            public void draw(Canvas canvas, Handler handler)
+            {
+                canvas.drawBitmap(bitmap, 0, 0, null);
+            }
+        });
     }
 
     @Override

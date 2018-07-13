@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.core.Blur;
+import com.fanwe.lib.blur.core.source.BlurSource;
 
 public interface BlurApi
 {
@@ -80,6 +81,14 @@ public interface BlurApi
      * @return
      */
     Bitmap bitmap(Drawable source);
+
+    /**
+     * {@link Blur#blur(BlurSource)}
+     *
+     * @param source
+     * @return
+     */
+    Bitmap bitmap(BlurSource source);
 
     /**
      * 模糊bitmap

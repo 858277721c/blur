@@ -129,6 +129,14 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
         return this;
     }
 
+    @Override
+    public void release()
+    {
+        setSource(null);
+        setTarget(null);
+        destroyBlurApi();
+    }
+
     private final ViewTreeObserver.OnPreDrawListener mOnPreDrawListener = new ViewTreeObserver.OnPreDrawListener()
     {
         @Override

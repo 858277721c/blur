@@ -53,10 +53,17 @@ public interface ViewBlur<V extends View>
     V getSource();
 
     /**
-     * 设置要模糊数据的来源
+     * 设置模糊的数据源
      *
      * @param source
      * @return
      */
     ViewBlur<V> setSource(V source);
+
+    /**
+     * 清空{@link #setSource(View)}和{@link #setTarget(View)}设置的View
+     * <p>
+     * 释放指向当前对象的引用
+     */
+    void release();
 }

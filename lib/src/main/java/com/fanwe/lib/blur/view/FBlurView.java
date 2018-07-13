@@ -24,6 +24,8 @@ public class FBlurView extends View implements BlurView
     private boolean mIsDrawingBlur;
     private boolean mIsAttachedToWindow;
 
+    private long mBlurTime;
+
     public FBlurView(Context context)
     {
         this(context, null);
@@ -124,26 +126,30 @@ public class FBlurView extends View implements BlurView
     @Override
     public final void blur()
     {
+        if (!mIsAttachedToWindow)
+            return;
+
         if (mIsDrawingBlur)
             return;
 
-        if (mIsAttachedToWindow)
-            mBlurApi.blur(getBlurSource()).async(mBlurAsync).into(mInvokeTarget);
-    }
-
-    private final BlurTarget mInvokeTarget = new BlurTarget()
-    {
-        @Override
-        public void onBlurred(Bitmap bitmap)
+        final long blurTime = System.currentTimeMillis();
+        mBlurApi.blur(getBlurSource()).async(mBlurAsync).into(new BlurTarget()
         {
-            if (bitmap == null)
-                return;
+            @Override
+            public void onBlurred(Bitmap bitmap)
+            {
+                if (bitmap == null)
+                    return;
 
-            mBitmapBlurred = bitmap;
-            mIsDrawingBlur = true;
-            invalidate();
-        }
-    };
+                if (blurTime >= mBlurTime)
+                {
+                    mBitmapBlurred = bitmap;
+                    mIsDrawingBlur = true;
+                    invalidate();
+                }
+            }
+        });
+    }
 
     @Override
     protected void onDraw(Canvas canvas)

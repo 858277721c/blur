@@ -20,6 +20,7 @@ public class FBlurImageView extends ImageView implements BlurView
 
     private Drawable mDrawable;
     private boolean mIsAttachedToWindow;
+
     private long mBlurTime;
 
     public FBlurImageView(Context context)

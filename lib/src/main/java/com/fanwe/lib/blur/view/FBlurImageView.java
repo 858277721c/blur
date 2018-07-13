@@ -21,8 +21,6 @@ public class FBlurImageView extends ImageView implements BlurView
     private Drawable mDrawable;
     private boolean mIsAttachedToWindow;
 
-    private long mBlurTime;
-
     public FBlurImageView(Context context)
     {
         this(context, null);
@@ -109,7 +107,6 @@ public class FBlurImageView extends ImageView implements BlurView
         if (!mIsAttachedToWindow)
             throw new RuntimeException("can not blur when view is detached");
 
-        final long blurTime = System.currentTimeMillis();
         getBlurApi().blur(drawable).async(mBlurAsync).into(new BlurTarget()
         {
             @Override
@@ -118,11 +115,7 @@ public class FBlurImageView extends ImageView implements BlurView
                 if (bitmap == null)
                     return;
 
-                if (blurTime >= mBlurTime)
-                {
-                    mBlurTime = blurTime;
-                    setImageDrawable(new BlurredBitmapDrawable(getResources(), bitmap));
-                }
+                setImageDrawable(new BlurredBitmapDrawable(getResources(), bitmap));
             }
         });
     }

@@ -14,8 +14,6 @@ abstract class ViewDrawableBlur<V extends View> extends BaseViewBlur<V>
     private boolean mBlurAsync;
     private Drawable mDrawable;
 
-    private long mBlurTime;
-
     public ViewDrawableBlur(Context context)
     {
         super(context);
@@ -38,7 +36,6 @@ abstract class ViewDrawableBlur<V extends View> extends BaseViewBlur<V>
 
             if (drawable != null && !(drawable instanceof BlurredBitmapDrawable))
             {
-                final long blurTime = System.currentTimeMillis();
                 getBlurApi().blur(drawable).async(mBlurAsync).into(new BlurTarget()
                 {
                     @Override
@@ -51,12 +48,8 @@ abstract class ViewDrawableBlur<V extends View> extends BaseViewBlur<V>
                         if (target == null)
                             return;
 
-                        if (blurTime >= mBlurTime)
-                        {
-                            mBlurTime = blurTime;
-                            mDrawable = new BlurredBitmapDrawable(target.getContext().getResources(), bitmap);
-                            onDrawableBlurred(mDrawable, target);
-                        }
+                        mDrawable = new BlurredBitmapDrawable(target.getContext().getResources(), bitmap);
+                        onDrawableBlurred(mDrawable, target);
                     }
                 });
             }

@@ -48,6 +48,16 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
                 .async(true) // 设置是否在子线程执行
                 .into(mImageView);
 
+        // 自定义Target
+        getBlurApi().blur(bitmap).async(true).into(new BlurApi.Target()
+        {
+            @Override
+            public void onBlurred(Bitmap bitmap)
+            {
+                // 得到模糊后的Bitmap
+            }
+        });
+
         /**
          * 直接得到模糊后的Bitmap对象
          */

@@ -114,9 +114,6 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
 
                 source.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
 
-                if (getTarget() == null)
-                    setTarget(source);
-
                 notifyUpdate();
             } else
             {

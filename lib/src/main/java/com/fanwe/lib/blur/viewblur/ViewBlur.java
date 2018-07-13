@@ -4,7 +4,7 @@ import android.view.View;
 
 import com.fanwe.lib.blur.core.Blur;
 
-public interface ViewBlur<S extends View>
+public interface ViewBlur<V extends View>
 {
     /**
      * {@link Blur#setRadius(int)}
@@ -32,24 +32,24 @@ public interface ViewBlur<S extends View>
      *
      * @return
      */
-    S getTarget();
+    V getTarget();
 
     /**
      * 设置得到模糊数据后，要模糊的目标
      */
-    void setTarget(S target);
+    void setTarget(V target);
 
     /**
      * {@link #setSource(View)}
      *
      * @return
      */
-    S getSource();
+    V getSource();
 
     /**
      * 设置要模糊数据的来源
      *
      * @param source
      */
-    void setSource(S source);
+    void setSource(V source);
 }

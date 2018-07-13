@@ -7,7 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-abstract class ViewDrawableBlur<S extends View> extends BaseViewBlur<S>
+abstract class ViewDrawableBlur<V extends View> extends BaseViewBlur<V>
 {
     private Drawable mDrawable;
 
@@ -17,7 +17,7 @@ abstract class ViewDrawableBlur<S extends View> extends BaseViewBlur<S>
     }
 
     @Override
-    protected final void onUpdate(S source)
+    protected final void onUpdate(V source)
     {
         final Drawable drawable = getDrawable(source);
         if (mDrawable != drawable)
@@ -37,7 +37,7 @@ abstract class ViewDrawableBlur<S extends View> extends BaseViewBlur<S>
     }
 
     @Override
-    protected void onTargetChanged(S oldTarget, S newTarget)
+    protected void onTargetChanged(V oldTarget, V newTarget)
     {
         if (newTarget != null && mDrawable instanceof BlurredBitmapDrawable)
             onDrawableBlurred(mDrawable, newTarget);
@@ -49,7 +49,7 @@ abstract class ViewDrawableBlur<S extends View> extends BaseViewBlur<S>
      * @param source
      * @return
      */
-    protected abstract Drawable getDrawable(S source);
+    protected abstract Drawable getDrawable(V source);
 
     /**
      * 把模糊后的Drawable设置给要模糊的目标
@@ -57,7 +57,7 @@ abstract class ViewDrawableBlur<S extends View> extends BaseViewBlur<S>
      * @param drawable
      * @param target
      */
-    protected abstract void onDrawableBlurred(Drawable drawable, S target);
+    protected abstract void onDrawableBlurred(Drawable drawable, V target);
 
     private static final class BlurredBitmapDrawable extends BitmapDrawable
     {

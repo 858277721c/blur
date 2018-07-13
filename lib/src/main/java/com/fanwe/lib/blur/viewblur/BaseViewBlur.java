@@ -10,13 +10,13 @@ import com.fanwe.lib.blur.api.BlurApiFactory;
 
 import java.lang.ref.WeakReference;
 
-abstract class BaseViewBlur<S extends View> implements ViewBlur<S>
+abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
 {
     private final Context mContext;
     private BlurApi mBlurApi;
 
-    private WeakReference<S> mSource;
-    private WeakReference<S> mTarget;
+    private WeakReference<V> mSource;
+    private WeakReference<V> mTarget;
 
     public BaseViewBlur(Context context)
     {
@@ -52,34 +52,41 @@ abstract class BaseViewBlur<S extends View> implements ViewBlur<S>
     }
 
     @Override
-    public S getTarget()
+    public final V getTarget()
     {
         return mTarget == null ? null : mTarget.get();
     }
 
     @Override
-    public void setTarget(S target)
+    public final void setTarget(V target)
     {
-        final S old = getTarget();
+        final V old = getTarget();
         if (old != target)
         {
+            if (old != null)
+                old.removeOnAttachStateChangeListener(mOnAttachStateChangeListener);
+
             mTarget = target == null ? null : new WeakReference<>(target);
+
+            if (target != null)
+                target.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
+
             onTargetChanged(old, target);
         }
     }
 
-    protected abstract void onTargetChanged(S oldTarget, S newTarget);
+    protected abstract void onTargetChanged(V oldTarget, V newTarget);
 
     @Override
-    public final S getSource()
+    public final V getSource()
     {
         return mSource == null ? null : mSource.get();
     }
 
     @Override
-    public final void setSource(S source)
+    public final void setSource(V source)
     {
-        final S old = getSource();
+        final V old = getSource();
         if (old != source)
         {
             if (old != null)
@@ -103,7 +110,8 @@ abstract class BaseViewBlur<S extends View> implements ViewBlur<S>
 
                 if (getTarget() == null)
                     setTarget(source);
-                onUpdate(source);
+
+                notifyUpdate();
             } else
             {
                 if (mBlurApi != null)
@@ -117,12 +125,7 @@ abstract class BaseViewBlur<S extends View> implements ViewBlur<S>
         @Override
         public boolean onPreDraw()
         {
-            final S source = getSource();
-            if (source != null)
-            {
-                if (isAttachedToWindow(source))
-                    onUpdate(source);
-            }
+            notifyUpdate();
             return true;
         }
     };
@@ -132,7 +135,7 @@ abstract class BaseViewBlur<S extends View> implements ViewBlur<S>
         @Override
         public void onViewAttachedToWindow(View v)
         {
-            onUpdate(getSource());
+            notifyUpdate();
         }
 
         @Override
@@ -143,10 +146,26 @@ abstract class BaseViewBlur<S extends View> implements ViewBlur<S>
         }
     };
 
-    protected abstract void onUpdate(S source);
+    private void notifyUpdate()
+    {
+        final V source = getSource();
+        if (!isAttachedToWindow(source))
+            return;
+
+        final V target = getTarget();
+        if (!isAttachedToWindow(target))
+            return;
+
+        onUpdate(source, target);
+    }
+
+    protected abstract void onUpdate(V source, V target);
 
     private static boolean isAttachedToWindow(View view)
     {
+        if (view == null)
+            return false;
+
         if (Build.VERSION.SDK_INT >= 19)
             return view.isAttachedToWindow();
         else

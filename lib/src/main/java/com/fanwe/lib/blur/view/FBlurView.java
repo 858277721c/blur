@@ -59,12 +59,12 @@ public class FBlurView extends View implements BlurView
     /**
      * 设置要模糊的view
      *
-     * @param target
+     * @param source
      */
-    public final void setBlurSource(View target)
+    public final void setBlurSource(View source)
     {
         final View old = getBlurSource();
-        if (old != target)
+        if (old != source)
         {
             if (old != null)
             {
@@ -73,11 +73,11 @@ public class FBlurView extends View implements BlurView
                     observer.removeOnPreDrawListener(mOnPreDrawListener);
             }
 
-            mBlurSource = target == null ? null : new WeakReference<>(target);
+            mBlurSource = source == null ? null : new WeakReference<>(source);
 
-            if (target != null)
+            if (source != null)
             {
-                final ViewTreeObserver observer = target.getViewTreeObserver();
+                final ViewTreeObserver observer = source.getViewTreeObserver();
                 if (observer.isAlive())
                     observer.addOnPreDrawListener(mOnPreDrawListener);
 
@@ -162,8 +162,8 @@ public class FBlurView extends View implements BlurView
     {
         super.onDraw(canvas);
 
-        final View target = getBlurSource();
-        if (target == null)
+        final View source = getBlurSource();
+        if (source == null)
             return;
 
         if (mBitmapBlurred == null || mBitmapBlurred.isRecycled())
@@ -172,7 +172,7 @@ public class FBlurView extends View implements BlurView
         final int scale = mBlurApi.settings().getDownSampling();
 
         canvas.save();
-        canvas.translate(target.getX() - getX(), target.getY() - getY());
+        canvas.translate(source.getX() - getX(), source.getY() - getY());
         canvas.scale(scale, scale);
         canvas.drawBitmap(mBitmapBlurred, 0, 0, null);
         canvas.restore();

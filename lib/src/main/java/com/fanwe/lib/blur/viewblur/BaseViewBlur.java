@@ -10,18 +10,36 @@ import com.fanwe.lib.blur.api.BlurApiFactory;
 
 import java.lang.ref.WeakReference;
 
-abstract class BaseViewBlur<T extends View>
+abstract class BaseViewBlur<S extends View> implements ViewBlur<S>
 {
     private final Context mContext;
     private BlurApi mBlurApi;
-    private WeakReference<T> mTarget;
+    private WeakReference<S> mSource;
 
     public BaseViewBlur(Context context)
     {
         mContext = context.getApplicationContext();
     }
 
-    public final BlurApi getBlurApi()
+    @Override
+    public final void setRadius(int radius)
+    {
+        getBlurApi().setRadius(radius);
+    }
+
+    @Override
+    public final void setDownSampling(int downSampling)
+    {
+        getBlurApi().setDownSampling(downSampling);
+    }
+
+    @Override
+    public final void setColor(int color)
+    {
+        getBlurApi().setColor(color);
+    }
+
+    protected final BlurApi getBlurApi()
     {
         if (mBlurApi == null)
         {
@@ -31,15 +49,17 @@ abstract class BaseViewBlur<T extends View>
         return mBlurApi;
     }
 
-    public final T getTarget()
+    @Override
+    public final S getSource()
     {
-        return mTarget == null ? null : mTarget.get();
+        return mSource == null ? null : mSource.get();
     }
 
-    public final void setTarget(T target)
+    @Override
+    public final void setSource(S source)
     {
-        final T old = getTarget();
-        if (old != target)
+        final S old = getSource();
+        if (old != source)
         {
             if (old != null)
             {
@@ -50,16 +70,16 @@ abstract class BaseViewBlur<T extends View>
                 old.removeOnAttachStateChangeListener(mOnAttachStateChangeListener);
             }
 
-            mTarget = target == null ? null : new WeakReference<>(target);
+            mSource = source == null ? null : new WeakReference<>(source);
 
-            if (target != null)
+            if (source != null)
             {
-                final ViewTreeObserver observer = target.getViewTreeObserver();
+                final ViewTreeObserver observer = source.getViewTreeObserver();
                 if (observer.isAlive())
                     observer.addOnPreDrawListener(mOnPreDrawListener);
 
-                target.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
-                onUpdate(target);
+                source.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
+                onUpdate(source);
             } else
             {
                 if (mBlurApi != null)
@@ -73,11 +93,11 @@ abstract class BaseViewBlur<T extends View>
         @Override
         public boolean onPreDraw()
         {
-            final T target = getTarget();
-            if (target != null)
+            final S source = getSource();
+            if (source != null)
             {
-                if (isAttachedToWindow(target))
-                    onUpdate(target);
+                if (isAttachedToWindow(source))
+                    onUpdate(source);
             }
             return true;
         }
@@ -88,7 +108,7 @@ abstract class BaseViewBlur<T extends View>
         @Override
         public void onViewAttachedToWindow(View v)
         {
-            onUpdate(getTarget());
+            onUpdate(getSource());
         }
 
         @Override
@@ -99,7 +119,7 @@ abstract class BaseViewBlur<T extends View>
         }
     };
 
-    protected abstract void onUpdate(T target);
+    protected abstract void onUpdate(S source);
 
     private static boolean isAttachedToWindow(View view)
     {

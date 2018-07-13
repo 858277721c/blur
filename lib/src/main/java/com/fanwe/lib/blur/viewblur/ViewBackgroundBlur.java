@@ -13,17 +13,17 @@ public class ViewBackgroundBlur extends ViewDrawableBlur<View>
     }
 
     @Override
-    protected Drawable getDrawable(View target)
+    protected Drawable getDrawable(View source)
     {
-        return target.getBackground();
+        return source.getBackground();
     }
 
     @Override
-    protected void onDrawableBlurred(Drawable drawable, View target)
+    protected void onDrawableBlurred(Drawable drawable, View source)
     {
         if (Build.VERSION.SDK_INT >= 16)
-            target.setBackground(drawable);
+            source.setBackground(drawable);
         else
-            target.setBackgroundDrawable(drawable);
+            source.setBackgroundDrawable(drawable);
     }
 }

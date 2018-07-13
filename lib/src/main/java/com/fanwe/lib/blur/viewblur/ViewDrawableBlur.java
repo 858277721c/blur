@@ -7,7 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-abstract class ViewDrawableBlur<T extends View> extends BaseViewBlur<T>
+abstract class ViewDrawableBlur<S extends View> extends BaseViewBlur<S>
 {
     private Drawable mDrawable;
 
@@ -17,9 +17,9 @@ abstract class ViewDrawableBlur<T extends View> extends BaseViewBlur<T>
     }
 
     @Override
-    protected final void onUpdate(T target)
+    protected final void onUpdate(S source)
     {
-        final Drawable drawable = getDrawable(target);
+        final Drawable drawable = getDrawable(source);
         if (mDrawable != drawable)
         {
             mDrawable = drawable;
@@ -30,15 +30,15 @@ abstract class ViewDrawableBlur<T extends View> extends BaseViewBlur<T>
                 if (bitmapBlurred == null)
                     return;
 
-                mDrawable = new BlurredBitmapDrawable(target.getContext().getResources(), bitmapBlurred);
-                onDrawableBlurred(mDrawable, target);
+                mDrawable = new BlurredBitmapDrawable(source.getContext().getResources(), bitmapBlurred);
+                onDrawableBlurred(mDrawable, source);
             }
         }
     }
 
-    protected abstract Drawable getDrawable(T target);
+    protected abstract Drawable getDrawable(S source);
 
-    protected abstract void onDrawableBlurred(Drawable drawable, T target);
+    protected abstract void onDrawableBlurred(Drawable drawable, S source);
 
     private static final class BlurredBitmapDrawable extends BitmapDrawable
     {

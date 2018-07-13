@@ -211,7 +211,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
         }
 
         @Override
-        public final synchronized Cancelable into(BlurTarget target)
+        public final Cancelable into(BlurTarget target)
         {
             if (target != null)
             {

@@ -8,8 +8,6 @@ import android.widget.ImageView;
 import com.fanwe.lib.blur.api.target.BlurTarget;
 import com.fanwe.lib.blur.core.Blur;
 
-import java.util.concurrent.ExecutorService;
-
 public interface BlurApi
 {
     /**
@@ -60,11 +58,28 @@ public interface BlurApi
     Settings settings();
 
     /**
-     * {@link Blur#destroy()}
+     * {@link Blur#blur(Bitmap)}
      *
+     * @param source
      * @return
      */
-    BlurApi destroy();
+    Bitmap bitmap(Bitmap source);
+
+    /**
+     * {@link Blur#blur(View)}
+     *
+     * @param source
+     * @return
+     */
+    Bitmap bitmap(View source);
+
+    /**
+     * {@link Blur#blur(Drawable)}
+     *
+     * @param source
+     * @return
+     */
+    Bitmap bitmap(Drawable source);
 
     /**
      * 模糊bitmap
@@ -89,6 +104,13 @@ public interface BlurApi
      * @return
      */
     Invoker blur(Drawable drawable);
+
+    /**
+     * {@link Blur#destroy()}
+     *
+     * @return
+     */
+    BlurApi destroy();
 
     interface Invoker extends Cancelable
     {

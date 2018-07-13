@@ -88,40 +88,6 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     }
 
     @Override
-    public BlurApi destroy()
-    {
-        if (mMapInvoker != null)
-        {
-            for (Map.Entry<Invoker, Future> item : mMapInvoker.entrySet())
-            {
-                item.getValue().cancel(true);
-            }
-            mMapInvoker.clear();
-        }
-
-        getBlur().destroy();
-        return this;
-    }
-
-    @Override
-    public Invoker blur(Bitmap bitmap)
-    {
-        return new BitmapInvoker(bitmap);
-    }
-
-    @Override
-    public Invoker blur(View view)
-    {
-        return new ViewInvoker(view);
-    }
-
-    @Override
-    public Invoker blur(Drawable drawable)
-    {
-        return new DrawableInvoker(drawable);
-    }
-
-    @Override
     public int getRadius()
     {
         return getBlur().getRadius();
@@ -149,6 +115,58 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     public boolean isDestroyAfterBlur()
     {
         return getBlur().isDestroyAfterBlur();
+    }
+
+    @Override
+    public Bitmap bitmap(Bitmap source)
+    {
+        return getBlur().blur(source);
+    }
+
+    @Override
+    public Bitmap bitmap(View source)
+    {
+        return getBlur().blur(source);
+    }
+
+    @Override
+    public Bitmap bitmap(Drawable source)
+    {
+        return getBlur().blur(source);
+    }
+
+    @Override
+    public Invoker blur(Bitmap bitmap)
+    {
+        return new BitmapInvoker(bitmap);
+    }
+
+    @Override
+    public Invoker blur(View view)
+    {
+        return new ViewInvoker(view);
+    }
+
+    @Override
+    public Invoker blur(Drawable drawable)
+    {
+        return new DrawableInvoker(drawable);
+    }
+
+    @Override
+    public BlurApi destroy()
+    {
+        if (mMapInvoker != null)
+        {
+            for (Map.Entry<Invoker, Future> item : mMapInvoker.entrySet())
+            {
+                item.getValue().cancel(true);
+            }
+            mMapInvoker.clear();
+        }
+
+        getBlur().destroy();
+        return this;
     }
 
     private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();

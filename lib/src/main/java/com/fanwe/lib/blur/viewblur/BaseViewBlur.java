@@ -75,11 +75,13 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
             mTarget = target == null ? null : new WeakReference<>(target);
 
             if (target != null)
+            {
                 target.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
-            else
+                notifyUpdate();
+            } else
+            {
                 destroyBlurApi();
-
-            notifyUpdate();
+            }
         }
     }
 
@@ -97,22 +99,22 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
         {
             if (old != null)
             {
+                old.removeOnAttachStateChangeListener(mOnAttachStateChangeListener);
+
                 final ViewTreeObserver observer = old.getViewTreeObserver();
                 if (observer.isAlive())
                     observer.removeOnPreDrawListener(mOnPreDrawListener);
-
-                old.removeOnAttachStateChangeListener(mOnAttachStateChangeListener);
             }
 
             mSource = source == null ? null : new WeakReference<>(source);
 
             if (source != null)
             {
+                source.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
+
                 final ViewTreeObserver observer = source.getViewTreeObserver();
                 if (observer.isAlive())
                     observer.addOnPreDrawListener(mOnPreDrawListener);
-
-                source.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
 
                 notifyUpdate();
             } else

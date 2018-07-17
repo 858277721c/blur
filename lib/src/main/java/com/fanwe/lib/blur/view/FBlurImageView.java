@@ -3,7 +3,6 @@ package com.fanwe.lib.blur.view;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -17,7 +16,7 @@ public class FBlurImageView extends ImageView implements BlurView
     private BlurApi mBlurApi;
     private boolean mBlurAsync;
 
-    private Drawable mDrawable;
+    private Drawable mOriginalDrawable;
     private boolean mIsAttachedToWindow;
 
     public FBlurImageView(Context context)
@@ -76,35 +75,34 @@ public class FBlurImageView extends ImageView implements BlurView
     @Override
     public final void blur()
     {
-        setImageDrawable(mDrawable);
+        setImageDrawable(mOriginalDrawable);
     }
 
     @Override
-    protected void onDraw(Canvas canvas)
+    public void setImageResource(int resId)
     {
-        final Drawable drawable = getDrawable();
-        if (drawable == null)
-        {
-            super.onDraw(canvas);
-            return;
-        }
+        final Drawable drawable = getResources().getDrawable(resId);
+        setImageDrawable(drawable);
+    }
 
-        if (drawable instanceof BlurredBitmapDrawable)
-        {
-            super.onDraw(canvas);
-        } else
-        {
-            mDrawable = drawable;
+    @Override
+    public void setImageDrawable(Drawable drawable)
+    {
+        if (!(drawable instanceof BlurredBitmapDrawable))
+            mOriginalDrawable = drawable;
+
+        if (drawable == null || drawable instanceof BlurredBitmapDrawable)
+            super.setImageDrawable(drawable);
+        else
             blurDrawable(drawable);
-        }
     }
 
     private void blurDrawable(Drawable drawable)
     {
+        if (!mIsAttachedToWindow)
+            return;
         if (drawable instanceof BlurredBitmapDrawable)
             throw new IllegalArgumentException("can not blur BlurredBitmapDrawable");
-        if (!mIsAttachedToWindow)
-            throw new RuntimeException("can not blur when view is detached");
 
         getBlurApi().blur(drawable).async(mBlurAsync).into(new BlurApi.Target()
         {
@@ -124,6 +122,7 @@ public class FBlurImageView extends ImageView implements BlurView
     {
         super.onAttachedToWindow();
         mIsAttachedToWindow = true;
+        blur();
     }
 
     @Override

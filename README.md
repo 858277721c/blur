@@ -80,7 +80,7 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
 # FBlurImageView
 用法和普通的ImageView一样，只不过会把设置的图片进行模糊后展示，可以设置是否在子线程进行模糊操作，默认在UI主线程
 ```xml
-<com.fanwe.lib.blur.view.FBlurImageView
+<com.sd.lib.blur.view.FBlurImageView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:src="@drawable/fj5"
@@ -93,17 +93,17 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
 # View动态模糊
 关于View动态模糊请参考demo
 <br>
-[BlurLayoutActivity.java](https://github.com/zj565061763/blur/blob/master/app/src/main/java/com/fanwe/blur/BlurLayoutActivity.java)
+[BlurLayoutActivity.java](https://github.com/zj565061763/blur/blob/master/app/src/main/java/com/sd/blur/BlurLayoutActivity.java)
 <br>
 [act_blur_layout.xml](https://github.com/zj565061763/blur/blob/master/app/src/main/res/layout/act_blur_layout.xml)
 <br>
 <br>
-[BlurViewActivity.java](https://github.com/zj565061763/blur/blob/master/app/src/main/java/com/fanwe/blur/BlurViewActivity.java)
+[BlurViewActivity.java](https://github.com/zj565061763/blur/blob/master/app/src/main/java/com/sd/blur/BlurViewActivity.java)
 <br>
 [act_blur_view.xml](https://github.com/zj565061763/blur/blob/master/app/src/main/res/layout/act_blur_view.xml)
 
 # 模糊View参数设置
-以上介绍的模糊View都实现了[BlurView](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/fanwe/lib/blur/view/BlurView.java)接口，可以进行模糊参数设置
+以上介绍的模糊View都实现了[BlurView](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/sd/lib/blur/view/BlurView.java)接口，可以进行模糊参数设置
 
 # ImageViewBlur
 如果你不想使用BlurApi接口，也不想使用上述的FBlurImageView，那么可以使用ImageViewBlur

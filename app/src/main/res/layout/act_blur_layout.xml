@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.fanwe.lib.blur.view.FBlurLayout
+    <com.sd.lib.blur.view.FBlurLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:blurAsync="false"
@@ -20,6 +20,6 @@
             android:onClick="onClick"
             android:src="@drawable/fj5" />
 
-    </com.fanwe.lib.blur.view.FBlurLayout>
+    </com.sd.lib.blur.view.FBlurLayout>
 
 </FrameLayout>

@@ -11,7 +11,7 @@ class SynchronizedBlur implements Blur
     public SynchronizedBlur(Blur blur)
     {
         if (blur == null)
-            throw new NullPointerException("blur is null");
+            throw new IllegalArgumentException("blur is null");
         mBlur = blur;
     }
 

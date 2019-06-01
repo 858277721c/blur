@@ -11,7 +11,7 @@ public class MainThreadTargetWrapper extends MainThreadTarget
     public MainThreadTargetWrapper(BlurApi.Target target)
     {
         if (target == null)
-            throw new NullPointerException("target is null");
+            throw new IllegalArgumentException("target is null");
         mTarget = target;
     }
 

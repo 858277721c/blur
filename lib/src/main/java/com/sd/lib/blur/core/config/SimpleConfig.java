@@ -22,7 +22,7 @@ public class SimpleConfig implements BlurConfig
     {
         mHasInit = false;
 
-        if (width <= 0 || height <= 0)
+        if (width <= 0 || height <= 0 || downSampling < 0)
             return false;
 
         final float scale = 1.0f / downSampling;

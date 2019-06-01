@@ -107,16 +107,16 @@ public class FBlurImageView extends ImageView implements BlurView
                 @Override
                 public void onBlurred(Bitmap bitmap)
                 {
-                    applyBlurBitmap(bitmap);
+                    applyBlur(bitmap);
                 }
             });
         } else
         {
-            applyBlurBitmap(getBlurApi().blur(drawable).bitmap());
+            applyBlur(getBlurApi().blur(drawable).bitmap());
         }
     }
 
-    private void applyBlurBitmap(Bitmap bitmap)
+    private void applyBlur(Bitmap bitmap)
     {
         if (bitmap != null)
             setImageDrawable(new BlurredBitmapDrawable(getResources(), bitmap));

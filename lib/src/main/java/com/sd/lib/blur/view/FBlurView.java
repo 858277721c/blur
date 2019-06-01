@@ -136,7 +136,7 @@ public class FBlurView extends View implements BlurView
             mBlurApi.blur(source).async().into(mBlurTarget);
         } else
         {
-            applyBlurBitmap(mBlurApi.blur(source).bitmap());
+            applyBlur(mBlurApi.blur(source).bitmap());
         }
     }
 
@@ -145,11 +145,11 @@ public class FBlurView extends View implements BlurView
         @Override
         public void onBlurred(Bitmap bitmap)
         {
-            applyBlurBitmap(bitmap);
+            applyBlur(bitmap);
         }
     };
 
-    private void applyBlurBitmap(Bitmap bitmap)
+    private void applyBlur(Bitmap bitmap)
     {
         if (bitmap == null)
             return;

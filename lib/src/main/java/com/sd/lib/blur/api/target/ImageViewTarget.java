@@ -13,7 +13,7 @@ public class ImageViewTarget extends ViewTarget<ImageView>
     @Override
     public void onBlurred(Bitmap bitmap, ImageView view)
     {
-        if (bitmap == null || view == null)
+        if (bitmap == null)
             return;
 
         view.setImageBitmap(bitmap);

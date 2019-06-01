@@ -26,24 +26,18 @@ import java.util.concurrent.FutureTask;
 class SimpleBlurApi implements BlurApi, BlurApi.Settings
 {
     private final Blur mBlur;
-    private Blur mSynchronizedBlur;
 
     public SimpleBlurApi(Context context)
     {
-        mBlur = BlurFactory.create(context);
-        mBlur.setDestroyAfterBlur(true);
+        final Blur blur = BlurFactory.create(context);
+        blur.setDestroyAfterBlur(true);
+
+        mBlur = BlurFactory.synchronizedBlur(blur);
     }
 
     private Blur getBlur()
     {
-        if (mMapInvoker == null || mMapInvoker.isEmpty())
-            return mBlur;
-        else
-        {
-            if (mSynchronizedBlur == null)
-                mSynchronizedBlur = BlurFactory.synchronizedBlur(mBlur);
-            return mSynchronizedBlur;
-        }
+        return mBlur;
     }
 
     @Override
@@ -120,33 +114,28 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     @Override
     public Invoker blur(Bitmap source)
     {
-        if (source == null)
-            return null;
-        return blur(BlurSourceFactory.create(source));
+        final BlurSource blurSource = BlurSourceFactory.create(source);
+        return blur(blurSource);
     }
 
     @Override
     public Invoker blur(View source)
     {
-        if (source == null)
-            return null;
-        return blur(BlurSourceFactory.create(source));
+        final BlurSource blurSource = BlurSourceFactory.create(source);
+        return blur(blurSource);
     }
 
     @Override
     public Invoker blur(Drawable source)
     {
-        if (source == null)
-            return null;
-        return blur(BlurSourceFactory.create(source));
+        final BlurSource blurSource = BlurSourceFactory.create(source);
+        return blur(blurSource);
     }
 
     @Override
     public Invoker blur(BlurSource source)
     {
-        if (source == null)
-            return null;
-        return new SourceInvoker(source);
+        return new InternalInvoker(source);
     }
 
     @Override
@@ -154,7 +143,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
     {
         if (mMapInvoker != null)
         {
-            for (Map.Entry<Invoker, Future> item : mMapInvoker.entrySet())
+            for (Map.Entry<AsyncInvoker, Future> item : mMapInvoker.entrySet())
             {
                 item.getValue().cancel(true);
             }
@@ -165,103 +154,103 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
         return this;
     }
 
-    private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
-    private Map<Invoker, Future> mMapInvoker;
-
-    private final class SourceInvoker implements Invoker
+    private abstract class SourceHolder
     {
-        private final BlurSource mSource;
-        private boolean mAsync;
+        protected final BlurSource mSource;
 
-        public SourceInvoker(BlurSource source)
+        public SourceHolder(BlurSource source)
         {
             if (source == null)
                 throw new IllegalArgumentException("source is null");
             mSource = source;
         }
+    }
 
-        @Override
-        public final Invoker async(boolean async)
+    private final class InternalInvoker extends SourceHolder implements Invoker
+    {
+        public InternalInvoker(BlurSource source)
         {
-            mAsync = async;
-            return this;
+            super(source);
         }
 
         @Override
-        public final Bitmap bitmap()
+        public Bitmap bitmap()
         {
             return getBlur().blur(mSource);
         }
 
         @Override
+        public AsyncInvoker async()
+        {
+            if (mMapInvoker == null)
+                mMapInvoker = new ConcurrentHashMap<>();
+
+            return new InternalAsyncInvoker(mSource);
+        }
+    }
+
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
+    private Map<AsyncInvoker, Future> mMapInvoker;
+
+    private final class InternalAsyncInvoker extends SourceHolder implements AsyncInvoker
+    {
+        public InternalAsyncInvoker(BlurSource source)
+        {
+            super(source);
+        }
+
+        @Override
         public final Cancelable into(ImageView imageView)
         {
-            if (imageView != null)
-                into(new ImageViewTarget(imageView));
+            into(new ImageViewTarget(imageView));
             return this;
         }
 
         @Override
         public final Cancelable intoBackground(View view)
         {
-            if (view != null)
-                into(new BackgroundTarget(view));
+            into(new BackgroundTarget(view));
             return this;
         }
 
         @Override
         public final Cancelable into(Target target)
         {
-            if (target != null)
-            {
-                target = new MainThreadTargetWrapper(target);
-                notifyTargetInternal(target);
-            }
+            notifyTargetInternal(new MainThreadTargetWrapper(target));
             return this;
         }
 
         @Override
         public final void cancel()
         {
-            if (mMapInvoker != null)
-            {
-                final Future future = mMapInvoker.remove(this);
-                if (future != null)
-                    future.cancel(true);
-            }
+            final Future future = mMapInvoker.remove(this);
+            if (future != null)
+                future.cancel(true);
         }
 
         private void notifyTargetInternal(Target target)
         {
             cancel();
-            if (mAsync)
-            {
-                final ExecutorService service = EXECUTOR_SERVICE;
-                final Future future = service.submit(new BlurTask(new Callable<Bitmap>()
-                {
-                    @Override
-                    public Bitmap call() throws Exception
-                    {
-                        return bitmap();
-                    }
-                }, this, target));
 
-                if (mMapInvoker == null)
-                    mMapInvoker = new ConcurrentHashMap<>();
-                mMapInvoker.put(this, future);
-            } else
+            final Future future = EXECUTOR_SERVICE.submit(new BlurTask(new Callable<Bitmap>()
             {
-                target.onBlurred(bitmap());
-            }
+                @Override
+                public Bitmap call() throws Exception
+                {
+                    return getBlur().blur(mSource);
+                }
+            }, this, target));
+
+            mMapInvoker.put(this, future);
         }
     }
 
     private final class BlurTask extends FutureTask<Bitmap>
     {
-        private final Invoker mInvoker;
+        private final AsyncInvoker mInvoker;
         private final Target mTarget;
 
-        public BlurTask(Callable<Bitmap> callable, Invoker invoker, Target target)
+        public BlurTask(Callable<Bitmap> callable, AsyncInvoker invoker, Target target)
         {
             super(callable);
             mInvoker = invoker;

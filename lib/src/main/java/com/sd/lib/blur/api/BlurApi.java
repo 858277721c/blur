@@ -96,16 +96,8 @@ public interface BlurApi
      */
     BlurApi destroy();
 
-    interface Invoker extends Cancelable
+    interface Invoker
     {
-        /**
-         * 是否在子线程执行模糊操作
-         *
-         * @param async
-         * @return
-         */
-        Invoker async(boolean async);
-
         /**
          * 得到模糊的Bitmap对象
          *
@@ -113,6 +105,16 @@ public interface BlurApi
          */
         Bitmap bitmap();
 
+        /**
+         * 异步执行
+         *
+         * @return
+         */
+        AsyncInvoker async();
+    }
+
+    interface AsyncInvoker extends Cancelable
+    {
         /**
          * 模糊后设置给ImageView
          *

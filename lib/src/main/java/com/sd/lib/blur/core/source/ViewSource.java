@@ -14,6 +14,8 @@ class ViewSource implements BlurSource
 
     public ViewSource(View source)
     {
+        if (source == null)
+            throw new IllegalArgumentException("source is null");
         mView = new WeakReference<>(source);
     }
 

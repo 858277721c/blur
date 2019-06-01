@@ -15,7 +15,7 @@ public class BackgroundTarget extends ViewTarget<View>
     @Override
     public void onBlurred(Bitmap bitmap, View view)
     {
-        if (bitmap == null || view == null)
+        if (bitmap == null)
             return;
 
         final BitmapDrawable drawable = new BitmapDrawable(null, bitmap);

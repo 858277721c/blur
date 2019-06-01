@@ -13,6 +13,8 @@ public abstract class ViewTarget<T extends View> implements BlurApi.Target
 
     public ViewTarget(T view)
     {
+        if (view == null)
+            throw new IllegalArgumentException("view is null when create " + getClass().getSimpleName());
         mView = new WeakReference<>(view);
     }
 
@@ -24,7 +26,9 @@ public abstract class ViewTarget<T extends View> implements BlurApi.Target
     @Override
     public final void onBlurred(Bitmap bitmap)
     {
-        onBlurred(bitmap, getView());
+        final T view = getView();
+        if (view != null)
+            onBlurred(bitmap, view);
     }
 
     public abstract void onBlurred(Bitmap bitmap, T view);

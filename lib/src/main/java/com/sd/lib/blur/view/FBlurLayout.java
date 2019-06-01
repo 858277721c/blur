@@ -7,18 +7,13 @@ import android.widget.FrameLayout;
 
 public class FBlurLayout extends FrameLayout implements BlurView
 {
-    public FBlurLayout(Context context)
-    {
-        this(context, null);
-    }
+    private final FBlurView mBlurView;
 
     public FBlurLayout(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         mBlurView = new FBlurView(context, attrs);
     }
-
-    private final FBlurView mBlurView;
 
     @Override
     public final void setBlurRadius(int radius)

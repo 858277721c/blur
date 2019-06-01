@@ -23,11 +23,6 @@ public class FBlurView extends View implements BlurView
     private boolean mIsDrawingBlur;
     private boolean mIsAttachedToWindow;
 
-    public FBlurView(Context context)
-    {
-        this(context, null);
-    }
-
     public FBlurView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
@@ -129,7 +124,20 @@ public class FBlurView extends View implements BlurView
         if (mIsDrawingBlur)
             return;
 
-        mBlurApi.blur(getBlurSource()).async(mBlurAsync).into(mBlurTarget);
+        final View source = getBlurSource();
+        if (source == null)
+        {
+            mBlurApi.destroy();
+            return;
+        }
+
+        if (mBlurAsync)
+        {
+            mBlurApi.blur(source).async().into(mBlurTarget);
+        } else
+        {
+            applyBlurBitmap(mBlurApi.blur(source).bitmap());
+        }
     }
 
     private final BlurApi.Target mBlurTarget = new BlurApi.Target()
@@ -137,14 +145,19 @@ public class FBlurView extends View implements BlurView
         @Override
         public void onBlurred(Bitmap bitmap)
         {
-            if (bitmap == null)
-                return;
-
-            mBitmapBlurred = bitmap;
-            mIsDrawingBlur = true;
-            invalidate();
+            applyBlurBitmap(bitmap);
         }
     };
+
+    private void applyBlurBitmap(Bitmap bitmap)
+    {
+        if (bitmap == null)
+            return;
+
+        mBitmapBlurred = bitmap;
+        mIsDrawingBlur = true;
+        invalidate();
+    }
 
     @Override
     protected void onDraw(Canvas canvas)

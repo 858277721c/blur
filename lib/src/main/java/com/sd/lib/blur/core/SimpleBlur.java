@@ -133,7 +133,7 @@ class SimpleBlur implements Blur
         mStrategy.blur(mRadius, bitmapInput, bitmapOutput);
 
         if (bitmapInput.isRecycled() || bitmapOutput.isRecycled())
-            throw new RuntimeException("you can not recycle bitmapInput or bitmapOutput");
+            throw new RuntimeException("bitmapInput or bitmapOutput is recycled ");
 
         Bitmap bitmapResult = null;
         if (mDownSampling == 1 || mKeepDownSamplingSize)

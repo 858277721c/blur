@@ -105,19 +105,5 @@ public class BlurActivity extends AppCompatActivity implements View.OnClickListe
 # 模糊View参数设置
 以上介绍的模糊View都实现了[BlurView](https://github.com/zj565061763/blur/blob/master/lib/src/main/java/com/sd/lib/blur/view/BlurView.java)接口，可以进行模糊参数设置
 
-# ImageViewBlur
-如果你不想使用BlurApi接口，也不想使用上述的FBlurImageView，那么可以使用ImageViewBlur
-```java
-ImageViewBlur blur = new ImageViewBlur(this);
-/**
- * 如果blur对象不再被需要的时候可以调用blur.release()方法清空设置的Source和Target并释放指向blur对象的引用
- */
-blur.setSource(mImageView) // 设置模糊的数据源
-        .setTarget(mImageView); // 设置得到模糊数据后，要模糊的目标
-```
-
-# ViewBackgroundBlur
-ViewBackgroundBlur的使用方式和ImageViewBlur一样，不同的是它监听模糊的是View的背景
-
 # 覆盖默认参数
 [default_blur_settings](https://github.com/zj565061763/blur/blob/master/lib/src/main/res/values/default_blur_settings.xml)

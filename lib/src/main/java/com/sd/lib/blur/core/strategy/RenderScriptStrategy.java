@@ -19,36 +19,27 @@ class RenderScriptStrategy extends BaseStrategy
         mContext = context.getApplicationContext();
     }
 
-    private RenderScript getRenderScript()
+    private void init()
     {
         if (mRenderScript == null)
             mRenderScript = RenderScript.create(mContext);
-        return mRenderScript;
-    }
 
-    private ScriptIntrinsicBlur getBlurScript()
-    {
         if (mBlurScript == null)
-        {
-            final RenderScript renderScript = getRenderScript();
-            mBlurScript = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
-        }
-        return mBlurScript;
+            mBlurScript = ScriptIntrinsicBlur.create(mRenderScript, Element.U8_4(mRenderScript));
     }
 
     @Override
     public void blur(int radius, Bitmap bitmapInput, Bitmap bitmapOutput)
     {
-        final ScriptIntrinsicBlur blurScript = getBlurScript();
-        final RenderScript renderScript = getRenderScript();
+        init();
 
-        final Allocation allocationInput = Allocation.createFromBitmap(renderScript, bitmapInput, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
-        final Allocation allocationOutput = Allocation.createTyped(renderScript, allocationInput.getType());
+        final Allocation allocationInput = Allocation.createFromBitmap(mRenderScript, bitmapInput, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
+        final Allocation allocationOutput = Allocation.createTyped(mRenderScript, allocationInput.getType());
 
-        blurScript.setRadius(radius);
+        mBlurScript.setRadius(radius);
         allocationInput.copyFrom(bitmapInput);
-        blurScript.setInput(allocationInput);
-        blurScript.forEach(allocationOutput);
+        mBlurScript.setInput(allocationInput);
+        mBlurScript.forEach(allocationOutput);
         allocationOutput.copyTo(bitmapOutput);
     }
 

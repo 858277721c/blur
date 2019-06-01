@@ -41,7 +41,6 @@ class SimpleBlur implements Blur
             mRadius = radius;
         else
             throw new IllegalArgumentException("radius out of range (0 < radius <= 25)");
-
     }
 
     @Override
@@ -51,7 +50,6 @@ class SimpleBlur implements Blur
             mDownSampling = downSampling;
         else
             throw new IllegalArgumentException("downSampling out of range (downSampling > 0)");
-
     }
 
     @Override

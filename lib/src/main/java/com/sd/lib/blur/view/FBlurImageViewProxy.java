@@ -15,6 +15,7 @@ import com.sd.lib.blur.api.BlurApiFactory;
 public abstract class FBlurImageViewProxy implements BlurView
 {
     private final Context mContext;
+    private boolean mHasInit;
 
     private BlurApi mBlurApi;
     private boolean mBlurAsync;
@@ -22,9 +23,17 @@ public abstract class FBlurImageViewProxy implements BlurView
     private Drawable mOriginalDrawable;
     private boolean mIsAttachedToWindow;
 
-    public FBlurImageViewProxy(ImageView imageView, AttributeSet attrs)
+    public FBlurImageViewProxy(Context context)
     {
-        mContext = imageView.getContext();
+        mContext = context;
+    }
+
+    public void init(ImageView imageView, AttributeSet attrs)
+    {
+        if (mHasInit)
+            throw new RuntimeException("Proxy has inited");
+
+        mHasInit = true;
 
         final BlurViewAttrs viewAttrs = BlurViewAttrs.parse(mContext, attrs);
         setBlurRadius(viewAttrs.getBlurRadius());
@@ -35,7 +44,9 @@ public abstract class FBlurImageViewProxy implements BlurView
         if (imageView.getBackground() == null)
             imageView.setBackgroundColor(viewAttrs.getBlurColor());
 
-        mOriginalDrawable = imageView.getDrawable();
+        if (mOriginalDrawable == null)
+            mOriginalDrawable = imageView.getDrawable();
+
         imageView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener()
         {
             @Override

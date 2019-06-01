@@ -7,60 +7,69 @@ import android.widget.ImageView;
 
 public class FBlurImageView extends ImageView implements BlurView
 {
-    private final FBlurImageViewProxy mBlurImageViewProxy;
+    private FBlurImageViewProxy mProxy;
 
     public FBlurImageView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        mBlurImageViewProxy = new FBlurImageViewProxy(this, attrs)
+        getProxy().init(this, attrs);
+    }
+
+    private FBlurImageViewProxy getProxy()
+    {
+        if (mProxy == null)
         {
-            @Override
-            protected void setImageDrawableSuper(Drawable drawable)
+            mProxy = new FBlurImageViewProxy(getContext())
             {
-                FBlurImageView.super.setImageDrawable(drawable);
-            }
-        };
+                @Override
+                protected void setImageDrawableSuper(Drawable drawable)
+                {
+                    FBlurImageView.super.setImageDrawable(drawable);
+                }
+            };
+        }
+        return mProxy;
     }
 
     @Override
     public final void setBlurRadius(int radius)
     {
-        mBlurImageViewProxy.setBlurRadius(radius);
+        getProxy().setBlurRadius(radius);
     }
 
     @Override
     public final void setBlurDownSampling(int downSampling)
     {
-        mBlurImageViewProxy.setBlurDownSampling(downSampling);
+        getProxy().setBlurDownSampling(downSampling);
     }
 
     @Override
     public final void setBlurColor(int color)
     {
-        mBlurImageViewProxy.setBlurColor(color);
+        getProxy().setBlurColor(color);
     }
 
     @Override
     public final void setBlurAsync(boolean async)
     {
-        mBlurImageViewProxy.setBlurAsync(async);
+        getProxy().setBlurAsync(async);
     }
 
     @Override
     public final void blur()
     {
-        mBlurImageViewProxy.blur();
+        getProxy().blur();
     }
 
     @Override
     public void setImageResource(int resId)
     {
-        mBlurImageViewProxy.setImageResourceOverride(resId);
+        getProxy().setImageResourceOverride(resId);
     }
 
     @Override
     public void setImageDrawable(Drawable drawable)
     {
-        mBlurImageViewProxy.setImageDrawableOverride(drawable);
+        getProxy().setImageDrawableOverride(drawable);
     }
 }

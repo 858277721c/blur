@@ -39,13 +39,16 @@ class RenderScriptStrategy extends BaseStrategy
     @Override
     public void blur(int radius, Bitmap bitmapInput, Bitmap bitmapOutput)
     {
-        final Allocation allocationInput = Allocation.createFromBitmap(getRenderScript(), bitmapInput, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
-        final Allocation allocationOutput = Allocation.createTyped(getRenderScript(), allocationInput.getType());
+        final ScriptIntrinsicBlur blurScript = getBlurScript();
+        final RenderScript renderScript = getRenderScript();
 
-        getBlurScript().setRadius(radius);
+        final Allocation allocationInput = Allocation.createFromBitmap(renderScript, bitmapInput, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
+        final Allocation allocationOutput = Allocation.createTyped(renderScript, allocationInput.getType());
+
+        blurScript.setRadius(radius);
         allocationInput.copyFrom(bitmapInput);
-        getBlurScript().setInput(allocationInput);
-        getBlurScript().forEach(allocationOutput);
+        blurScript.setInput(allocationInput);
+        blurScript.forEach(allocationOutput);
         allocationOutput.copyTo(bitmapOutput);
     }
 

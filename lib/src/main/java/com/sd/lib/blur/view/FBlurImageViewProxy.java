@@ -124,6 +124,9 @@ public abstract class FBlurImageViewProxy implements BlurView
 
     private void blurDrawable(Drawable drawable)
     {
+        if (drawable == null)
+            throw new IllegalArgumentException("drawable is null when blurDrawable()");
+
         if (!mIsAttachedToWindow)
             return;
 

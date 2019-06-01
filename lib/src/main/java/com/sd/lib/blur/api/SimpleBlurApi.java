@@ -176,7 +176,7 @@ class SimpleBlurApi implements BlurApi, BlurApi.Settings
         public SourceInvoker(BlurSource source)
         {
             if (source == null)
-                throw new NullPointerException("source is null");
+                throw new IllegalArgumentException("source is null");
             mSource = source;
         }
 

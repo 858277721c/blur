@@ -10,6 +10,7 @@ import java.lang.ref.WeakReference;
 class ViewSource implements BlurSource
 {
     private final WeakReference<View> mView;
+    private Handler mHandler;
 
     public ViewSource(View source)
     {
@@ -36,7 +37,7 @@ class ViewSource implements BlurSource
     }
 
     @Override
-    public void draw(final Canvas canvas, final Handler handler)
+    public void draw(final Canvas canvas)
     {
         View view = getView();
         if (view == null)
@@ -49,15 +50,15 @@ class ViewSource implements BlurSource
         {
             synchronized (ViewSource.this)
             {
-                if (handler.getLooper() != Looper.getMainLooper())
-                    throw new RuntimeException("Illegal Handler:" + handler);
+                if (mHandler == null)
+                    mHandler = new Handler(Looper.getMainLooper());
 
-                handler.post(new Runnable()
+                mHandler.post(new Runnable()
                 {
                     @Override
                     public void run()
                     {
-                        draw(canvas, handler);
+                        draw(canvas);
 
                         synchronized (ViewSource.this)
                         {

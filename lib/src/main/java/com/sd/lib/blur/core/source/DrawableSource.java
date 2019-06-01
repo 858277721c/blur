@@ -2,7 +2,6 @@ package com.sd.lib.blur.core.source;
 
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
 
 class DrawableSource extends BaseSource<Drawable>
 {
@@ -24,7 +23,7 @@ class DrawableSource extends BaseSource<Drawable>
     }
 
     @Override
-    public void draw(Canvas canvas, Handler handler)
+    public void draw(Canvas canvas)
     {
         getSource().draw(canvas);
     }

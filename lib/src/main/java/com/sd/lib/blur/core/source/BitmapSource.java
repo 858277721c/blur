@@ -2,7 +2,6 @@ package com.sd.lib.blur.core.source;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.os.Handler;
 
 class BitmapSource extends BaseSource<Bitmap>
 {
@@ -24,7 +23,7 @@ class BitmapSource extends BaseSource<Bitmap>
     }
 
     @Override
-    public void draw(Canvas canvas, Handler handler)
+    public void draw(Canvas canvas)
     {
         canvas.drawBitmap(getSource(), 0, 0, null);
     }

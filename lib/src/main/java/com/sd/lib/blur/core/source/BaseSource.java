@@ -7,7 +7,7 @@ abstract class BaseSource<T> implements BlurSource
     public BaseSource(T source)
     {
         if (source == null)
-            throw new NullPointerException("source is null");
+            throw new IllegalArgumentException("source is null");
         mSource = source;
     }
 

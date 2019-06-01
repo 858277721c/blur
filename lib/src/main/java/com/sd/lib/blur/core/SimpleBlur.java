@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.os.Handler;
-import android.os.Looper;
 
 import com.sd.lib.blur.DefaultBlurSettings;
 import com.sd.lib.blur.core.config.BlurConfig;
@@ -16,8 +14,6 @@ import com.sd.lib.blur.core.strategy.BlurStrategyFactory;
 
 class SimpleBlur implements Blur
 {
-    private static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
-
     private int mRadius = 15;
     private int mDownSampling = 8;
     private int mColor = Color.TRANSPARENT;
@@ -120,7 +116,7 @@ class SimpleBlur implements Blur
             if (mConfig.getBitmapInput().isRecycled())
                 throw new RuntimeException("bitmap for canvas is recycled");
 
-            source.draw(mConfig.getCanvas(), MAIN_HANDLER);
+            source.draw(mConfig.getCanvas());
             return blurInternal(mConfig);
         } finally
         {

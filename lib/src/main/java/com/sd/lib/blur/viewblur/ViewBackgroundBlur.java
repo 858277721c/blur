@@ -13,7 +13,7 @@ public class ViewBackgroundBlur extends ViewDrawableBlur<View>
     }
 
     @Override
-    protected Drawable getDrawable(View source)
+    protected Drawable getSourceDrawable(View source)
     {
         return source.getBackground();
     }

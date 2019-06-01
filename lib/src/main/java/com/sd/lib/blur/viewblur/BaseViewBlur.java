@@ -3,7 +3,6 @@ package com.sd.lib.blur.viewblur;
 import android.content.Context;
 import android.os.Build;
 import android.view.View;
-import android.view.ViewTreeObserver;
 
 import com.sd.lib.blur.api.BlurApi;
 import com.sd.lib.blur.api.BlurApiFactory;
@@ -15,7 +14,6 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
     private final Context mContext;
     private BlurApi mBlurApi;
 
-    private WeakReference<V> mSource;
     private WeakReference<V> mTarget;
 
     public BaseViewBlur(Context context)
@@ -23,7 +21,7 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
         mContext = context.getApplicationContext();
     }
 
-    protected final BlurApi getBlurApi()
+    private BlurApi getBlurApi()
     {
         if (mBlurApi == null)
         {
@@ -61,9 +59,22 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
     }
 
     @Override
+    public final V getSource()
+    {
+        return mSourceListener.getView();
+    }
+
+    @Override
     public final V getTarget()
     {
         return mTarget == null ? null : mTarget.get();
+    }
+
+    @Override
+    public final ViewBlur<V> setSource(V source)
+    {
+        mSourceListener.setView(source);
+        return this;
     }
 
     @Override
@@ -73,53 +84,13 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
         if (old != target)
         {
             if (old != null)
-                old.removeOnAttachStateChangeListener(mOnAttachStateChangeListener);
+                old.removeOnAttachStateChangeListener(mTargetAttachStateChangeListener);
 
             mTarget = target == null ? null : new WeakReference<>(target);
 
             if (target != null)
             {
-                target.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
-                notifyUpdate();
-            } else
-            {
-                destroyBlurApi();
-            }
-        }
-        return this;
-    }
-
-    @Override
-    public final V getSource()
-    {
-        return mSource == null ? null : mSource.get();
-    }
-
-    @Override
-    public final ViewBlur<V> setSource(V source)
-    {
-        final V old = getSource();
-        if (old != source)
-        {
-            if (old != null)
-            {
-                old.removeOnAttachStateChangeListener(mOnAttachStateChangeListener);
-
-                final ViewTreeObserver observer = old.getViewTreeObserver();
-                if (observer.isAlive())
-                    observer.removeOnPreDrawListener(mOnPreDrawListener);
-            }
-
-            mSource = source == null ? null : new WeakReference<>(source);
-
-            if (source != null)
-            {
-                source.addOnAttachStateChangeListener(mOnAttachStateChangeListener);
-
-                final ViewTreeObserver observer = source.getViewTreeObserver();
-                if (observer.isAlive())
-                    observer.addOnPreDrawListener(mOnPreDrawListener);
-
+                target.addOnAttachStateChangeListener(mTargetAttachStateChangeListener);
                 notifyUpdate();
             } else
             {
@@ -137,17 +108,26 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
         destroyBlurApi();
     }
 
-    private final ViewTreeObserver.OnPreDrawListener mOnPreDrawListener = new ViewTreeObserver.OnPreDrawListener()
+    private final FViewListener<V> mSourceListener = new FViewListener<V>()
     {
         @Override
-        public boolean onPreDraw()
+        protected void onViewChanged(V oldView, V newView)
+        {
+            super.onViewChanged(oldView, newView);
+            if (newView != null)
+                notifyUpdate();
+            else
+                destroyBlurApi();
+        }
+
+        @Override
+        protected void onUpdate(V view)
         {
             notifyUpdate();
-            return true;
         }
     };
 
-    private final View.OnAttachStateChangeListener mOnAttachStateChangeListener = new View.OnAttachStateChangeListener()
+    private final View.OnAttachStateChangeListener mTargetAttachStateChangeListener = new View.OnAttachStateChangeListener()
     {
         @Override
         public void onViewAttachedToWindow(View v)
@@ -172,10 +152,10 @@ abstract class BaseViewBlur<V extends View> implements ViewBlur<V>
         if (!isAttachedToWindow(target))
             return;
 
-        onUpdate(source, target);
+        onUpdate(getBlurApi(), source, target);
     }
 
-    protected abstract void onUpdate(V source, V target);
+    protected abstract void onUpdate(BlurApi blurApi, V source, V target);
 
     private static boolean isAttachedToWindow(View view)
     {

@@ -12,7 +12,7 @@ public class ImageViewBlur extends ViewDrawableBlur<ImageView>
     }
 
     @Override
-    protected Drawable getDrawable(ImageView source)
+    protected Drawable getSourceDrawable(ImageView source)
     {
         return source.getDrawable();
     }

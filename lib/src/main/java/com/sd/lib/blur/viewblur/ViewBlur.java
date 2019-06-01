@@ -39,26 +39,18 @@ public interface ViewBlur<V extends View>
     ViewBlur<V> setBlurAsync(boolean async);
 
     /**
-     * {@link #setTarget(View)}
-     *
-     * @return
-     */
-    V getTarget();
-
-    /**
-     * 设置得到模糊数据后，要模糊的目标
-     *
-     * @param target
-     * @return
-     */
-    ViewBlur<V> setTarget(V target);
-
-    /**
      * {@link #setSource(View)}
      *
      * @return
      */
     V getSource();
+
+    /**
+     * {@link #setTarget(View)}
+     *
+     * @return
+     */
+    V getTarget();
 
     /**
      * 设置模糊的数据源
@@ -67,6 +59,14 @@ public interface ViewBlur<V extends View>
      * @return
      */
     ViewBlur<V> setSource(V source);
+
+    /**
+     * 设置得到模糊数据后，要模糊的目标
+     *
+     * @param target
+     * @return
+     */
+    ViewBlur<V> setTarget(V target);
 
     /**
      * 清空{@link #setSource(View)}和{@link #setTarget(View)}设置的View

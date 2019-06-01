@@ -27,33 +27,46 @@ abstract class ViewDrawableBlur<V extends View> extends BaseViewBlur<V>
     }
 
     @Override
-    protected final void onUpdate(V source, V target)
+    protected final void onUpdate(BlurApi blurApi, V source, V target)
     {
-        final Drawable drawable = getDrawable(source);
-        if (mDrawable != drawable)
+        final Drawable drawable = getSourceDrawable(source);
+        if (mDrawable == drawable)
+            return;
+
+        mDrawable = drawable;
+
+        if (drawable != null && !(drawable instanceof BlurredBitmapDrawable))
         {
-            mDrawable = drawable;
-
-            if (drawable != null && !(drawable instanceof BlurredBitmapDrawable))
+            if (mBlurAsync)
             {
-                getBlurApi().blur(drawable).async(mBlurAsync).into(new BlurApi.Target()
-                {
-                    @Override
-                    public void onBlurred(Bitmap bitmap)
-                    {
-                        if (bitmap == null)
-                            return;
-
-                        final V target = getTarget();
-                        if (target == null)
-                            return;
-
-                        mDrawable = new BlurredBitmapDrawable(target.getContext().getResources(), bitmap);
-                        onDrawableBlurred(mDrawable, target);
-                    }
-                });
+                blurApi.blur(drawable).async().into(mBlurTarget);
+            } else
+            {
+                applyBlur(blurApi.blur(drawable).bitmap());
             }
         }
+    }
+
+    private final BlurApi.Target mBlurTarget = new BlurApi.Target()
+    {
+        @Override
+        public void onBlurred(Bitmap bitmap)
+        {
+            applyBlur(bitmap);
+        }
+    };
+
+    private void applyBlur(Bitmap bitmap)
+    {
+        if (bitmap == null)
+            return;
+
+        final V target = getTarget();
+        if (target == null)
+            return;
+
+        mDrawable = new BlurredBitmapDrawable(target.getContext().getResources(), bitmap);
+        onDrawableBlurred(mDrawable, target);
     }
 
     /**
@@ -62,7 +75,7 @@ abstract class ViewDrawableBlur<V extends View> extends BaseViewBlur<V>
      * @param source
      * @return
      */
-    protected abstract Drawable getDrawable(V source);
+    protected abstract Drawable getSourceDrawable(V source);
 
     /**
      * 把模糊后的Drawable设置给要模糊的目标
